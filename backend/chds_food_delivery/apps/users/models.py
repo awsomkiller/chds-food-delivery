@@ -38,7 +38,8 @@ class User(AbstractBaseUser,PermissionsMixin):
     is_superuser = models.BooleanField(_("User Active"), default=False)
     
     objects = UserMangaer()
-    REQUIRED_FIELDS=["full_name","email","mobile_number"]
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS=["full_name","mobile_number"]
     
     class Meta:
         ordering = ['id']
@@ -46,7 +47,7 @@ class User(AbstractBaseUser,PermissionsMixin):
         verbose_name_plural = 'Users'
         
     def __str__(self)-> str:
-        return f"{self.full_name}"
+        return f"{self.email}"
         
         
 
@@ -79,7 +80,7 @@ class UserAddress(models.Model):
         return f"{self.street_address}, {self.city}, {self.state}, {self.country} - {self.postal_code}"
     
     
-class UserProfile(models.model):
+class UserProfile(models.Model):
     """ 
         Model for storing user  extra data
     """
