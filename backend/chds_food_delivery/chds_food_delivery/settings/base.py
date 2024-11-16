@@ -41,7 +41,10 @@ INSTALLED_APPS = [
 ]
 
 APPS_URLS = [
-    "apps.users"
+    "apps.users",
+    "apps.restaurants",
+    "apps.transactions",
+    "apps.translations",
 ]
 INSTALLED_APPS+= APPS_URLS
 AUTH_USER_MODEL = "users.User"
