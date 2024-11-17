@@ -27,27 +27,27 @@ class RestaurantApi(ModelViewSet):
 #     serializer_class = MenuCategorySerializer
 #     queryset = MenuCategory.objects.all()
     
-# class MenuItemApi(ModelViewSet):
-#     """ 
-#         Api for handle Menu items 
+class MenuItemApi(ModelViewSet):
+    """ 
+        Api for handle Menu items 
         
-#     """
-#     http_method_names = ["get","post","delete"]
-#     serializer_class = ListMenuItemSerializer
-#     queryset = MenuItem.objects.all()
+    """
+    http_method_names = ["get","post","delete"]
+    serializer_class = ListMenuItemSerializer
+    queryset = MenuItem.objects.all()
     
-#     def get_serializer_class(self):
-#         if self.action == 'list':
-#             return ListMenuItemSerializer
-#         return CreateMenuItemSerializer
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return ListMenuItemSerializer
+        return CreateMenuItemSerializer
 
 class MenuCategoryApi(ListAPIView):
     serializer_class = MenuCategorySerializer
     queryset = MenuCategory.objects.all()
 
-class MenuItemApi(ListAPIView):
-    serializer_class = ListMenuItemSerializer
-    queryset = MenuItem.objects.all()
+# class MenuItemApi(ListAPIView):
+#     serializer_class = ListMenuItemSerializer
+#     queryset = MenuItem.objects.all()
     
 class MenuImagesApi(ListAPIView):
     serializer_class =ListMenuImagesSerializer

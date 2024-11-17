@@ -94,6 +94,7 @@ class UserAddressesApi(ModelViewSet):
         return UserAddress.objects.filter(user=self.request.user)
     
 class UserProfileApi(ModelViewSet):
+    
     pass
 
 class UserCardDetailsApi(ModelViewSet):

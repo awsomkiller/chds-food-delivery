@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from rest_framework.viewsets import ViewSet
+from apps.transactions.models import Transaction
 
-# Create your views here.
+class TransactionApi(ViewSet):
+    def list(self,request,*args,**kwargs):
+        pass
+        
