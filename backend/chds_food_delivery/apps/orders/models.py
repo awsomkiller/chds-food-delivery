@@ -5,7 +5,15 @@ from apps.transactions.models import Transaction
 
 class Orders(models.Model):
     ORDER_STATUS=[
-        ()
+        ('ORDER_PREPARING','Order Preparing'),
+        ('PACKED', 'Packed'),
+        ('READY_FOR_PICKUP', 'Ready for Pickup'),
+        ('SHIPPED', 'Shipped'),
+        ('OUT_FOR_DELIVERY', 'Out for Delivery'),
+        ('DELIVERED', 'Delivered'),
+        ('CANCELLED', 'Cancelled'),
+        ('COMPLETED', 'Completed'),
+        
     ]
     restaurent_id = models.ForeignKey(Restaurant,on_delete=models.DO_NOTHING, related_name="orders")
     user = models.ForeignKey(User,on_delete=models.CASCADE, related_name="userorders")
