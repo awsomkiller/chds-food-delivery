@@ -7,10 +7,17 @@ from apps.users.serializers import (
     RegisterApiSerializer,
     LoginSerializer,
     ForgetPasswordSerializer,
-    VerifyPasswordSerializer
+    ResetPasswordSerializer,
+    ChangePasswordSerializer,
+    UserAddressSerializer
 )
 from django.shortcuts import get_object_or_404
 import uuid
+from rest_framework import generics
+from rest_framework.viewsets import ModelViewSet
+from apps.users.models import User , EmailToken ,UserAddress
+from django.utils.crypto import get_random_string
+from apps.users.email import Sendresetpasswordlinkapi
 
 class RegisterAPI(APIView):
     permission_classes = (AllowAny,)
@@ -35,39 +42,63 @@ class ForgetApiView(APIView):
     def post(self,request):
         serializer = ForgetPasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        email = serializer.validated_data["email"].lower()
-
-        token = uuid.uuid4()  
-        # token_instance, _ = EmailToken.objects.update_or_create(
-        #     user=request.user, defaults={"email_token": token}
-        # )
+        email = serializer.validated_data["email"]
+        token =get_random_string(length=32) 
+        EmailToken.objects.update_or_create(
+            user=request.user,
+            defaults={"email_token": token},
+        )
         site_url = request.headers.get("Origin", "")
-        # Sendresetpasswordlinkapi(site_url, email, token)
-
+        Sendresetpasswordlinkapi(site_url, email, token)
         return Response(
             {"message": "Password reset email sent successfully"},
             status=status.HTTP_200_OK,
         )
         
-class VerifyResetPassword(APIView):
-    serializer_class = VerifyPasswordSerializer
-    permission_classes = ()
+class ResetPasswordAPI(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = ResetPasswordSerializer(data=request.data, context={"request":request})
+        if serializer.is_valid(raise_exception=True):
+            email = serializer.validated_data["email"]
+            new_password = serializer.validated_data["new_password"]
+            user = User.objects.get(email=email)
+            user.set_password(new_password)
+            user.save()
+            return Response({"message": "Password has been reset successfully."}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def post(self, request, token, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        token = serializer.validated_data["token"]
-        new_password = serializer.validated_data["password"]
-
-        # token_instance = get_object_or_404(EmailToken, email_token=token)
-        # user = token_instance.user
-
-        # user.set_password(new_password)
-        # user.save()
-        # token_instance.delete()
-
-        return Response(
-            {"message": "Password updated successfully"}, status=status.HTTP_200_OK
+class ChangePasswordAPI(APIView):
+    serializer_class = ChangePasswordSerializer
+    
+    def create(self, request):
+        instance = self.request.user
+        serializer = self.serializer_class(
+            data=request.data, context={"request": request}
         )
+        if serializer.is_valid(raise_exception=True):
+            instance.set_password(serializer.validated_data.get("new_password"))
+            instance.save()
+            return Response({"message":"Password Changes Successfully"},status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+
+class UserAddressesApi(ModelViewSet):
+    """ 
+        API for Managing User Address
+    """
+    serializer_class = UserAddressSerializer
+    queryset = UserAddress.objects.all()
+    
+    def get_queryset(self):
+        return UserAddress.objects.filter(user=self.request.user)
+    
+class UserProfileApi(ModelViewSet):
+    pass
+
+class UserCardDetailsApi(ModelViewSet):
+    pass
+
+
+class UserWalletApi(generics.ListCreateAPIView):
+    pass

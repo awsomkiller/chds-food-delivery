@@ -133,3 +133,14 @@ class Wallet(models.Model):
     class Meta:
         verbose_name = "Wallet"
         verbose_name_plural = "Wallets"
+        
+
+class EmailToken(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="email_user",
+        blank=True,
+        null=True,
+    )
+    email_token = models.CharField(max_length=50)

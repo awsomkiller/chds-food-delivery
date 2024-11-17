@@ -41,6 +41,9 @@ class MenuCategory(models.Model):
 
 class MenuItem(models.Model):
     name = models.CharField(max_length=100)
+    price = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0.00, help_text="Price in US dollars"
+    )
     description = models.TextField(blank=True, null=True)
     calories = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
     protein = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
@@ -72,8 +75,6 @@ class MenuItem(models.Model):
             }
         return {"Protein (%)": 0, "Fats (%)": 0, "Carbs (%)": 0}
 
-
-from django.db import models
 
 class MenuImage(models.Model):
     menu_item = models.ForeignKey(MenuItem,on_delete=models.CASCADE,related_name='images')
