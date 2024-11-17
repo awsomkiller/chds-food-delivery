@@ -4,7 +4,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import authenticate
-from apps.users.models import EmailToken , User,UserAddress
+from apps.users.models import EmailToken , User,UserAddress,UserProfile,UserCardDetails,Wallet
 
 
 class RegisterApiSerializer(serializers.ModelSerializer):
@@ -138,3 +138,32 @@ class UserAddressSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         attrs['user'] = user
         return UserAddress.objects.create(**attrs)
+    
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ['id', 'user_image', 'date_of_birth', 'user']
+        
+class UserCardDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserCardDetails
+        fields = [
+            'id', 'card_number', 'card_fullname', 'card_cvv', 
+            'card_expiry', 'preferred_payment', 'user', 'is_active'
+        ]
+        extra_kwargs = {
+            'card_cvv': {'write_only': True}, 
+        }
+
+class ListWalletSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wallet
+        fields = ['id', 'user', 'unique_id']
+        read_only_fields = ['unique_id']
+
+class WalletSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wallet
+        fields = ['id', 'user', 'balance', 'expiry', 'unique_id']
+        read_only_fields = ['unique_id']

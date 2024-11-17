@@ -18,19 +18,9 @@ class RestaurantApi(ModelViewSet):
     serializer_class = RestaurantApiSerializer
     queryset = Restaurant.objects.all()
     
-# class MenuCategoryApi(ModelViewSet):
-#     """
-#         Api for handling Menu categories
-
-#     """
-#     http_method_names = ["get","post","delete"]
-#     serializer_class = MenuCategorySerializer
-#     queryset = MenuCategory.objects.all()
-    
 class MenuItemApi(ModelViewSet):
     """ 
-        Api for handle Menu items 
-        
+        Api for handle Menu items   
     """
     http_method_names = ["get","post","delete"]
     serializer_class = ListMenuItemSerializer
@@ -42,13 +32,13 @@ class MenuItemApi(ModelViewSet):
         return CreateMenuItemSerializer
 
 class MenuCategoryApi(ListAPIView):
+    """     
+        API for listing categories
+    """
     serializer_class = MenuCategorySerializer
     queryset = MenuCategory.objects.all()
 
-# class MenuItemApi(ListAPIView):
-#     serializer_class = ListMenuItemSerializer
-#     queryset = MenuItem.objects.all()
-    
+
 class MenuImagesApi(ListAPIView):
     serializer_class =ListMenuImagesSerializer
     queryset = MenuImage.objects.all()

@@ -9,13 +9,17 @@ from apps.users.serializers import (
     ForgetPasswordSerializer,
     ResetPasswordSerializer,
     ChangePasswordSerializer,
-    UserAddressSerializer
+    UserAddressSerializer,
+    UserProfileSerializer,
+    UserCardDetailsSerializer,
+    WalletSerializer,
+    ListWalletSerializer
 )
 from django.shortcuts import get_object_or_404
 import uuid
 from rest_framework import generics
 from rest_framework.viewsets import ModelViewSet
-from apps.users.models import User , EmailToken ,UserAddress
+from apps.users.models import User , EmailToken ,UserAddress,UserCardDetails,UserProfile,Wallet
 from django.utils.crypto import get_random_string
 from apps.users.email import Sendresetpasswordlinkapi
 
@@ -88,18 +92,48 @@ class UserAddressesApi(ModelViewSet):
         API for Managing User Address
     """
     serializer_class = UserAddressSerializer
-    queryset = UserAddress.objects.all()
     
     def get_queryset(self):
         return UserAddress.objects.filter(user=self.request.user)
     
 class UserProfileApi(ModelViewSet):
+    """
+    API endpoint for managing user profiles.
+    """
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user) 
+
+
+class UserCardDetailsViewSet(ModelViewSet):
+    """
+    API endpoint for managing user card details.
+    """
+    queryset = UserCardDetails.objects.all()
+    serializer_class = UserCardDetailsSerializer
+
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user) 
+
+
+
+class WalletViewSet(ModelViewSet):
+    """
+    API endpoint for managing wallets.
+    """
+    queryset = Wallet.objects.all()
+    serializer_class = WalletSerializer
     
-    pass
+    def get_serializer_class(self):
+        if self.action=="list":
+            return ListWalletSerializer
+        return self.serializer_class
+            
 
-class UserCardDetailsApi(ModelViewSet):
-    pass
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user)
 
-
-class UserWalletApi(generics.ListCreateAPIView):
-    pass
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user) 

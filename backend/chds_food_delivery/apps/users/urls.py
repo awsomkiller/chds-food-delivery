@@ -7,21 +7,22 @@ from apps.users.views import (
     ChangePasswordAPI,
     UserAddressesApi,
     UserProfileApi,
-    UserCardDetailsApi,
-    UserWalletApi
+    UserCardDetailsViewSet,
+    WalletViewSet
 )
 
 
 router = routers.DefaultRouter()
 router.register('user-address', UserAddressesApi, basename="user_addresses")
 router.register("user-profile", UserProfileApi , basename= "user_profile")
-router.register("user-cards",UserCardDetailsApi , basename="user_card_details")
+router.register("user-cards",UserCardDetailsViewSet , basename="user_card_details")
+router.register('user-wallet', WalletViewSet, basename='user_wallet')
 
 urlpatterns = [
     path("register-user/",RegisterAPI.as_view() , name="register_user"),
     path("login/",LoginApiView.as_view() , name="login"),
     path("forget-password/",ForgetApiView.as_view(), name="forget_password"),
     path("change-password/",ChangePasswordAPI.as_view() , name ="change_password"),
-    path("user-wallet/",UserWalletApi.as_view(),name="user_wallet")
+    # path("user-wallet/",UserWalletApi.as_view(),name="user_wallet")
 
 ]+router.urls

@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager,PermissionsMixin
 from django.utils.translation import gettext_lazy as _
-
+import uuid
 
 
 class UserMangaer(BaseUserManager):
@@ -126,10 +126,16 @@ class Wallet(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='wallet')
     balance = models.FloatField(_("Wallet Balance"),default=0.0)
     expiry = models.DateTimeField(_("Wallet Expire"),null=True,blank=True)
-
+    unique_id = models.UUIDField(_("Unique Wallet ID"), editable=False, unique=True,null=True,blank=True)
+    
     def __str__(self):
         return f"Wallet of {self.user.full_name} - Balance: {self.balance}"
     
+    def save(self, *args, **kwargs):
+        if not self.unique_id:
+            self.unique_id = uuid.uuid4()  # Generate unique ID if not set
+        super().save(*args, **kwargs)
+            
     class Meta:
         verbose_name = "Wallet"
         verbose_name_plural = "Wallets"
