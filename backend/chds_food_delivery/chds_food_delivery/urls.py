@@ -9,5 +9,6 @@ urlpatterns = [
     path("api/translations/", include("apps.translations.urls")),
     path("api/transactions/", include("apps.transactions.urls")),
     path("api/restaurants/", include("apps.restaurants.urls")),
+    path("api/orders/",include("apps.orders.urls")),
     path("api-auth/", include("rest_framework.urls")),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

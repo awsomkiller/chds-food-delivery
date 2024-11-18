@@ -48,6 +48,7 @@ APPS_URLS = [
     "apps.restaurants",
     "apps.transactions",
     "apps.translations",
+    "apps.orders"
 ]
 INSTALLED_APPS+= APPS_URLS
 AUTH_USER_MODEL = "users.User"

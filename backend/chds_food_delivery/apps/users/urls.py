@@ -8,7 +8,8 @@ from apps.users.views import (
     UserAddressesApi,
     UserProfileApi,
     UserCardDetailsViewSet,
-    WalletViewSet
+    WalletViewSet,
+    ResetPasswordAPI
 )
 
 
@@ -22,6 +23,7 @@ urlpatterns = [
     path("register-user/",RegisterAPI.as_view() , name="register_user"),
     path("login/",LoginApiView.as_view() , name="login"),
     path("forget-password/",ForgetApiView.as_view(), name="forget_password"),
+    path("reset-password/",ResetPasswordAPI.as_view(), name="forget_password"),
     path("change-password/",ChangePasswordAPI.as_view() , name ="change_password"),
     # path("user-wallet/",UserWalletApi.as_view(),name="user_wallet")
 
