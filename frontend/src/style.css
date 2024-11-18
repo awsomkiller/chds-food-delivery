@@ -1,0 +1,51 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+:root{
+    --body-color: #f1f0f5;
+    --divider-color: #e4e4e4;
+    --card-heading-color: #333333;
+    --card-location-color:#787878;
+    --order-background-color: #76923b;
+}
+
+body{
+    background-color: var(--body-color) ;
+}
+
+
+/* scrollbar */
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+
+
+
+  .btn-primary{
+    background-color: var(--order-background-color) ;
+    border-color: var(--order-background-color) ;
+  }
+
+  .btn-primary:hover{
+    background-color: #627a2d ;
+    border-color: var(--order-background-color) ;
+  }
