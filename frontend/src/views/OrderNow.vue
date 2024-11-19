@@ -30,10 +30,36 @@
             </div> -->
 
             <!-- menu items -->
-            <div class="col-lg-8 col-md-12 col-sm-12 col-12 p-3">
+            <div class="col-xxl-10 col-xl-9 col-lg-8 col-md-12 col-sm-12 col-12 p-3">
                 <div class="menu-items">
                     <div class="row ">
-                        <div class="col-lg-6 col-md-12 col-sm-12 col-12 p-0 pe-1">
+
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-12 p-2 pt-0">
+                            <div class="outlet-card p-2 ">
+                                <div class="col-12">
+                                    <label for="inputState" class="form-label">Location</label>
+                                    <select id="inputState" class="form-select">
+                                    <option selected>Choose Location</option>
+                                    <option>...</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-12 p-2 pt-0">
+                            <div class="outlet-card p-2">
+                                <div class="col-12">
+                                    <label for="inputState" class="form-label">Category</label>
+                                    <select id="inputState" class="form-select">
+                                    <option selected>Choose Category</option>
+                                    <option>...</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-2">
                             <div class="outlet-card p-2">
                                 <div class="restaurent-img">
                                 <img class="" src="../assets/CHDS logo Blk transparent.png"> 
@@ -44,16 +70,19 @@
                                 </div>
                             </div>
                             
-                        </div>
+                        </div> -->
 
-                        <div class="col-lg-6 col-md-12 col-sm-12 col-12 p-0 ps-1">
-                            <div class="search-filter h-100 p-2">
+
+
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-12 p-2 pt-0">
+                            <div class="search-filter h-100 p-2 ">
                                 <form class="d-flex" role="search">
-                                    <input class="form-control me-2" type="search" placeholder="Search menu" aria-label="Search">
-                                    <button class="btn btn-outline-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                                    <button class="btn btn-secondary w-100 text-start" type="button" data-bs-toggle="modal" data-bs-target="#searchdishModal"><i class="fa-solid fa-magnifying-glass"></i> Search Dish</button>
                                 </form>
                             </div>
                         </div>
+
+                        
                         
                     </div>
 
@@ -64,201 +93,109 @@
                     </div>
                     
                     <div class="row p-0">
-                        <div class="col-md-6 col-sm-12 col-12 p-2">
-                            
+                        <div class="col-xxl-4 col-xl-6 col-md-6 col-sm-12 col-12 p-2">
                             <div class="card-item " type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 <div class="card-item-food p-3">
                                     <div class="food-item-detail">
                                         <h5> Wine-Marinated Chicken Hearts </h5>
-                                        <p class="item-price"> <small>$ 124 </small> $80 </p>
+                                        <p class="item-price">  $19-$31 </p>
                                         <p class="item-description">
                                             Tender chicken hearts marinated in wine sauce, offering a rich and unique flavor, perfect as…
                                         </p>
+                                        
                                     </div>
                                     <div class="food-image-n-add-item">
-                                        <img class="" src="../assets/dish-images/Soy Braised Beef Shank.png">
-                                        <a href="" class="add-item-action">
-                                            Add +
-                                        </a>
-                                    </div>
-                                    
-                                </div>
-
-                                <div class="calories-detail">
-                                    <span class="overall-cal"> 800 Kcal</span>
-                                    <ul class="list-unstyled ingridients-list">
-                                        <li> 
-                                            <span class="nutreents" >Protein </span>
-                                            <span> 200g </span>
-                                        </li>
-
-                                        <li> 
-                                            <span  class="nutreents">Carbes </span>
-                                            <span> 200g </span>
-                                        </li>
-
-                                        <li> 
-                                            <span  class="nutreents">Fat </span>
-                                            <span> 200g </span>
-                                        </li>
-
-                                        <li> 
-                                            <span  class="nutreents">Neutrients </span>
-                                            <span> 200g </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            
-                        </div>
-
-                        <div class="col-md-6 col-sm-12 col-12 p-2">
-                            
-                            <div class="card-item ">
-                                <div class="card-item-food p-3">
-                                    <div class="food-item-detail">
-                                        <h5> Wine-Marinated Chicken Hearts </h5>
-                                        <p class="item-price"> <small>$ 124 </small> $80 </p>
-                                        <p class="item-description">
-                                            Tender chicken hearts marinated in wine sauce, offering a rich and unique flavor, perfect as…
-                                        </p>
-                                    </div>
-                                    <div class="food-image-n-add-item">
-                                        <img class="" src="../assets/dish-images/Soy Braised Beef Shank(1).png">
-                                        <a href="" class="add-item-action">
-                                            Add +
-                                        </a>
-                                    </div>
-                                    
-                                </div>
-
-                                <div class="calories-detail">
-                                    <span class="overall-cal"> 800 Kcal</span>
-                                    <ul class="list-unstyled ingridients-list">
-                                        <li> 
-                                            <span class="nutreents" >Protein </span>
-                                            <span> 200g </span>
-                                        </li>
-
-                                        <li> 
-                                            <span  class="nutreents">Carbes </span>
-                                            <span> 200g </span>
-                                        </li>
-
-                                        <li> 
-                                            <span  class="nutreents">Fat </span>
-                                            <span> 200g </span>
-                                        </li>
-
-                                        <li> 
-                                            <span  class="nutreents">Neutrients </span>
-                                            <span> 200g </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            
-                        </div>
-
-                        <div class="col-md-6 col-sm-12 col-12 p-2">
-                            
-                            <div class="card-item ">
-                                <div class="card-item-food p-3">
-                                    <div class="food-item-detail">
-                                        <h5> Wine-Marinated Chicken Hearts </h5>
-                                        <p class="item-price"> <small>$ 124 </small> $80 </p>
-                                        <p class="item-description">
-                                            Tender chicken hearts marinated in wine sauce, offering a rich and unique flavor, perfect as…
-                                        </p>
-                                    </div>
-                                    <div class="food-image-n-add-item">
-                                        <img class="" src="../assets/dish-images/Pickled Veg Chicken Stir-fry.png">
-                                        <a href="" class="add-item-action">
-                                            Add +
-                                        </a>
-                                    </div>
-                                    
-                                </div>
-
-                                <div class="calories-detail">
-                                    <span class="overall-cal"> 800 Kcal</span>
-                                    <ul class="list-unstyled ingridients-list">
-                                        <li> 
-                                            <span class="nutreents" >Protein </span>
-                                            <span> 200g </span>
-                                        </li>
-
-                                        <li> 
-                                            <span  class="nutreents">Carbes </span>
-                                            <span> 200g </span>
-                                        </li>
-
-                                        <li> 
-                                            <span  class="nutreents">Fat </span>
-                                            <span> 200g </span>
-                                        </li>
-
-                                        <li> 
-                                            <span  class="nutreents">Neutrients </span>
-                                            <span> 200g </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            
-                        </div>
-
-                        <div class="col-md-6 col-sm-12 col-12 p-2">
-                            
-                            <div class="card-item ">
-                                <div class="card-item-food p-3">
-                                    <div class="food-item-detail">
-                                        <h5> Wine-Marinated Chicken Hearts </h5>
-                                        <p class="item-price"> <small>$ 124 </small> $80 </p>
-                                        <p class="item-description">
-                                            Tender chicken hearts marinated in wine sauce, offering a rich and unique flavor, perfect as…
-                                        </p>
-                                    </div>
-                                    <div class="food-image-n-add-item">
-                                        <img class="" src="../assets/dish-images/Pickled Veg Chicken Stir-fry(1).png">
-                                        <div class="item-action">
-                                            <a href="" class="subtract">
-                                                <i class="fa-solid fa-minus"></i>
-                                            </a>
-                                            <p>20</p>
-                                            <a href="" class="add">
-                                                <i class="fa-solid fa-plus"></i>
+                                        <div class="position-relative">
+                                            <img class="" src="../assets/dish-images/Soy Braised Beef Shank.png">
+                                            <a href="" class="add-item-action">
+                                                Add +
                                             </a>
                                         </div>
                                         
                                     </div>
-                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class="col-xxl-4 col-xl-6 col-md-6 col-sm-12 col-12 p-2">
+                            
+                            <div class="card-item ">
+                                <div class="card-item-food p-3">
+                                    <div class="food-item-detail">
+                                        <h5> Wine-Marinated Chicken Hearts </h5>
+                                        <p class="item-price">  $19-$31 </p>
+                                        <p class="item-description">
+                                            Tender chicken hearts marinated in wine sauce, offering a rich and unique flavor, perfect as…
+                                        </p>
+
+                                    </div>
+                                    <div class="food-image-n-add-item">
+                                        <div class="position-relative">
+                                            <img class="" src="../assets/dish-images/Soy Braised Beef Shank.png">
+                                            <a href="" class="add-item-action">
+                                                Add +
+                                            </a>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class="col-xxl-4 col-xl-6 col-md-6 col-sm-12 col-12 p-2">
+                            
+                            <div class="card-item ">
+                                <div class="card-item-food p-3">
+                                    <div class="food-item-detail">
+                                        <h5> Wine-Marinated Chicken Hearts </h5>
+                                        <p class="item-price">  $19-$31 </p>
+                                        <p class="item-description">
+                                            Tender chicken hearts marinated in wine sauce, offering a rich and unique flavor, perfect as…
+                                        </p>
+
+                                    </div>
+                                    <div class="food-image-n-add-item">
+                                        <div class="position-relative">
+                                            <img class="" src="../assets/dish-images/Soy Braised Beef Shank.png">
+                                            <a href="" class="add-item-action">
+                                                Add +
+                                            </a>
+                                        </div>
+                                        
+                                    </div>
                                 </div>
 
-                                <div class="calories-detail">
-                                    <span class="overall-cal"> 800 Kcal</span>
-                                    <ul class="list-unstyled ingridients-list">
-                                        <li> 
-                                            <span class="nutreents" >Protein </span>
-                                            <span> 200g </span>
-                                        </li>
+                               
+                            </div>
+                            
+                        </div>
 
-                                        <li> 
-                                            <span  class="nutreents">Carbes </span>
-                                            <span> 200g </span>
-                                        </li>
+                        <div class="col-xxl-4 col-xl-6 col-md-6 col-sm-12 col-12 p-2">
+                            
+                            <div class="card-item ">
+                                <div class="card-item-food p-3">
+                                    <div class="food-item-detail">
+                                        <h5> Wine-Marinated Chicken Hearts </h5>
+                                        <p class="item-price">  $19-$31 </p>
+                                        <p class="item-description">
+                                            Tender chicken hearts marinated in wine sauce, offering a rich and unique flavor, perfect as…
+                                        </p>
 
-                                        <li> 
-                                            <span  class="nutreents">Fat </span>
-                                            <span> 200g </span>
-                                        </li>
-
-                                        <li> 
-                                            <span  class="nutreents">Neutrients </span>
-                                            <span> 200g </span>
-                                        </li>
-                                    </ul>
+                                    </div>
+                                    <div class="food-image-n-add-item">
+                                        <div class="position-relative">
+                                            <img class="" src="../assets/dish-images/Soy Braised Beef Shank.png">
+                                            <a href="" class="add-item-action">
+                                                Add +
+                                            </a>
+                                        </div>
+                                        
+                                    </div>
                                 </div>
+
+                               
                             </div>
                             
                         </div>
@@ -269,16 +206,28 @@
 
 
             <!-- cart  -->
-            <div class="col-lg-4 col-md-12 col-sm-12 col-12 p-2">
+            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12 p-2 cart-desktop">
                 <div class="bg-white cart-section p-2 rounded ">
                     <div class="pb-3">
-                        <h4 class="cart-heading"> Your Cart</h4>
+                        <div class="outlet-card p-2 mb-4">
+                            <div class="restaurent-img">
+                                <img class="" src="../assets/CHDS logo Blk transparent.png"> 
+                            </div>
+                            <div class="outlet-detail">
+                                <h5> Chi Hun Da Su </h5>
+                                <p> Location </p>
+                            </div>
+                        </div>
+
+                        <h4 class="cart-heading mb-0"> Your Cart</h4>
+
+                        
                     
-                        <div class="order-type-container">
+                        <!-- <div class="order-type-container">
                             <button type="button" class="btn-active-order"> <span> Delivery </span> <br> <span class="delhivery-time">20 Minutes</span> </button>
                             <button type="button" class="btn-inactive-order">Pick Up</button>
                             <button type="button" class="btn-inactive-order">In Car</button>
-                        </div>
+                        </div> -->
                     </div>
                     
 
@@ -365,23 +314,37 @@
                        </ul> 
                     </div>
                     <div>
-                        <div class="final-subtotal">
+                        <!-- <div class="final-subtotal">
                             <span>Subtotal </span>
                             <span> $  800.00</span>
-                        </div>
+                        </div> -->
+                        
                         <div class="final-subtotal fw-normal">
-                            <span class=" ">Delivery Charges </span>
-                            <span> $  20.00</span>
+                            <span class=" ">You have total 8 items in your cart </span>
                         </div>
 
-                        <button type="button" class="btn btn-primary w-100"> Checkout $ 820.00 </button>
+                        <button type="button" class="btn btn-primary w-100"> Proceed to Checkout </button>
                     </div>
                     
                 </div>
+                
             </div>
+
+            
+            
         </div>
     </div>
 
+
+    <!-- cart-button-mobile -->
+    <div class="mobile-cart">
+        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+           <div class="view-cart-mobile" >
+            <p class="mb-0"> 80 Items</p>
+            <p class="mb-0"> View Cart </p>
+           </div>
+        </button>
+    </div>
 
 <!-- item detail popup -->
 <div class="modal modal-food-item fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -394,36 +357,311 @@
             <img class="mb-3" src="../assets/dish-images/Soy Braised Beef Shank.png">
             
             <div>
-            <h5> Wine-Marinated Chicken Hearts</h5>
-            <p>
-                Tender chicken hearts marinated in wine sauce, offering a rich and unique flavor, perfect as a nutritious snack.
-            </p>
+                <h5> Wine-Marinated Chicken Hearts</h5>
+                <p>
+                    Tender chicken hearts marinated in wine sauce, offering a rich and unique flavor, perfect as a nutritious snack.
+                </p>
 
-            <div class="price-text"> $ <span class="fw-bold">399 </span> </div>
-        </div>
+                <div class="price-text"> <span class="fw-bold">$19-$31 </span> </div>
+            </div>
         </div>
         
+        <div class="px-3 py-2">
+            <h4 class="extra-status"> Meal Size : <span  class="text-status"> Meal Set </span> </h4>
+            <div class="meal-category rounded p-3">
+                <input type="radio" class="btn-check " name="options" id="option1" autocomplete="off" checked>
+                <label class="btn btn-primary" for="option1">Meal Set</label>
 
-        <div class="meal-category p-3">
-            <input type="radio" class="btn-check " name="options" id="option1" autocomplete="off" checked>
-            <label class="btn btn-primary" for="option1">Meal Set</label>
+                <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="option2"> Main Dish (300 g)</label>
 
-            <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
-            <label class="btn btn-outline-primary" for="option2"> Main Dish (300 g)</label>
+                <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
+                <label class="btn btn-outline-primary" for="option3"> meal 3 (300 g)</label>
+            </div>
+        </div>
 
-           
-            
+        <div class="px-3 py-2">
+            <h4 class="extra-status"> Extra protein : <span class="text-status"> Yes </span> </h4>
+            <div class="meal-category rounded p-3">
+                <input type="radio" class="btn-check " name="protein" id="proteinoption1" autocomplete="off" checked>
+                <label class="btn btn-primary" for="proteinoption1">Yes</label>
+
+                <input type="radio" class="btn-check" name="protein" id="proteinoption2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="proteinoption2"> No</label>
+            </div>
+        </div>
+
+        <div class="px-3 py-2">
+            <h4 class="extra-status"> Extra vegetables : <span class="text-status"> Yes </span></h4>
+            <div class="meal-category rounded p-3">
+                <input type="radio" class="btn-check " name="extraveg" id="extraveg1" autocomplete="off" checked>
+                <label class="btn btn-primary" for="extraveg1">Yes</label>
+
+                <input type="radio" class="btn-check" name="extraveg" id="extraveg2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="extraveg2"> No</label>
+            </div>
+        </div>
+
+
+        <div class="px-3 py-2">
+            <h4 class="extra-status"> Extra rice : <span class="text-status"> Yes </span> </h4>
+            <div class="meal-category rounded p-3">
+                <input type="radio" class="btn-check " name="extrarice" id="extrarice1" autocomplete="off" checked>
+                <label class="btn btn-primary" for="extrarice1">Yes</label>
+
+                <input type="radio" class="btn-check" name="extrarice" id="extrarice2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="extrarice2"> No</label>
+            </div>
+        </div>
+       
+
+        <div class="px-3 py-2">
+            <h4 class="nutrients-facts"> Nutrition Facts – Per Meal Set
+                (150g Dish + 150g Vegetables + 150g Rice) </h4>
+            <div class="meal-category-table rounded ">
+                <table class="table w-100">
+                <thead>
+                    <tr>
+                        <th scope="col">Protein</th>
+                        <th scope="col">Carb</th>
+                        <th scope="col">Fat</th>
+                        <th scope="col">Calories</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td >46 g</td>
+                        <td>37 g</td>
+                        <td>4.2 g</td>
+                        <td>370 Kcal</td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="px-3 py-2 pb-4 bg-white d-flex justify-content-between align-items-center">
+            <div class="item-action item-ippopup-action">
+                <a href="" class="subtract">
+                    <i class="fa-solid fa-minus"></i>
+                </a>
+                <p>20</p>
+                <a href="" class="add">
+                    <i class="fa-solid fa-plus"></i>
+                </a>
+            </div>
+
+            <button type="button" class="btn btn-primary">Add to Cart</button>
         </div>
 
 
         
       </div>
-      <div class="modal-footer">
+      <!-- <div class="modal-footer">
         <button type="button" class="btn btn-primary">Add to Cart</button>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
+
+
+<!-- item search popup -->
+<div class="modal modal-search-dish fade" id="searchdishModal" tabindex="-1" aria-labelledby="searchdishModalLabel" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-scrollable modal-dialog-centered">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h5 class="modal-title">Search Dish</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+
+        <div class="modal-body bg-modal-body-color ">
+
+            <div class=" mb-3">
+                <input class="form-control me-2" type="search" placeholder="Search Dish" aria-label="Search">
+            </div>
+
+            <div class="">
+                <div class="divider-heading">
+                        <h3>
+                            Serach Results
+                        </h3>
+                    </div>
+                <div class="meal-category rounded ">
+                    <ul class="list-unstyled search-item-list mb-0">
+                        <li class="d-flex align-items-center p-3">
+                            <img class="searchitem-dish-image" src="../assets/dish-images/Pickled Veg Chicken Stir-fry.png" > 
+                            <p class="searchitem-dish-name mb-0">Wine-Marinated Chicken Hearts</p>
+                        </li>
+
+                        <li class="d-flex align-items-center p-3">
+                            <img class="searchitem-dish-image" src="../assets/dish-images/Pickled Veg Chicken Stir-fry.png" > 
+                            <p class="searchitem-dish-name mb-0">Wine-Marinated Chicken Hearts</p>
+                        </li>
+
+
+                        <li class="d-flex align-items-center p-3">
+                            <img class="searchitem-dish-image" src="../assets/dish-images/Pickled Veg Chicken Stir-fry.png" > 
+                            <p class="searchitem-dish-name mb-0">Wine-Marinated Chicken Hearts</p>
+                        </li>
+
+
+                        <li class="d-flex align-items-center p-3">
+                            <img class="searchitem-dish-image" src="../assets/dish-images/Pickled Veg Chicken Stir-fry.png" > 
+                            <p class="searchitem-dish-name mb-0">Wine-Marinated Chicken Hearts</p>
+                        </li>
+
+                        <li class="d-flex align-items-center p-3">
+                            <img class="searchitem-dish-image" src="../assets/dish-images/Pickled Veg Chicken Stir-fry.png" > 
+                            <p class="searchitem-dish-name mb-0">Wine-Marinated Chicken Hearts</p>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Add to Cart</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+
+
+<!-- item cart mobile popup -->
+
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Your Cart</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="bg-white cart-section p-2 rounded ">
+        <div class="pb-3">
+            <div class="outlet-card p-2 mb-4">
+                <div class="restaurent-img">
+                    <img class="" src="../assets/CHDS logo Blk transparent.png"> 
+                </div>
+                <div class="outlet-detail">
+                    <h5> Chi Hun Da Su </h5>
+                    <p> Location </p>
+                </div>
+            </div>
+
+            
+        
+            <!-- <div class="order-type-container">
+                <button type="button" class="btn-active-order"> <span> Delivery </span> <br> <span class="delhivery-time">20 Minutes</span> </button>
+                <button type="button" class="btn-inactive-order">Pick Up</button>
+                <button type="button" class="btn-inactive-order">In Car</button>
+            </div> -->
+        </div>
+        
+
+
+        <div>
+            <ul class="list-unstyled orderl-list" >
+                <li class="order-item">
+                    <div class="order-desscription">
+                        <p class="item-small-hd">Wine-Marinated Chicken Hearts</p>
+                        
+                        <p class="item-price"><span>4 x $ 189</span> <b style="display: inline-block; font-weight: 500;"> $ 756</b></p>
+                    </div>
+                    <div class="order-count">
+                        <div class="item-action item-action-cart">
+                                <a href="" class="subtract">
+                                    <i class="fa-solid fa-minus"></i>
+                                </a>
+                                <p>20</p>
+                                <a href="" class="add">
+                                    <i class="fa-solid fa-plus"></i>
+                                </a>
+                            </div>
+                    </div>
+                </li>
+
+                <li class="order-item">
+                    <div class="order-desscription">
+                        <p class="item-small-hd">Wine-Marinated Chicken Hearts</p>
+                        
+                        <p class="item-price"><span>4 x $ 189</span> <b style="display: inline-block; font-weight: 500;"> $ 756</b></p>
+                    </div>
+                    <div class="order-count">
+                        <div class="item-action item-action-cart">
+                                <a href="" class="subtract">
+                                    <i class="fa-solid fa-minus"></i>
+                                </a>
+                                <p>20</p>
+                                <a href="" class="add">
+                                    <i class="fa-solid fa-plus"></i>
+                                </a>
+                            </div>
+                    </div>
+                </li>
+
+                <li class="order-item">
+                    <div class="order-desscription">
+                        <p class="item-small-hd">Wine-Marinated Chicken Hearts</p>
+                        
+                        <p class="item-price"><span>4 x $ 189</span> <b style="display: inline-block; font-weight: 500;"> $ 756</b></p>
+                    </div>
+                    <div class="order-count">
+                        <div class="item-action item-action-cart">
+                                <a href="" class="subtract">
+                                    <i class="fa-solid fa-minus"></i>
+                                </a>
+                                <p>20</p>
+                                <a href="" class="add">
+                                    <i class="fa-solid fa-plus"></i>
+                                </a>
+                            </div>
+                    </div>
+                </li>
+
+                <li class="order-item">
+                    <div class="order-desscription">
+                        <p class="item-small-hd">Wine-Marinated Chicken Hearts</p>
+                        
+                        <p class="item-price"><span>4 x $ 189</span> <b style="display: inline-block; font-weight: 500;"> $ 756</b></p>
+                    </div>
+                    <div class="order-count">
+                        <div class="item-action item-action-cart">
+                                <a href="" class="subtract">
+                                    <i class="fa-solid fa-minus"></i>
+                                </a>
+                                <p>20</p>
+                                <a href="" class="add">
+                                    <i class="fa-solid fa-plus"></i>
+                                </a>
+                            </div>
+                    </div>
+                </li>
+
+
+            </ul> 
+        </div>
+        <div>
+            <!-- <div class="final-subtotal">
+                <span>Subtotal </span>
+                <span> $  800.00</span>
+            </div> -->
+            
+            <div class="final-subtotal fw-normal">
+                <span class=" ">You have total 8 items in your cart </span>
+            </div>
+
+            <button type="button" class="btn btn-primary w-100"> Proceed to Checkout </button>
+        </div>
+            
+    </div>
+  </div>
+</div>
+
 </template>
 
 <style>
@@ -433,8 +671,13 @@
         --divider-color: #e4e4e4;
         --card-heading-color: #333333;
         --card-location-color:#787878;
-        
+       
+        --darkest-green-bg-color: #576d27;
         --order-background-color: #76923b;
+        --light-green-color: #b3c677;
+        --dark-brown-color : #944c22;
+        --light-brown-colo: #c5886b;
+        --lightest-brown-colo: #f7d9ba;
 
     }
 
@@ -485,13 +728,15 @@
     .divider-heading h3{
         position: absolute;
         text-transform: uppercase;
-        top: -1.25rem;
-        left: 50px;
+        top: -0.75rem;
+        left: 50%;
         right: 0;
         color: var(--card-heading-color);
         background-color: var(--body-color) !important;
         width: max-content;
         padding: 0 10px;
+        font-size: 20px;
+        transform: translate(-50%, 0);
     }
 
 
@@ -503,11 +748,16 @@
 
     .card-item-food{
         display: flex;
+        padding-bottom: 30px !important;
         
     }
     .food-item-detail{
         flex: 0 0 60%;
         padding-right: 0.5rem;
+    }
+
+    .food-image-n-add-item{
+        flex: 0 0 40%;
     }
 
     .item-price {
@@ -525,6 +775,7 @@
     .food-item-detail h5{
         font-size: 1rem;
         margin-bottom: 0.5rem;
+        color: var(--order-background-color);
     }
     .food-item-detail .item-description{
         font-size: 12px;
@@ -539,9 +790,7 @@
 
     .food-image-n-add-item img{
         width: 100%;
-        border-radius: 6px;
-        height: 135px;
-        width: 135px;
+        border-radius: 1rem;
         object-fit: cover;
         
     }
@@ -550,7 +799,7 @@
         font-size: 16px;
         font-weight: 600;
         padding: 3px 12px;
-        border: 1px solid var(--card-heading-color);
+        border: 1px solid var(--order-background-color);
         border-radius: 8px;
         width: max-content !important;
         text-align: center;
@@ -561,7 +810,7 @@
         left: 50%;
         transform: translate(-50%, 0%);
         text-decoration: none;
-        color: #333333
+        color: var(--order-background-color)
     }
 
     .item-action{
@@ -632,6 +881,11 @@
         color: var(--card-location-color);
         font-size: 12px;
     }
+
+    .ingridients-list li span:nth-child(2){
+        font-size: 13px;
+    }
+
 
     .cart-section{
         position: sticky;
@@ -712,6 +966,7 @@
         overflow-y: auto;
         max-height: 400px;
         padding-right: 10px;
+        padding-left: 10px;
     }
 
     .order-item{
@@ -747,7 +1002,8 @@
     }
 
     .item-price{
-        margin-bottom: 0px;
+        margin-bottom: 10px;
+        color: var(--dark-brown-color);
     }
 
     .item-price span {
@@ -822,6 +1078,11 @@
     /* .modal-food-item{
         max-width: 300px;
     } */
+
+    .modal-food-item .modal-content{
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+    }
     .modal-food-item .modal-body{
         background-color: var(--body-color);
         padding: 0;
@@ -842,17 +1103,147 @@
         border-bottom-right-radius: 20px;
         padding: 1rem;
     }
+
+    .item-img h5{
+       color: var(--order-background-color);
+       font-size: 24px;
+       font-weight: 700;
+    }
+
+
     .item-img img{
-        border-radius: 30px;
+        border-radius: 1rem;
         width:100%
     }
 
     .price-text{
         font-size: 20px;
-        color:var(--card-heading-color)
+        color:var(--card-heading-color);
     }
     .meal-category{
         display: flex;
+        flex-wrap: wrap;
         gap: 1rem;
+        background-color: white
     }
+
+    .extra-status{
+        text-transform: uppercase;
+        font-size: 1rem;
+       
+        color: var(--card-location-color);
+    }
+
+    .text-status{
+        color: var(--card-heading-color);
+    }
+    .nutrients-facts{
+        color: var(--dark-brown-color);
+        font-size: 1rem ;
+        font-weight: 700;
+    }
+
+    .meal-category-table table th{
+        background-color: var(--dark-brown-color);
+        color: white;
+        text-align: center;
+    }
+
+    .meal-category-table table td{
+        text-align: center;
+    }
+
+    .item-ippopup-action{
+        position: relative;
+        left: 0;
+        bottom:0;
+        transform: translate(0,0)
+    }
+
+    .item-ippopup-action a, .item-ippopup-action p{
+       border-top: 1px solid var(--order-background-color) ;
+       border-bottom:1px solid var(--order-background-color) ;
+       background-color: white !important;
+       color: var(--darkest-green-bg-color) !important;
+       height:38px !important;
+
+    }
+    .item-ippopup-action .subtract{
+       border-left: 1px solid var(--order-background-color) ;
+       
+    }
+
+    .item-ippopup-action .add{
+       border-right:1px solid var(--order-background-color) ;
+    }
+
+
+    .modal-search-dish{
+
+    }
+
+    .search-item-list{
+        width:100%;
+        border-bottom: 0;
+    }
+
+    .search-item-list li{
+        border-bottom: 1px dashed var(--card-location-color);
+        width: 100%;
+    }
+
+    .search-item-list li:last-child{
+        border: none;
+    }
+
+    .modal-search-dish .bg-modal-body-color {
+        background-color: var(--body-color) ;
+    }
+
+    .searchitem-dish-image{
+        width: 100px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .searchitem-dish-name{
+        font-size: 1rem;
+        color: var(--card-heading-color);
+        padding-left: 1rem;
+    }
+
+    .mobile-cart{
+        display: none;
+    }
+
+    .view-cart-mobile{
+        display: flex;
+        font-size: 18px;
+        align-items: center;
+        font-weight: 700;
+        justify-content: space-between;
+    }
+
+
+    @media screen and (max-width:991.91px) {
+        .mobile-cart{
+            display: block;
+            position: fixed;
+            bottom: 30px;
+            z-index:99;
+            padding: 10px;
+            width: 100%;
+        }
+
+        .mobile-cart button{
+            width: calc(100vw - 2rem);
+            padding: 1rem;
+        }
+
+        .cart-desktop{
+            display: none;
+        }
+    }
+
 </style>

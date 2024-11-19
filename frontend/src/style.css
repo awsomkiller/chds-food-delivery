@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 *{
     margin: 0;
     padding: 0;
+    font-family: "Inter", serif;
 }
 
 :root{
@@ -9,12 +12,30 @@
     --card-heading-color: #333333;
     --card-location-color:#787878;
     --order-background-color: #76923b;
+    --dark-brown-color : #944c22;
+        --bs-btn-color: #fff !important;
+        --bs-btn-bg: var;
+        --bs-btn-border-color: #76923b !important;
+        --bs-btn-hover-color: #fff;
+        --bs-btn-hover-bg: #576d27 !important;
+        --bs-btn-hover-border-color: #76923b;
+        --bs-btn-focus-shadow-rgb: 49, 132, 253 !important;
+        --bs-btn-active-color: #fff;
+        --bs-btn-active-bg: #576d27  !important;
+        --bs-btn-active-border-color: #576d27 !important;
+        --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+        --bs-btn-disabled-color: #fff;
+        --bs-btn-disabled-bg: #76923b !important;
+        --bs-btn-disabled-border-color: #76923b !important; 
 }
-
 body{
     background-color: var(--body-color) ;
 }
 
+
+.bg-modal-body-color{
+    background-color: var(--body-color) ;
+}
 
 /* scrollbar */
 
@@ -43,9 +64,46 @@ body{
   .btn-primary{
     background-color: var(--order-background-color) ;
     border-color: var(--order-background-color) ;
+    
   }
 
   .btn-primary:hover{
     background-color: #627a2d ;
     border-color: var(--order-background-color) ;
   }
+
+
+
+  .btn-outline-primary{
+    border-color: var(--order-background-color) ;
+    color: var(--order-background-color) ;
+  }
+
+  .btn-outline-primary{
+    border-color: var(--order-background-color) ;
+    color: var(--order-background-color) ;
+  }
+
+
+
+.btn-check:checked+.btn{
+    background-color: var(--dark-brown-color) ;
+    border-color: var(--dark-brown-color) ;
+}
+
+.btn-check:checked+.btn:hover{
+    background-color: var(--dark-brown-color) ;
+    border-color: var(--dark-brown-color) ;
+}
+
+.btn-check+.btn{
+    background-color: transparent ;
+    color: var(--dark-brown-color);
+    border-color: var(--dark-brown-color) ;
+}
+.btn-check+.btn:hover{
+    background-color: var(--dark-brown-color) ;
+    color: white !important;
+    color: var(--dark-brown-color);
+    border-color: var(--dark-brown-color) ;
+}
