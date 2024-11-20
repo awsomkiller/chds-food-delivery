@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import OrderNow from '../views/OrderNow.vue';
+import CheckoutPage from '@/views/CheckoutPage.vue';
 
 const routes = [
   {
@@ -11,9 +12,17 @@ const routes = [
 
   {
     path: '/ordernow',
-    name: 'Oredernow',
+    name: 'Ordernow',
     component: OrderNow,
   },
+
+
+  {
+    path: '/Checkout',
+    name: 'CheckoutPage',
+    component: CheckoutPage,
+  },
+  
 ];
 
 const router = createRouter({

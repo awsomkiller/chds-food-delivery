@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid">
+    <div class="container-xxl">
         <!-- <h2>Order Online</h2> -->
         <div class="row">
             <!-- <div class="col-lg-2 col-md-12 col-sm-12 col-12 p-3">
@@ -34,64 +34,41 @@
                 <div class="menu-items">
                     <div class="row ">
 
-                        <div class="col-lg-4 col-md-4 col-sm-12 col-12 p-2 pt-0">
-                            <div class="outlet-card p-2 ">
-                                <div class="col-12">
-                                    <label for="inputState" class="form-label">Location</label>
-                                    <select id="inputState" class="form-select">
-                                    <option selected>Choose Location</option>
-                                    <option>...</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+                       
 
-
-                        <div class="col-lg-4 col-md-4 col-sm-12 col-12 p-2 pt-0">
+                        <div class="col-lg-8 col-md-6 col-sm-12 col-12 p-2 pt-0">
                             <div class="outlet-card p-2">
-                                <div class="col-12">
-                                    <label for="inputState" class="form-label">Category</label>
-                                    <select id="inputState" class="form-select">
-                                    <option selected>Choose Category</option>
-                                    <option>...</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-2">
-                            <div class="outlet-card p-2">
-                                <div class="restaurent-img">
-                                <img class="" src="../assets/CHDS logo Blk transparent.png"> 
-                                </div>
-                                <div class="outlet-detail">
-                                    <h5> Chi Hun Da Su </h5>
-                                    <p> Location </p>
-                                </div>
-                            </div>
+                                    <input class="form-control " type="search" placeholder="Search Dish" aria-label="Search">
                             
-                        </div> -->
-
-
-
-                        <div class="col-lg-4 col-md-4 col-sm-12 col-12 p-2 pt-0">
-                            <div class="search-filter h-100 p-2 ">
-                                <form class="d-flex" role="search">
-                                    <button class="btn btn-secondary w-100 text-start" type="button" data-bs-toggle="modal" data-bs-target="#searchdishModal"><i class="fa-solid fa-magnifying-glass"></i> Search Dish</button>
-                                </form>
                             </div>
                         </div>
 
+
+
+                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-2 pt-0">
+                            <div class="search-filter h-100 p-2 ">
+
+                                <div class="">
+                                    <div class="col-12">
+                                        <!-- <label for="inputState" class="form-label">Category</label> -->
+                                        <select id="inputState" class="form-select">
+                                            <option selected>Choose Category</option>
+                                            <option>...</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         
                         
                     </div>
 
-                    <div class="divider-heading">
+                    <!-- <div class="divider-heading">
                         <h3>
                             Our Menu
                         </h3>
                     </div>
-                    
+                     -->
                     <div class="row p-0">
                         <div class="col-xxl-4 col-xl-6 col-md-6 col-sm-12 col-12 p-2">
                             <div class="card-item " type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -133,11 +110,16 @@
                                     <div class="food-image-n-add-item">
                                         <div class="position-relative">
                                             <img class="" src="../assets/dish-images/Soy Braised Beef Shank.png">
-                                            <a href="" class="add-item-action">
-                                                Add +
-                                            </a>
+                                            <div class="item-action">
+                                                <a href="" class="subtract">
+                                                    <i class="fa-solid fa-minus"></i>
+                                                </a>
+                                                <p>20</p>
+                                                <a href="" class="add">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                </a>
+                                            </div>
                                         </div>
-                                        
                                     </div>
                                 </div>
                             </div>
@@ -221,13 +203,6 @@
 
                         <h4 class="cart-heading mb-0"> Your Cart</h4>
 
-                        
-                    
-                        <!-- <div class="order-type-container">
-                            <button type="button" class="btn-active-order"> <span> Delivery </span> <br> <span class="delhivery-time">20 Minutes</span> </button>
-                            <button type="button" class="btn-inactive-order">Pick Up</button>
-                            <button type="button" class="btn-inactive-order">In Car</button>
-                        </div> -->
                     </div>
                     
 
@@ -242,14 +217,14 @@
                                 </div>
                                 <div class="order-count">
                                     <div class="item-action item-action-cart">
-                                            <a href="" class="subtract">
-                                                <i class="fa-solid fa-minus"></i>
-                                            </a>
-                                            <p>20</p>
-                                            <a href="" class="add">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </a>
-                                        </div>
+                                        <a href="" class="subtract">
+                                            <i class="fa-solid fa-minus"></i>
+                                        </a>
+                                        <p>20</p>
+                                        <a href="" class="add">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </li>
 
@@ -380,42 +355,53 @@
             </div>
         </div>
 
-        <div class="px-3 py-2">
-            <h4 class="extra-status"> Extra protein : <span class="text-status"> Yes </span> </h4>
-            <div class="meal-category rounded p-3">
-                <input type="radio" class="btn-check " name="protein" id="proteinoption1" autocomplete="off" checked>
-                <label class="btn btn-primary" for="proteinoption1">Yes</label>
+        <!-- extra customization -->
+        <div class="px-3 py-2 extra-options">
+            <div class="meal-category toggle-button-extra rounded p-3">
+                <h4 class="extra-status"> Extra protein </h4>
+                <div class="">
+                    <div class="can-toggle">
+                        <input id="a" type="checkbox">
+                        <label for="a">
+                            <div class="can-toggle__switch" data-checked="Yes" data-unchecked="No"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
 
-                <input type="radio" class="btn-check" name="protein" id="proteinoption2" autocomplete="off">
-                <label class="btn btn-outline-primary" for="proteinoption2"> No</label>
+            <div class="meal-category toggle-button-extra rounded p-3">
+                <h4 class="extra-status"> Extra vegetables </h4>
+                <div class="meal-category toggle-button-extra rounded ">
+                    <div class="">
+                        <div class="can-toggle">
+                            <input id="a" type="checkbox">
+                            <label for="a">
+                                <div class="can-toggle__switch" data-checked="Yes" data-unchecked="No"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="meal-category toggle-button-extra rounded p-3">
+                <h4 class="extra-status"> Extra rice  </h4>
+                <div class=" toggle-button-extra rounded ">
+                    <div class="">
+                        <div class="can-toggle">
+                            <input id="a" type="checkbox">
+                            <label for="a">
+                                <div class="can-toggle__switch" data-checked="Yes" data-unchecked="No"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div class="px-3 py-2">
-            <h4 class="extra-status"> Extra vegetables : <span class="text-status"> Yes </span></h4>
-            <div class="meal-category rounded p-3">
-                <input type="radio" class="btn-check " name="extraveg" id="extraveg1" autocomplete="off" checked>
-                <label class="btn btn-primary" for="extraveg1">Yes</label>
-
-                <input type="radio" class="btn-check" name="extraveg" id="extraveg2" autocomplete="off">
-                <label class="btn btn-outline-primary" for="extraveg2"> No</label>
-            </div>
-        </div>
-
-
-        <div class="px-3 py-2">
-            <h4 class="extra-status"> Extra rice : <span class="text-status"> Yes </span> </h4>
-            <div class="meal-category rounded p-3">
-                <input type="radio" class="btn-check " name="extrarice" id="extrarice1" autocomplete="off" checked>
-                <label class="btn btn-primary" for="extrarice1">Yes</label>
-
-                <input type="radio" class="btn-check" name="extrarice" id="extrarice2" autocomplete="off">
-                <label class="btn btn-outline-primary" for="extrarice2"> No</label>
-            </div>
-        </div>
+        
        
 
-        <div class="px-3 py-2">
+        <div class="px-3 py-2 pt-4">
             <h4 class="nutrients-facts"> Nutrition Facts – Per Meal Set
                 (150g Dish + 150g Vegetables + 150g Rice) </h4>
             <div class="meal-category-table rounded ">
@@ -930,7 +916,7 @@
         outline: none;
         padding: 10px 1rem;
         border:none;
-        font-size: 12px;
+        /* font-size: 12px; */
         border-radius: 12px;
         width: 33%;
     }
@@ -964,7 +950,7 @@
 
     .orderl-list{
         overflow-y: auto;
-        max-height: 400px;
+        max-height: 350px;
         padding-right: 10px;
         padding-left: 10px;
     }
@@ -990,7 +976,7 @@
     }
 
     .delhivery-time{
-        font-size: 9px;
+        font-size: 12px;
         width: 100%;
         
     }
@@ -1129,10 +1115,30 @@
 
     .extra-status{
         text-transform: uppercase;
-        font-size: 1rem;
+        font-size: 13px;
        
         color: var(--card-location-color);
     }
+
+    .toggle-button-extra{
+        flex-direction: column;
+        width: 33%;
+        height: 100%;
+    }
+
+    .toggle-button-extra .extra-status{
+        height: 30px;
+    }
+
+
+
+
+    .extra-options{
+        display: flex;
+        align-items: flex-start;
+        gap:12px;
+    }
+
 
     .text-status{
         color: var(--card-heading-color);
