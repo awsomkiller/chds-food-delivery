@@ -75,17 +75,21 @@ class LoginSerializer(TokenObtainPairSerializer):
     
     
     def validate(self, attrs):
-        email = attrs.get("email")
+        identifier = attrs.get("email")
         password = attrs.get("password")
-        user = authenticate(username=email,password=password)
+        user = authenticate(username=identifier,password=password)
         if not user:
             raise serializers.ValidationError("Invalid credentials")
-        data = super().validate(attrs)
-        data["user"] = {
-            "id": user.id,
-            "email": user.email,
-            "profile": self._get_user_profile(user),
-            "primary_address": self._get_user_address(user),
+        refresh = self.get_token(user)
+        data = {
+            "refresh_token":str(refresh),
+            "access_token":str(refresh.access_token),
+            "user":{
+                "id": user.id,
+                "email": user.email,
+                "profile": self._get_user_profile(user),
+                "primary_address": self._get_user_address(user),
+            }
         }
         return data
         
