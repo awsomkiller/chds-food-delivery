@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import authenticate
 from apps.users.models import EmailToken , User,UserAddress,UserProfile,UserCardDetails,Wallet
-
+from django.shortcuts import get_object_or_404
 
 class RegisterApiSerializer(serializers.ModelSerializer):
     """ 
@@ -29,9 +29,10 @@ class RegisterApiSerializer(serializers.ModelSerializer):
 
         
     def validate(self, data):
+        if not data['email'] and not data['mobile_number']:
+            raise serializers.ValidationError("You must provide either an email or a mobile number.")
         if data['password'] != data['confirm_password']:
             raise serializers.ValidationError({"password": "Passwords do not match."})
-        # if data["mobile_number"]
         try:
             validate_password(data['password'])
         except ValidationError as e:
@@ -54,14 +55,39 @@ class LoginSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
         token["email"] = user.email
         return token
-
+    
+    def _get_user_address(self,user):
+        user_address = UserAddress.objects.filter(user=user,is_primary = True).first()
+        return {
+            "street_address":user_address.street_address,
+            "state":user_address.state,
+            "country":user_address.country,
+            "city":user_address.city,
+            "postal_code":user_address.postal_code 
+        } if user_address else None
+    
+    def _get_user_profile(self,user):
+        profile = UserProfile.objects.filter(user=user).first()
+        return {
+                "data_of_birth": profile.date_of_birth,
+                "user_image": profile.user_image,
+            } if profile else None
+    
+    
     def validate(self, attrs):
         email = attrs.get("email")
         password = attrs.get("password")
-        user = authenticate(email=email,password=password)
+        user = authenticate(username=email,password=password)
         if not user:
             raise serializers.ValidationError("Invalid credentials")
-        return super().validate(attrs)
+        data = super().validate(attrs)
+        data["user"] = {
+            "id": user.id,
+            "email": user.email,
+            "profile": self._get_user_profile(user),
+            "primary_address": self._get_user_address(user),
+        }
+        return data
         
 class ForgetPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)

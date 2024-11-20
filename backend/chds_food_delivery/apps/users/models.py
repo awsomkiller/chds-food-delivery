@@ -2,17 +2,18 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager,PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 import uuid
+from django.db import transaction
 
 
 class UserMangaer(BaseUserManager):
     use_in_migrations = True
-    def create_user(self, email, password, confirm_password=None, **extra_fields):
+    def create_user(self, email=None,mobile_number=None, password=None, **extra_fields):
         if not email:
             raise ValueError("The email field must be required")
-        email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
+        email = self.normalize_email(email) if email else None
+        user = self.model(email=email,  mobile_number=mobile_number,**extra_fields)
         user.set_password(password)
-        user.save()
+        user.save(using=self._db)
         return user
 
     def create_superuser(self, email, password, **extra_fields):
@@ -29,9 +30,9 @@ class User(AbstractBaseUser,PermissionsMixin):
     """
         Custom User Model
     """
-    full_name = models.CharField(_("User Full Name"), max_length=30)
-    email = models.EmailField(_("User Email"), unique=True)
-    mobile_number = models.CharField(_("User Mobile Number"),max_length=13)
+    full_name = models.CharField(_("User Full Name"), max_length=30,null=True,blank=True)
+    email = models.EmailField(_("User Email"), unique=True,null=True,blank=True)
+    mobile_number = models.CharField(_("User Mobile Number"),max_length=13,unique=True,null=True,blank=True)
     created_at = models.DateTimeField(_("User Creation Date&Time"),auto_now_add=True)
     is_active = models.BooleanField(_("User Active"), default=True)
     is_staff = models.BooleanField(_("User Active"), default=False)
@@ -39,7 +40,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     
     objects = UserMangaer()
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS=["full_name","mobile_number"]
+    REQUIRED_FIELDS=[]
     
     class Meta:
         ordering = ['id']
@@ -48,6 +49,12 @@ class User(AbstractBaseUser,PermissionsMixin):
         
     def __str__(self)-> str:
         return f"{self.email}"
+    
+    def save(self, *args, **kwargs):
+    
+        if not self.email and not self.mobile_number:
+            raise ValueError("The user must have either an email or a mobile number.")
+        super().save(*args, **kwargs)
         
         
 
@@ -66,10 +73,14 @@ class UserAddress(models.Model):
     updated_at = models.DateTimeField(_("Updated"),auto_now=True)
 
     def save(self, *args, **kwargs):
-        if self.is_primary:
-            UserAddress.objects.filter(user=self.user).update(is_primary=False)
-        super().save(*args, **kwargs)
-        
+        with transaction.atomic():
+            if self.is_primary:
+                UserAddress.objects.filter(user=self.user, is_primary=True).update(is_primary=False)
+            else:
+                if not UserAddress.objects.filter(user=self.user, is_primary=True).exists():
+                    self.is_primary = True           
+            super().save(*args, **kwargs)
+                
     class Meta:
         ordering = ['id']
         verbose_name = 'User Address'
