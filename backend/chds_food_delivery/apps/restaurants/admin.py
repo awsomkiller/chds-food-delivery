@@ -1,10 +1,10 @@
 from django.contrib import admin
-from apps.restaurants.models import Restaurant,MenuCategory,MenuItem,MenuImage
+from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuImage
 
-@admin.register(Restaurant)
-class RestaurentAdmin(admin.ModelAdmin):
-    list_display=["id","name","location","status","phone_number"]
-    fields=["name","location","code","from_time","to_time","status","phone_number"]
+@admin.register(PickupLocation)
+class PickupLocationAdmin(admin.ModelAdmin):
+    list_display=["id","street_address1","street_address2","city","postal_code"]
+    fields = ["name","street_address1","street_address2","city","state","postal_code"]
 
  
 @admin.register(MenuCategory)   
@@ -21,7 +21,7 @@ class MenuItemsAdmin(admin.ModelAdmin):
     
 @admin.register(MenuImage)
 class MenuImagesAdmin(admin.ModelAdmin):
-    list_display=["id","is_main"]
+    list_display=["id","is_main","menu_item"]
     fields=["menu_item","image","is_main"]
    
 

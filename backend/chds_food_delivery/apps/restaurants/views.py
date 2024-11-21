@@ -1,14 +1,16 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView,CreateAPIView
 from apps.restaurants.serializers import (
     RestaurantApiSerializer ,
     MenuCategorySerializer,
     ListMenuItemSerializer,
     CreateMenuItemSerializer,
-    ListMenuImagesSerializer
+    CreateMenuImagesSerializer
 )
-from apps.restaurants.models import Restaurant,MenuCategory,MenuItem,MenuImage
+from rest_framework.filters import SearchFilter, OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
+from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuImage
 
 class RestaurantApi(ModelViewSet):
     """ 
@@ -16,7 +18,7 @@ class RestaurantApi(ModelViewSet):
     """
     http_method_names = ["get","post","delete"]
     serializer_class = RestaurantApiSerializer
-    queryset = Restaurant.objects.all()
+    queryset = PickupLocation.objects.all()
     
 class MenuItemApi(ModelViewSet):
     """ 
@@ -25,6 +27,11 @@ class MenuItemApi(ModelViewSet):
     http_method_names = ["get","post","delete"]
     serializer_class = ListMenuItemSerializer
     queryset = MenuItem.objects.all()
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_fields = ['category']
+    search_fields = ['name',"category__name"]
+
+  
     
     def get_serializer_class(self):
         if self.action == 'list':
@@ -39,8 +46,11 @@ class MenuCategoryApi(ListAPIView):
     queryset = MenuCategory.objects.all()
 
 
-class MenuImagesApi(ListAPIView):
-    serializer_class =ListMenuImagesSerializer
+class MenuImagesApi(CreateAPIView):
+    """
+        API for creating Create Menu images for menu items
+    """
+    serializer_class =CreateMenuImagesSerializer
     queryset = MenuImage.objects.all()
     
     

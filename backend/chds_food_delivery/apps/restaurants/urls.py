@@ -8,15 +8,16 @@ from apps.restaurants.views import (
 
 )
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 router = routers.DefaultRouter()
-router.register('restaurants', RestaurantApi, basename="restaurants")
-# router.register("menu-category", MenuCategoryApi , basename="menu_category")
+router.register('pickup-location', RestaurantApi, basename="pickup_location")
 router.register("menu-items", MenuItemApi , basename="menu_items")
 
 urlpatterns = [
-    path("menu-images/",MenuImagesApi.as_view(),name="menu_images"),
+    path("create-menu-images/",MenuImagesApi.as_view(),name="create-menu_images"),
     path("menu-category/",MenuCategoryApi.as_view(),name="menu_category"),
-    # path("menu-items",MenuItemApi.as_view(),name="menu_items")
  
-]+router.urls
+]+router.urls+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

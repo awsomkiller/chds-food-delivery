@@ -1,30 +1,26 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-class Restaurant(models.Model):
-    STATUS_CHOICES = [
-        ('ON', 'On'),
-        ('OFF', 'Off'),
-    ]
-
-    name = models.CharField(_("Resturant Name") ,max_length=255)
-    location = models.CharField(_("Resturant Location"),max_length=255)
-    code = models.CharField(_("Resturant Code"),max_length=50, unique=True)
-    from_time = models.TimeField(_("Opening Time"))
-    to_time = models.TimeField(_("Closing Time"))
-    status = models.CharField(_("Resturant Status"),max_length=3, choices=STATUS_CHOICES, default='OFF')
-    phone_number = models.CharField(_("Contact Number"),max_length=15)
+class PickupLocation(models.Model):
+    
+    name = models.CharField(_("Pickup Location Name") ,max_length=255)
+    code = models.UUIDField(_("Pickup Location Code"),max_length=50, unique=True)
+    street_address1 = models.CharField(_("Street Address"),max_length=255)
+    street_address2 = models.CharField(_("Street Address"),max_length=255)
+    city = models.CharField(_("City"),max_length=100,)
+    state = models.CharField(_("State"),max_length=100)
+    postal_code = models.CharField(_("Postal Code"),max_length=20,null=True,blank=True)
+   
 
     def __str__(self):
-        return f"{self.name} ({self.code}) - {self.status}"
-
-    def is_open(self, current_time):
-        """Check if the restaurant is open at the given time."""
-        return self.status == 'ON' and self.from_time <= current_time <= self.to_time
+        return f"{self.name} ({self.code}) "
+    
+    def save(self):...
+      
     
     class Meta:
-        verbose_name ="Restaurant"
-        verbose_name_plural ="Restaurants"
+        verbose_name ="PickupLocation"
+        verbose_name_plural ="PickupLocations"
 
 
 class MenuCategory(models.Model):
@@ -88,3 +84,7 @@ class MenuImage(models.Model):
 
     def __str__(self):
         return f"Image for {self.menu_item.name} ({'Main' if self.is_main else 'Additional'})"
+
+
+class TimeSlots(models.Model):
+    pass

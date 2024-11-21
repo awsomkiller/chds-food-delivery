@@ -69,6 +69,7 @@ class UserAddress(models.Model):
     country = models.CharField(_("Country"),max_length=100,null=True,blank=True)
     postal_code = models.CharField(_("Postal Code"),max_length=20,null=True,blank=True)
     is_primary = models.BooleanField(_("Primary Address"),default=False)
+    is_billing = models.BooleanField(_("Billing"),default=False)
     created_at = models.DateTimeField(_("Created"),auto_now_add=True)
     updated_at = models.DateTimeField(_("Updated"),auto_now=True)
 
