@@ -11,8 +11,8 @@ class UserAdmin(admin.ModelAdmin):
     
 @admin.register(UserAddress)
 class UserAdmin(admin.ModelAdmin):
-    fields=["user","street_address","city","state","country","postal_code","is_primary"] 
-    list_display =["id","user","street_address","city","created_at","updated_at"]
+    fields=["user","street_address1","street_address2","suburbs","city","state","postal_code","is_primary","is_billing"] 
+    list_display =["id","user","street_address1","street_address2","city","created_at","updated_at"]
    
     
 @admin.register(UserProfile)

@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
+import uuid
+import time
 class PickupLocation(models.Model):
     
     name = models.CharField(_("Pickup Location Name") ,max_length=255)
@@ -15,7 +16,10 @@ class PickupLocation(models.Model):
     def __str__(self):
         return f"{self.name} ({self.code}) "
     
-    def save(self):...
+    def save(self, *args, **kwargs):
+        if not self.unique_id:
+            self.unique_id = uuid.uuid4()  
+        super().save(*args, **kwargs)
       
     
     class Meta:
@@ -87,4 +91,14 @@ class MenuImage(models.Model):
 
 
 class TimeSlots(models.Model):
-    pass
+    time = models.CharField(_("Time Slot"),max_length=50)
+    code =  models.CharField(_("Time Slot Code"),max_length=50)
+    
+    class Meta:
+        verbose_name ="Time Slot"
+        verbose_name_plural = "Time Slots"
+        
+    def save(self,*args,**kwargs):
+        if not self.code:
+            self.code = str(time.time())
+        super().save(*args,**kwargs)

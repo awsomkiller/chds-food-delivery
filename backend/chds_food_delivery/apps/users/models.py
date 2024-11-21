@@ -63,10 +63,11 @@ class UserAddress(models.Model):
         Model for storing User Address
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="addresses")
-    street_address = models.CharField(_("Street Address"),max_length=255,null=True,blank=True)
+    street_address1 = models.CharField(_("Street Address1"),max_length=255,null=True,blank=True)
+    street_address2 = models.CharField(_("Street Address2"),max_length=255,null=True,blank=True)
+    suburbs = models.CharField(_("Suburbs"),max_length=255,null=True,blank=True)
     city = models.CharField(_("City"),max_length=100, null=True,blank=True)
     state = models.CharField(_("State"),max_length=100,null=True,blank=True)
-    country = models.CharField(_("Country"),max_length=100,null=True,blank=True)
     postal_code = models.CharField(_("Postal Code"),max_length=20,null=True,blank=True)
     is_primary = models.BooleanField(_("Primary Address"),default=False)
     is_billing = models.BooleanField(_("Billing"),default=False)
@@ -75,11 +76,17 @@ class UserAddress(models.Model):
 
     def save(self, *args, **kwargs):
         with transaction.atomic():
-            if self.is_primary:
+            
+            primary_address_exists = UserAddress.objects.filter(user=self.user, is_primary=True).exists()
+            if self.is_primary or not primary_address_exists:
                 UserAddress.objects.filter(user=self.user, is_primary=True).update(is_primary=False)
-            else:
-                if not UserAddress.objects.filter(user=self.user, is_primary=True).exists():
-                    self.is_primary = True           
+                self.is_primary = True
+                
+            billing_address_exists = UserAddress.objects.filter(user=self.user, is_billing=True).exists()
+            if self.is_billing or not billing_address_exists:
+                UserAddress.objects.filter(user=self.user, is_billing=True).update(is_billing=False)
+                self.is_billing = True
+         
             super().save(*args, **kwargs)
                 
     class Meta:
@@ -89,7 +96,7 @@ class UserAddress(models.Model):
         
 
     def __str__(self)-> str:
-        return f"{self.street_address}, {self.city}, {self.state}, {self.country} - {self.postal_code}"
+        return f"{self.street_address1}, {self.city}, {self.state}, - {self.postal_code}"
     
     
 class UserProfile(models.Model):

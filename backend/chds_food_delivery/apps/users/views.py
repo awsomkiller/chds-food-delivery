@@ -102,6 +102,7 @@ class UserAddressesApi(ModelViewSet):
     """ 
         API for Managing User Address
     """
+    http_method_names=['get',"post","delete"]
     serializer_class = UserAddressSerializer
     
     def get_queryset(self):
