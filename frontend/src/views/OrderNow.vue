@@ -212,7 +212,10 @@
                             <li class="order-item">
                                 <div class="order-desscription">
                                     <p class="item-small-hd">Wine-Marinated Chicken Hearts</p>
-                                    
+                                    <p class="item-type-hd mb-0">Q: Main Dish (300g)</p>
+                                    <p class="item-type-hd mb-0">Extra Protein</p>
+                                    <p class="item-type-hd mb-0">Extra Vegetable</p>
+                                    <p class="item-type-hd mb-0">Extra Rice</p>
                                     <p class="item-price"><span>4 x $ 189</span> <b style="display: inline-block; font-weight: 500;"> $ 756</b></p>
                                 </div>
                                 <div class="order-count">
@@ -231,7 +234,10 @@
                             <li class="order-item">
                                 <div class="order-desscription">
                                     <p class="item-small-hd">Wine-Marinated Chicken Hearts</p>
-                                    
+                                    <p class="item-type-hd mb-0">Q: Main Dish (300g)</p>
+                                    <p class="item-type-hd mb-0">Extra Protein</p>
+                                    <p class="item-type-hd mb-0">Extra Vegetable</p>
+                                    <p class="item-type-hd mb-0">Extra Rice</p>
                                     <p class="item-price"><span>4 x $ 189</span> <b style="display: inline-block; font-weight: 500;"> $ 756</b></p>
                                 </div>
                                 <div class="order-count">
@@ -250,7 +256,10 @@
                             <li class="order-item">
                                 <div class="order-desscription">
                                     <p class="item-small-hd">Wine-Marinated Chicken Hearts</p>
-                                    
+                                    <p class="item-type-hd mb-0">Q: Main Dish (300g)</p>
+                                    <p class="item-type-hd mb-0">Extra Protein</p>
+                                    <p class="item-type-hd mb-0">Extra Vegetable</p>
+                                    <p class="item-type-hd mb-0">Extra Rice</p>
                                     <p class="item-price"><span>4 x $ 189</span> <b style="display: inline-block; font-weight: 500;"> $ 756</b></p>
                                 </div>
                                 <div class="order-count">
@@ -269,7 +278,10 @@
                             <li class="order-item">
                                 <div class="order-desscription">
                                     <p class="item-small-hd">Wine-Marinated Chicken Hearts</p>
-                                    
+                                    <p class="item-type-hd mb-0">Q: Main Dish (300g)</p>
+                                    <p class="item-type-hd mb-0">Extra Protein</p>
+                                    <p class="item-type-hd mb-0">Extra Vegetable</p>
+                                    <p class="item-type-hd mb-0">Extra Rice</p>
                                     <p class="item-price"><span>4 x $ 189</span> <b style="display: inline-block; font-weight: 500;"> $ 756</b></p>
                                 </div>
                                 <div class="order-count">
@@ -981,10 +993,15 @@
         
     }
     .item-small-hd{
-        font-size: 13px;
+        font-size: 14px;
         margin-bottom: 3px;
         font-weight: 500;
         line-height: 20px;
+        
+    }
+
+    .item-type-hd{
+        font-size: 12px;
     }
 
     .item-price{
