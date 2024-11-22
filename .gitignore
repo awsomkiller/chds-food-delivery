@@ -165,7 +165,7 @@ cython_debug/
 .DS_Store
 node_modules
 /dist
-
+media*
 
 # local env files
 .env.local
