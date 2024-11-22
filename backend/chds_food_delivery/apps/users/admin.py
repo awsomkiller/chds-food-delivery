@@ -1,13 +1,26 @@
 from django.contrib import admin
 from apps.users.models import User,UserAddress,UserProfile,UserCardDetails,Wallet
-# Register your models here.
+from django.contrib.auth.admin import UserAdmin
+
 
 
 @admin.register(User)
-class UserAdmin(admin.ModelAdmin):
+class UserAdmin(UserAdmin):
     search_fields =["email"]
     list_display =["id","email","created_at"]
+    ordering = ['email']
    
+    fieldsets = (
+        (None, {'fields': ('email', 'password',"full_name","mobile_number")}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+    )
+    
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'password1', 'password2'),
+        }),
+    )
     
 @admin.register(UserAddress)
 class UserAdmin(admin.ModelAdmin):
