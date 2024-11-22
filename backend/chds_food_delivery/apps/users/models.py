@@ -35,8 +35,8 @@ class User(AbstractBaseUser,PermissionsMixin):
     mobile_number = models.CharField(_("User Mobile Number"),max_length=13,unique=True,null=True,blank=True)
     created_at = models.DateTimeField(_("User Creation Date&Time"),auto_now_add=True)
     is_active = models.BooleanField(_("User Active"), default=True)
-    is_staff = models.BooleanField(_("User Active"), default=False)
-    is_superuser = models.BooleanField(_("User Active"), default=False)
+    is_staff = models.BooleanField(_("Is Staff"), default=False)
+    is_superuser = models.BooleanField(_("Is Superuser"), default=False)
     
     objects = UserMangaer()
     USERNAME_FIELD = "email"
