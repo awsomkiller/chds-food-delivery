@@ -1,18 +1,19 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager,PermissionsMixin
 from django.utils.translation import gettext_lazy as _
-
+import uuid
+from django.db import transaction
 
 
 class UserMangaer(BaseUserManager):
     use_in_migrations = True
-    def create_user(self, email, password, confirm_password=None, **extra_fields):
+    def create_user(self, email=None,mobile_number=None, password=None, **extra_fields):
         if not email:
             raise ValueError("The email field must be required")
-        email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
+        email = self.normalize_email(email) if email else None
+        user = self.model(email=email,  mobile_number=mobile_number,**extra_fields)
         user.set_password(password)
-        user.save()
+        user.save(using=self._db)
         return user
 
     def create_superuser(self, email, password, **extra_fields):
@@ -23,22 +24,23 @@ class UserMangaer(BaseUserManager):
             raise ValueError("Superuser must have is_staff=True")
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must have is_superuser=True")
-        return self.create_user(email, password, **extra_fields)
+        return self.create_user(email=email, password=password, **extra_fields)
 
 class User(AbstractBaseUser,PermissionsMixin):
     """
         Custom User Model
     """
-    full_name = models.CharField(_("User Full Name"), max_length=30)
-    email = models.EmailField(_("User Email"), unique=True)
-    mobile_number = models.CharField(_("User Mobile Number"),max_length=13)
+    full_name = models.CharField(_("User Full Name"), max_length=30,null=True,blank=True)
+    email = models.EmailField(_("User Email"), unique=True,null=True,blank=True)
+    mobile_number = models.CharField(_("User Mobile Number"),max_length=13,unique=True,null=True,blank=True)
     created_at = models.DateTimeField(_("User Creation Date&Time"),auto_now_add=True)
     is_active = models.BooleanField(_("User Active"), default=True)
     is_staff = models.BooleanField(_("User Active"), default=False)
     is_superuser = models.BooleanField(_("User Active"), default=False)
     
     objects = UserMangaer()
-    REQUIRED_FIELDS=["full_name","email","mobile_number"]
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS=[]
     
     class Meta:
         ordering = ['id']
@@ -46,7 +48,13 @@ class User(AbstractBaseUser,PermissionsMixin):
         verbose_name_plural = 'Users'
         
     def __str__(self)-> str:
-        return f"{self.full_name}"
+        return f"{self.email}"
+    
+    def save(self, *args, **kwargs):
+    
+        if not self.email and not self.mobile_number:
+            raise ValueError("The user must have either an email or a mobile number.")
+        super().save(*args, **kwargs)
         
         
 
@@ -55,20 +63,32 @@ class UserAddress(models.Model):
         Model for storing User Address
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="addresses")
-    street_address = models.CharField(_("Street Address"),max_length=255,null=True,blank=True)
+    street_address1 = models.CharField(_("Street Address1"),max_length=255,null=True,blank=True)
+    street_address2 = models.CharField(_("Street Address2"),max_length=255,null=True,blank=True)
+    suburbs = models.CharField(_("Suburbs"),max_length=255,null=True,blank=True)
     city = models.CharField(_("City"),max_length=100, null=True,blank=True)
     state = models.CharField(_("State"),max_length=100,null=True,blank=True)
-    country = models.CharField(_("Country"),max_length=100,null=True,blank=True)
     postal_code = models.CharField(_("Postal Code"),max_length=20,null=True,blank=True)
     is_primary = models.BooleanField(_("Primary Address"),default=False)
+    is_billing = models.BooleanField(_("Billing"),default=False)
     created_at = models.DateTimeField(_("Created"),auto_now_add=True)
     updated_at = models.DateTimeField(_("Updated"),auto_now=True)
 
     def save(self, *args, **kwargs):
-        if self.is_primary:
-            UserAddress.objects.filter(user=self.user).update(is_primary=False)
-        super().save(*args, **kwargs)
-        
+        with transaction.atomic():
+            
+            primary_address_exists = UserAddress.objects.filter(user=self.user, is_primary=True).exists()
+            if self.is_primary or not primary_address_exists:
+                UserAddress.objects.filter(user=self.user, is_primary=True).update(is_primary=False)
+                self.is_primary = True
+                
+            billing_address_exists = UserAddress.objects.filter(user=self.user, is_billing=True).exists()
+            if self.is_billing or not billing_address_exists:
+                UserAddress.objects.filter(user=self.user, is_billing=True).update(is_billing=False)
+                self.is_billing = True
+         
+            super().save(*args, **kwargs)
+                
     class Meta:
         ordering = ['id']
         verbose_name = 'User Address'
@@ -76,10 +96,10 @@ class UserAddress(models.Model):
         
 
     def __str__(self)-> str:
-        return f"{self.street_address}, {self.city}, {self.state}, {self.country} - {self.postal_code}"
+        return f"{self.street_address1}, {self.city}, {self.state}, - {self.postal_code}"
     
     
-class UserProfile(models.model):
+class UserProfile(models.Model):
     """ 
         Model for storing user  extra data
     """
@@ -120,3 +140,32 @@ class UserCardDetails(models.Model):
     def __str__(self):
         return f"{self.card_fullname}"
     
+
+class Wallet(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='wallet')
+    balance = models.FloatField(_("Wallet Balance"),default=0.0)
+    expiry = models.DateTimeField(_("Wallet Expire"),null=True,blank=True)
+    unique_id = models.UUIDField(_("Unique Wallet ID"), editable=False, unique=True,null=True,blank=True)
+    
+    def __str__(self):
+        return f"Wallet of {self.user.full_name} - Balance: {self.balance}"
+    
+    def save(self, *args, **kwargs):
+        if not self.unique_id:
+            self.unique_id = uuid.uuid4()  # Generate unique ID if not set
+        super().save(*args, **kwargs)
+            
+    class Meta:
+        verbose_name = "Wallet"
+        verbose_name_plural = "Wallets"
+        
+
+class EmailToken(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="email_user",
+        blank=True,
+        null=True,
+    )
+    email_token = models.CharField(max_length=50)

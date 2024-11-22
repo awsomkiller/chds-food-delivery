@@ -1,37 +1,52 @@
+// services/axios.js
 import axios from 'axios';
+import { useAuthStore } from '@/stores/auth';
 
-function getCookie(name) {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== '') {
-    const cookies = document.cookie.split(';');
-    for (let i = 0; i < cookies.length; i += 1) {
-      const cookie = cookies[i].trim();
-      // Does this cookie string begin with the name we want?
-      if (cookie.substring(0, name.length + 1) === (`${name}=`)) {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
-    }
-  }
-  return cookieValue;
-}
-
-const axiosInstance = axios.create({
-  baseURL: process.env.VUE_APP_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-    'X-CSRFToken': getCookie('csrftoken'),
-    // 'Authorization':'Token 877508fc5158f0e598822636476bb9fbccd42d13' //Not for prod, only for testing purpose
-  },
+const caxios = axios.create({
+  baseURL: 'http://localhost:8000/api',
+  timeout: 5000,
 });
 
-export default axiosInstance;
+// Request Interceptor
+caxios.interceptors.request.use(
+  (config) => {
+    const authStore = useAuthStore();
+    if (authStore.accessToken) {
+      config.headers.Authorization = `Bearer ${authStore.accessToken}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-// b331c415d9acc0840071ef5bbda6281212133f8d testuser
+// Response Interceptor
+caxios.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const authStore = useAuthStore();
 
-// 034499b43fabee3849b1309626e7db61477e4da1 user@gmail.com
+    // Handle 401 Unauthorized (token refresh)
+    if (error.response?.status === 401 && authStore.refreshToken) {
+      try {
+        const refreshResponse = await caxios.post('/refresh', {
+          refresh_token: authStore.refreshToken,
+        });
+        const { access_token } = refreshResponse.data;
 
-// 5d744fd2bb18e4068a670bb891b2f3b600b7bf5b user@anil-workshop
+        // Update tokens in store and localStorage
+        authStore.accessToken = access_token;
+        localStorage.setItem('accessToken', access_token);
 
-// 877508fc5158f0e598822636476bb9fbccd42d13 user1@anil-workshop
+        // Retry the failed request with the new token
+        error.config.headers.Authorization = `Bearer ${access_token}`;
+        return caxios.request(error.config);
+      } catch (refreshError) {
+        authStore.logout();
+        return Promise.reject(refreshError);
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default caxios;
