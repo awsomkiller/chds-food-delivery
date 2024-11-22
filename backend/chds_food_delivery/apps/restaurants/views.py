@@ -11,6 +11,7 @@ from apps.restaurants.serializers import (
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuImage
+from rest_framework.permissions import AllowAny
 
 class RestaurantApi(ModelViewSet):
     """ 
@@ -30,6 +31,7 @@ class MenuItemApi(ModelViewSet):
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['category']
     search_fields = ['name',"category__name"]
+    permission_classes = [AllowAny,]
 
   
     
