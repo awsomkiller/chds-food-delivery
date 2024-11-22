@@ -42,7 +42,7 @@ class MenuCategory(models.Model):
 class MenuItem(models.Model):
     name = models.CharField(max_length=100)
     price = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0.00, help_text="Price in US dollars"
+        max_digits=8, decimal_places=2, default=0.00, help_text="Price in  Australian dollars"
     )
     description = models.TextField(blank=True, null=True)
     calories = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
