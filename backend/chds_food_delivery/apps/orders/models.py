@@ -35,7 +35,7 @@ class Orders(models.Model):
     
     
     def __str__(self)-> str:
-        return f"{self.user}-{self.pickup_location.name}"
+        return f"{self.user}"
     
     class Meta:
         ordering = ["-order_time"]
