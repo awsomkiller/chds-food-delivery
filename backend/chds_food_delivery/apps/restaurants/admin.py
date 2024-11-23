@@ -1,6 +1,5 @@
 from django.contrib import admin
-from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuImage,PortionSize,MenuPortionPriceList,Addons
-
+from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuImage,PortionSize,MenuPortionPriceList,Addons ,TimeSlots,WorkingDays
 @admin.register(PickupLocation)
 class PickupLocationAdmin(admin.ModelAdmin):
     list_display=["id","street_address1","street_address2","city","postal_code"]
@@ -54,7 +53,20 @@ class AddonsAdmin(admin.ModelAdmin):
     search_fields =['name','price']
     
    
-
+    
+@admin.register(TimeSlots)
+class TimeSlotAdmin(admin.ModelAdmin):
+    list_display=["id","name","type"]
+    fields=["name","type"]
+    search_fields =['name','type']
+    
+    
+    
+@admin.register(WorkingDays)
+class WorkingDaysAdmin(admin.ModelAdmin):
+    list_display=["id","date","is_active"]
+    fields=["date","time_slot","is_active"]
+    search_fields =['date','is_active']
     
     
 
