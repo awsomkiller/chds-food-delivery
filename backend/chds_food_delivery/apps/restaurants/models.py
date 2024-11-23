@@ -40,9 +40,8 @@ class MenuCategory(models.Model):
 
 
 class MenuItem(models.Model):
-    name = models.CharField(max_length=100)
-    price = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0.00, help_text="Price in  Australian dollars"
+    name = models.CharField(_("Menu Item Name"),max_length=100)
+    price = models.CharField(_("Menu Item Price"),max_length=50, help_text="Price in  Australian dollars"
     )
     description = models.TextField(blank=True, null=True)
     calories = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
@@ -52,6 +51,7 @@ class MenuItem(models.Model):
     category = models.ForeignKey(
         MenuCategory, on_delete=models.CASCADE, related_name='menu_items'
     )
+    portion_sizes= models.ManyToManyField("restaurants.PortionSize", verbose_name=_("Menu Items Sizes"),help_text="Select Portion")
 
     class Meta:
         verbose_name = "Menu Item"
@@ -102,3 +102,44 @@ class TimeSlots(models.Model):
         if not self.code:
             self.code = str(time.time())
         super().save(*args,**kwargs)
+        
+        
+class PortionSize(models.Model):
+    name = models.CharField(_("Portion Size"),max_length=50)
+    weight = models.CharField(_("Portion Weight"),max_length=50, help_text="Weight in grams")
+    
+    class Meta:
+        verbose_name = "Portion Size"
+        verbose_name_plural = "Portion Sizes"
+        ordering = ['weight']
+        
+    def __str__(self):
+        return f"{self.name} - {self.weight}"
+    
+class MenuPortionPriceList(models.Model):
+    menu_item = models.ForeignKey(MenuItem, verbose_name=_("Menu Item"), on_delete=models.CASCADE,related_name="menu_items_prices")
+    portion_item = models.ForeignKey(PortionSize, verbose_name=_("Portion Item"), on_delete=models.CASCADE,related_name="portion_size_prices")
+    price = models.CharField(_("Portion Price"),max_length=50, help_text="Price in  Australian dollars")
+    
+    
+    class Meta:
+        verbose_name = "Menu Portion Price List"
+        verbose_name = "Menu Portion Price Lists"
+        ordering = ['id']
+        
+    def __str__(self):
+        return f"{self.menu_item.name} - {self.portion_item.name} - {self.price}"
+    
+    
+class Addons(models.Model):
+    name = models.CharField(_("Addon Name"),max_length=50)
+    price = models.CharField(_("Addon Price"),max_length=50, help_text="Price in  Australian dollars")
+
+    class Meta:
+        verbose_name = "Addon"
+        verbose_name_plural = "Addons"
+        ordering = ['name']
+        
+    def __str__(self):
+        return f"{self.name} - {self.price}"
+    
