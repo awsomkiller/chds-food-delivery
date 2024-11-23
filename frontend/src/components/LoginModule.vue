@@ -128,7 +128,7 @@
                 </div>
               </div>
               <div class="bottom-text">
-                <p>Already have an account? <span>Login Now !</span></p>
+                <p>Already have an account? <span>SignUp Now !</span></p>
               </div>
             </form>
           </div>

@@ -327,6 +327,9 @@ max-width: 2500px;
   color: #a3a3a3a6;
 }
 
+.form-wrap-content{
+  text-align: start;
+}
 .form-wrap-content input {
   padding: 8px 38px 8px 38px !important;
 }
@@ -1110,8 +1113,9 @@ ul {
 }
 
 .offer-card.style1 {
-  padding: 0px 0px 18px 30px;
+  padding: 16px 16px 18px 30px;
   display: flex;
+  justify-content: space-between;
   gap: 0px;
   background-image: url('@/assets/homepage/offerBG1-1.jpg');
   background-position: center;
@@ -1790,8 +1794,12 @@ ul {
   display: none !important;
 }
 @media screen and (max-width:992px) {
+
+  a.nav-link {
+    border: 1px solid white;
+  }
   .contact-wrap {
-      flex-direction: column;
+      /* flex-direction: column; */
       padding: 16px 32px;
   }
   .our-food::before {
@@ -1800,7 +1808,7 @@ ul {
   }
   
   .main-content {
-      margin-top: 65px;
+      /* margin-top: 65px; */
       height: 100%;
   }
   .search {
@@ -1814,7 +1822,11 @@ ul {
   }
   .navbar-nav{
       margin-top: 20px !important;
-      padding: 0 16px !important;
+      padding: 0 16px;
+  }
+
+  .navbar-collapse{
+    padding: 0 !important;
   }
   a.nav-link, .login-register{
       padding: 16px;
@@ -1850,7 +1862,7 @@ ul {
       z-index: 9999;
   }
 
-  #navbarSupportedContent {
+  /* #navbarSupportedContent {
       border-right: 2px solid #894118;
       position: fixed !important;
       left: 0 !important;
@@ -1859,15 +1871,15 @@ ul {
       height: 100%;
       background: #ffffff;
       z-index: 9;
-  }
-
+  } */
+/* 
   #navbarSupportedContent::after {
       width: 100%;
       height: 100vh;
       position: fixed;
       content: "";
 
-  }
+  } */
 
   .show-login {
       display: block !important;

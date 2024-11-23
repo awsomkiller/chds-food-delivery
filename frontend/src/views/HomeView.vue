@@ -68,10 +68,47 @@
               </div>
               <div class="container">
                 <div class="swiper-container ">
-                  <div class="swiper-wrapper">
-                    <!-- Slides -->
-                    <div class="swiper-slide">
-                      <div class="single-food-items">
+
+                  <swiper
+                    :slides-per-view="3"
+                    :space-between="30"
+                    :loop="true"
+                    :breakpoints="{
+                      '640': {
+                        slidesPerView: 1,
+                        spaceBetween: 20,
+                      },
+                      '768': {
+                        slidesPerView: 2,
+                        spaceBetween: 30,
+                      },
+                      '1024': {
+                        slidesPerView: 3,
+                        spaceBetween: 30,
+                      },
+                      '1400': {
+                        slidesPerView: 3,
+                        spaceBetween: 30,
+                      },
+
+                      '2000': {
+                        slidesPerView: 4,
+                        spaceBetween: 30,
+                      },
+
+                      '2500': {
+                        slidesPerView: 5,
+                        spaceBetween: 30,
+                      },
+                    }"
+                    :modules="modules"
+                    class="mySwiper"
+                    @swiper="onSwiper"
+                    @slideChange="onSlideChange"
+
+                  >
+                    <swiper-slide>
+                        <div class="single-food-items">
                         <div class="item-thumb">
                             <img src="@/assets/homepage/dish-2.png" alt="thumb">
                             <div class="circle-shape"><img class="cir36" src="@/assets/homepage/circle.svg" alt="shape"></div>
@@ -144,10 +181,9 @@
                             <h6>$20.99</h6>
                         </div>
                       </div>
-                    </div>
-                    
-                    <div class="swiper-slide">
-                      <div class="single-food-items">
+                    </swiper-slide>
+                    <swiper-slide>
+                        <div class="single-food-items">
                         <div class="item-thumb">
                             <img src="@/assets/homepage/dish-2.png" alt="thumb">
                             <div class="circle-shape"><img class="cir36" src="@/assets/homepage/circle.svg" alt="shape"></div>
@@ -156,7 +192,7 @@
                             <a href="menu.html">
                                 <h3>Chicken-Stuffed Bean Curd Rolls</h3>
                             </a>
-                            <div class="text kcal-wrap-content d-flex align-items-center gap-2">
+                            <div class="text kcal-wrap-content d-flex align-items-center justify-content-center gap-2">
                               <span class="d-flex align-items-center gap-2">
                                 <svg width="62" height="62" viewBox="0 0 62 62" fill="none" xmlns="http://www.w3.org/2000/svg">
                                   <path d="M17.2246 19.7286C16.9485 22.6736 16.7547 27.8855 18.4936 30.104C18.4936 30.104 17.6751 24.3786 25.0133 17.1954C27.968 14.3036 28.651 10.3705 27.6193 7.42067C27.0332 5.74957 25.9627 4.36911 25.0327 3.4052C24.4902 2.83848 24.9068 1.90364 25.6963 1.93754C30.4722 2.15067 38.2126 3.47785 41.5015 11.7316C42.9449 15.3547 43.0515 19.099 42.3636 22.9061C41.9277 25.3377 40.3777 30.7433 43.9136 31.4069C46.4372 31.8816 47.6579 29.8763 48.2052 28.4329C48.4329 27.8322 49.2224 27.6821 49.6486 28.1616C53.9111 33.0102 54.2744 38.721 53.3929 43.6374C51.6879 53.1408 42.0633 60.0577 32.5018 60.0577C20.5571 60.0577 11.0488 53.2232 8.58333 40.8522C7.59037 35.8583 8.09412 25.9771 15.7957 19.0021C16.3672 18.4789 17.3021 18.9439 17.2246 19.7286V19.7286Z" fill="url(#paint0_radial_125_1107)"/>
@@ -220,9 +256,10 @@
                             <h6>$20.99</h6>
                         </div>
                       </div>
-                    </div>
-                    <div class="swiper-slide">
-                      <div class="single-food-items">
+                    </swiper-slide>
+
+                    <swiper-slide>
+                        <div class="single-food-items">
                         <div class="item-thumb">
                             <img src="@/assets/homepage/dish-2.png" alt="thumb">
                             <div class="circle-shape"><img class="cir36" src="@/assets/homepage/circle.svg" alt="shape"></div>
@@ -231,7 +268,7 @@
                             <a href="menu.html">
                                 <h3>Chicken-Stuffed Bean Curd Rolls</h3>
                             </a>
-                            <div class="text kcal-wrap-content d-flex align-items-center gap-2">
+                            <div class="text kcal-wrap-content d-flex align-items-center justify-content-center gap-2">
                               <span class="d-flex align-items-center gap-2">
                                 <svg width="62" height="62" viewBox="0 0 62 62" fill="none" xmlns="http://www.w3.org/2000/svg">
                                   <path d="M17.2246 19.7286C16.9485 22.6736 16.7547 27.8855 18.4936 30.104C18.4936 30.104 17.6751 24.3786 25.0133 17.1954C27.968 14.3036 28.651 10.3705 27.6193 7.42067C27.0332 5.74957 25.9627 4.36911 25.0327 3.4052C24.4902 2.83848 24.9068 1.90364 25.6963 1.93754C30.4722 2.15067 38.2126 3.47785 41.5015 11.7316C42.9449 15.3547 43.0515 19.099 42.3636 22.9061C41.9277 25.3377 40.3777 30.7433 43.9136 31.4069C46.4372 31.8816 47.6579 29.8763 48.2052 28.4329C48.4329 27.8322 49.2224 27.6821 49.6486 28.1616C53.9111 33.0102 54.2744 38.721 53.3929 43.6374C51.6879 53.1408 42.0633 60.0577 32.5018 60.0577C20.5571 60.0577 11.0488 53.2232 8.58333 40.8522C7.59037 35.8583 8.09412 25.9771 15.7957 19.0021C16.3672 18.4789 17.3021 18.9439 17.2246 19.7286V19.7286Z" fill="url(#paint0_radial_125_1107)"/>
@@ -295,9 +332,10 @@
                             <h6>$20.99</h6>
                         </div>
                       </div>
-                    </div>
-                    <div class="swiper-slide">
-                      <div class="single-food-items">
+                    </swiper-slide>
+
+                    <swiper-slide>
+                        <div class="single-food-items">
                         <div class="item-thumb">
                             <img src="@/assets/homepage/dish-2.png" alt="thumb">
                             <div class="circle-shape"><img class="cir36" src="@/assets/homepage/circle.svg" alt="shape"></div>
@@ -306,7 +344,7 @@
                             <a href="menu.html">
                                 <h3>Chicken-Stuffed Bean Curd Rolls</h3>
                             </a>
-                            <div class="text kcal-wrap-content d-flex align-items-center gap-2">
+                            <div class="text kcal-wrap-content d-flex align-items-center justify-content-center gap-2">
                               <span class="d-flex align-items-center gap-2">
                                 <svg width="62" height="62" viewBox="0 0 62 62" fill="none" xmlns="http://www.w3.org/2000/svg">
                                   <path d="M17.2246 19.7286C16.9485 22.6736 16.7547 27.8855 18.4936 30.104C18.4936 30.104 17.6751 24.3786 25.0133 17.1954C27.968 14.3036 28.651 10.3705 27.6193 7.42067C27.0332 5.74957 25.9627 4.36911 25.0327 3.4052C24.4902 2.83848 24.9068 1.90364 25.6963 1.93754C30.4722 2.15067 38.2126 3.47785 41.5015 11.7316C42.9449 15.3547 43.0515 19.099 42.3636 22.9061C41.9277 25.3377 40.3777 30.7433 43.9136 31.4069C46.4372 31.8816 47.6579 29.8763 48.2052 28.4329C48.4329 27.8322 49.2224 27.6821 49.6486 28.1616C53.9111 33.0102 54.2744 38.721 53.3929 43.6374C51.6879 53.1408 42.0633 60.0577 32.5018 60.0577C20.5571 60.0577 11.0488 53.2232 8.58333 40.8522C7.59037 35.8583 8.09412 25.9771 15.7957 19.0021C16.3672 18.4789 17.3021 18.9439 17.2246 19.7286V19.7286Z" fill="url(#paint0_radial_125_1107)"/>
@@ -370,9 +408,11 @@
                             <h6>$20.99</h6>
                         </div>
                       </div>
-                    </div>
-                    <div class="swiper-slide">
-                      <div class="single-food-items">
+                    </swiper-slide>
+
+
+                    <swiper-slide>
+                        <div class="single-food-items">
                         <div class="item-thumb">
                             <img src="@/assets/homepage/dish-2.png" alt="thumb">
                             <div class="circle-shape"><img class="cir36" src="@/assets/homepage/circle.svg" alt="shape"></div>
@@ -381,7 +421,7 @@
                             <a href="menu.html">
                                 <h3>Chicken-Stuffed Bean Curd Rolls</h3>
                             </a>
-                            <div class="text kcal-wrap-content d-flex align-items-center gap-2">
+                            <div class="text kcal-wrap-content d-flex align-items-center justify-content-center gap-2">
                               <span class="d-flex align-items-center gap-2">
                                 <svg width="62" height="62" viewBox="0 0 62 62" fill="none" xmlns="http://www.w3.org/2000/svg">
                                   <path d="M17.2246 19.7286C16.9485 22.6736 16.7547 27.8855 18.4936 30.104C18.4936 30.104 17.6751 24.3786 25.0133 17.1954C27.968 14.3036 28.651 10.3705 27.6193 7.42067C27.0332 5.74957 25.9627 4.36911 25.0327 3.4052C24.4902 2.83848 24.9068 1.90364 25.6963 1.93754C30.4722 2.15067 38.2126 3.47785 41.5015 11.7316C42.9449 15.3547 43.0515 19.099 42.3636 22.9061C41.9277 25.3377 40.3777 30.7433 43.9136 31.4069C46.4372 31.8816 47.6579 29.8763 48.2052 28.4329C48.4329 27.8322 49.2224 27.6821 49.6486 28.1616C53.9111 33.0102 54.2744 38.721 53.3929 43.6374C51.6879 53.1408 42.0633 60.0577 32.5018 60.0577C20.5571 60.0577 11.0488 53.2232 8.58333 40.8522C7.59037 35.8583 8.09412 25.9771 15.7957 19.0021C16.3672 18.4789 17.3021 18.9439 17.2246 19.7286V19.7286Z" fill="url(#paint0_radial_125_1107)"/>
@@ -445,9 +485,10 @@
                             <h6>$20.99</h6>
                         </div>
                       </div>
-                    </div>
-                    <div class="swiper-slide">
-                      <div class="single-food-items">
+                    </swiper-slide>
+
+                    <swiper-slide>
+                        <div class="single-food-items">
                         <div class="item-thumb">
                             <img src="@/assets/homepage/dish-2.png" alt="thumb">
                             <div class="circle-shape"><img class="cir36" src="@/assets/homepage/circle.svg" alt="shape"></div>
@@ -456,7 +497,7 @@
                             <a href="menu.html">
                                 <h3>Chicken-Stuffed Bean Curd Rolls</h3>
                             </a>
-                            <div class="text kcal-wrap-content d-flex align-items-center gap-2">
+                            <div class="text kcal-wrap-content d-flex align-items-center justify-content-center gap-2">
                               <span class="d-flex align-items-center gap-2">
                                 <svg width="62" height="62" viewBox="0 0 62 62" fill="none" xmlns="http://www.w3.org/2000/svg">
                                   <path d="M17.2246 19.7286C16.9485 22.6736 16.7547 27.8855 18.4936 30.104C18.4936 30.104 17.6751 24.3786 25.0133 17.1954C27.968 14.3036 28.651 10.3705 27.6193 7.42067C27.0332 5.74957 25.9627 4.36911 25.0327 3.4052C24.4902 2.83848 24.9068 1.90364 25.6963 1.93754C30.4722 2.15067 38.2126 3.47785 41.5015 11.7316C42.9449 15.3547 43.0515 19.099 42.3636 22.9061C41.9277 25.3377 40.3777 30.7433 43.9136 31.4069C46.4372 31.8816 47.6579 29.8763 48.2052 28.4329C48.4329 27.8322 49.2224 27.6821 49.6486 28.1616C53.9111 33.0102 54.2744 38.721 53.3929 43.6374C51.6879 53.1408 42.0633 60.0577 32.5018 60.0577C20.5571 60.0577 11.0488 53.2232 8.58333 40.8522C7.59037 35.8583 8.09412 25.9771 15.7957 19.0021C16.3672 18.4789 17.3021 18.9439 17.2246 19.7286V19.7286Z" fill="url(#paint0_radial_125_1107)"/>
@@ -520,9 +561,8 @@
                             <h6>$20.99</h6>
                         </div>
                       </div>
-                    </div>
-                    <!-- Add more slides as needed -->
-                  </div>
+                    </swiper-slide>
+                  </swiper>
                
                 </div>
 
@@ -1025,117 +1065,207 @@
                         
                          
                             <div class="swiper-container-2 ">
-                              <div class="swiper-wrapper">
-                                <!-- Slides -->
-                                <div class="swiper-slide">
+
+                              <swiper
+                                :slides-per-view="3"
+                                :space-between="30"
+                                :loop="true"
+                                :breakpoints="{
+                                  '640': {
+                                    slidesPerView: 1,
+                                    spaceBetween: 20,
+                                  },
+                                  '768': {
+                                    slidesPerView: 2,
+                                    spaceBetween: 30,
+                                  },
+                                  '1024': {
+                                    slidesPerView: 3,
+                                    spaceBetween: 30,
+                                  },
+                                  '1400': {
+                                    slidesPerView: 3,
+                                    spaceBetween: 30,
+                                  },
+
+                                  '2000': {
+                                    slidesPerView: 4,
+                                    spaceBetween: 30,
+                                  },
+
+                                  '2500': {
+                                    slidesPerView: 5,
+                                    spaceBetween: 30,
+                                  },
+                                }"
+                                :modules="modules"
+                                class="testimonialSwiper"
+                                @swiper="onSwiper"
+                                @slideChange="onSlideChange"
+
+                              >
+                                <swiper-slide>
                                   <div class="testimonial-card style1">
-                                    <div class="testimonial-header">
-                                        <div class="fancy-box">
-                                            <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
-                                            <div class="item2">
-                                                <h6>Albert Flores</h6>
-                                                <p>Web Designer</p>
-                                                <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
-                                            </div>
-                                            <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
-                                            </div>
-                                        </div>
-                                    </div>
-    
-                                    <p>Penatibus magnis dis point parturient montes nascetur ridiculus mus Ut id
-                                        lorem ac enim the vestibulum blandit nec sit amet felis. Fusce quis diam
-                                        odio Cras mattis mi quis tincidunt</p>
-                                </div>
-                                </div>
-                                <div class="swiper-slide">
+                                      <div class="testimonial-header">
+                                          <div class="fancy-box">
+                                              <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
+                                              <div class="item2">
+                                                  <h6>Albert Flores</h6>
+                                                  <p>Web Designer</p>
+                                                  <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
+                                              </div>
+                                              <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
+                                              </div>
+                                          </div>
+                                      </div>
+      
+                                      <p>Penatibus magnis dis point parturient montes nascetur ridiculus mus Ut id
+                                          lorem ac enim the vestibulum blandit nec sit amet felis. Fusce quis diam
+                                          odio Cras mattis mi quis tincidunt
+                                      </p>
+                                  </div>
+                                </swiper-slide>
+
+                                <swiper-slide>
                                   <div class="testimonial-card style1">
-                                    <div class="testimonial-header">
-                                        <div class="fancy-box">
-                                            <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
-                                            <div class="item2">
-                                                <h6>Albert Flores</h6>
-                                                <p>Web Designer</p>
-                                                <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
-                                            </div>
-                                            <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
-                                            </div>
-                                        </div>
-                                    </div>
-    
-                                    <p>Penatibus magnis dis point parturient montes nascetur ridiculus mus Ut id
-                                        lorem ac enim the vestibulum blandit nec sit amet felis. Fusce quis diam
-                                        odio Cras mattis mi quis tincidunt</p>
-                                </div>
-                                </div>
-                                <div class="swiper-slide">
+                                      <div class="testimonial-header">
+                                          <div class="fancy-box">
+                                              <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
+                                              <div class="item2">
+                                                  <h6>Albert Flores</h6>
+                                                  <p>Web Designer</p>
+                                                  <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
+                                              </div>
+                                              <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
+                                              </div>
+                                          </div>
+                                      </div>
+      
+                                      <p>Penatibus magnis dis point parturient montes nascetur ridiculus mus Ut id
+                                          lorem ac enim the vestibulum blandit nec sit amet felis. Fusce quis diam
+                                          odio Cras mattis mi quis tincidunt
+                                      </p>
+                                  </div>
+                                </swiper-slide>
+
+                                <swiper-slide>
                                   <div class="testimonial-card style1">
-                                    <div class="testimonial-header">
-                                        <div class="fancy-box">
-                                            <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
-                                            <div class="item2">
-                                                <h6>Albert Flores</h6>
-                                                <p>Web Designer</p>
-                                                <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
-                                            </div>
-                                            <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
-                                            </div>
-                                        </div>
-                                    </div>
-    
-                                    <p>Penatibus magnis dis point parturient montes nascetur ridiculus mus Ut id
-                                        lorem ac enim the vestibulum blandit nec sit amet felis. Fusce quis diam
-                                        odio Cras mattis mi quis tincidunt</p>
-                                </div>
-                                </div>
-                                <div class="swiper-slide">
+                                      <div class="testimonial-header">
+                                          <div class="fancy-box">
+                                              <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
+                                              <div class="item2">
+                                                  <h6>Albert Flores</h6>
+                                                  <p>Web Designer</p>
+                                                  <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
+                                              </div>
+                                              <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
+                                              </div>
+                                          </div>
+                                      </div>
+      
+                                      <p>Penatibus magnis dis point parturient montes nascetur ridiculus mus Ut id
+                                          lorem ac enim the vestibulum blandit nec sit amet felis. Fusce quis diam
+                                          odio Cras mattis mi quis tincidunt
+                                      </p>
+                                  </div>
+                                </swiper-slide>
+
+
+                                <swiper-slide>
                                   <div class="testimonial-card style1">
-                                    <div class="testimonial-header">
-                                        <div class="fancy-box">
-                                            <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
-                                            <div class="item2">
-                                                <h6>Albert Flores</h6>
-                                                <p>Web Designer</p>
-                                                <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
-                                            </div>
-                                            <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
-                                            </div>
-                                        </div>
-                                    </div>
-    
-                                    <p>Penatibus magnis dis point parturient montes nascetur ridiculus mus Ut id
-                                        lorem ac enim the vestibulum blandit nec sit amet felis. Fusce quis diam
-                                        odio Cras mattis mi quis tincidunt</p>
-                                </div>
-                                </div>
-                                <div class="swiper-slide">
+                                      <div class="testimonial-header">
+                                          <div class="fancy-box">
+                                              <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
+                                              <div class="item2">
+                                                  <h6>Albert Flores</h6>
+                                                  <p>Web Designer</p>
+                                                  <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
+                                              </div>
+                                              <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
+                                              </div>
+                                          </div>
+                                      </div>
+      
+                                      <p>Penatibus magnis dis point parturient montes nascetur ridiculus mus Ut id
+                                          lorem ac enim the vestibulum blandit nec sit amet felis. Fusce quis diam
+                                          odio Cras mattis mi quis tincidunt
+                                      </p>
+                                  </div>
+                                </swiper-slide>
+
+
+                                <swiper-slide>
                                   <div class="testimonial-card style1">
-                                    <div class="testimonial-header">
-                                        <div class="fancy-box">
-                                            <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
-                                            <div class="item2">
-                                                <h6>Albert Flores</h6>
-                                                <p>Web Designer</p>
-                                                <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
-                                            </div>
-                                            <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
-                                            </div>
-                                        </div>
-                                    </div>
-    
-                                    <p>Penatibus magnis dis point parturient montes nascetur ridiculus mus Ut id
-                                        lorem ac enim the vestibulum blandit nec sit amet felis. Fusce quis diam
-                                        odio Cras mattis mi quis tincidunt</p>
-                                </div>
-                                </div>
-                                
-                               
-                                <!-- Add more slides as needed -->
-                              </div>
-                           
+                                      <div class="testimonial-header">
+                                          <div class="fancy-box">
+                                              <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
+                                              <div class="item2">
+                                                  <h6>Albert Flores</h6>
+                                                  <p>Web Designer</p>
+                                                  <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
+                                              </div>
+                                              <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
+                                              </div>
+                                          </div>
+                                      </div>
+      
+                                      <p>Penatibus magnis dis point parturient montes nascetur ridiculus mus Ut id
+                                          lorem ac enim the vestibulum blandit nec sit amet felis. Fusce quis diam
+                                          odio Cras mattis mi quis tincidunt
+                                      </p>
+                                  </div>
+                                </swiper-slide>
+
+
+                                <swiper-slide>
+                                  <div class="testimonial-card style1">
+                                      <div class="testimonial-header">
+                                          <div class="fancy-box">
+                                              <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
+                                              <div class="item2">
+                                                  <h6>Albert Flores</h6>
+                                                  <p>Web Designer</p>
+                                                  <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
+                                              </div>
+                                              <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
+                                              </div>
+                                          </div>
+                                      </div>
+      
+                                      <p>Penatibus magnis dis point parturient montes nascetur ridiculus mus Ut id
+                                          lorem ac enim the vestibulum blandit nec sit amet felis. Fusce quis diam
+                                          odio Cras mattis mi quis tincidunt
+                                      </p>
+                                  </div>
+                                </swiper-slide>
+
+
+                                <swiper-slide>
+                                  <div class="testimonial-card style1">
+                                      <div class="testimonial-header">
+                                          <div class="fancy-box">
+                                              <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
+                                              <div class="item2">
+                                                  <h6>Albert Flores</h6>
+                                                  <p>Web Designer</p>
+                                                  <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
+                                              </div>
+                                              <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
+                                              </div>
+                                          </div>
+                                      </div>
+      
+                                      <p>Penatibus magnis dis point parturient montes nascetur ridiculus mus Ut id
+                                          lorem ac enim the vestibulum blandit nec sit amet felis. Fusce quis diam
+                                          odio Cras mattis mi quis tincidunt
+                                      </p>
+                                  </div>
+                                </swiper-slide>
+                              
+                              </swiper>
+                        
                             </div>
 
-                       
-                       
         
                       </div>
                           
@@ -1155,6 +1285,20 @@
 </template>
 
 <script>
+  // Import Swiper Vue.js components
+  import { Swiper, SwiperSlide } from 'swiper/vue';
 
+  // Import Swiper styles
+  import 'swiper/css';
+
+  export default {
+    components: {
+      Swiper,
+      SwiperSlide,
+    },
+    setup() {
+      return {};
+    },
+  };
 
 </script>
