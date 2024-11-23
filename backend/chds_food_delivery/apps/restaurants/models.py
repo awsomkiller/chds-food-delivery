@@ -91,17 +91,20 @@ class MenuImage(models.Model):
 
 
 class TimeSlots(models.Model):
-    time = models.CharField(_("Time Slot"),max_length=50)
-    code =  models.CharField(_("Time Slot Code"),max_length=50)
+    DELIVERY_CHOICES =[
+        ('ALL', 'All'),
+        ('DELIVERY ONLY','Delivery Only'),
+        ('PICKUP ONLY', 'Pickup Only')
+    ]
+    name = models.CharField(_("Name"),max_length=50, null=True)
+    type = models.CharField(_("Type"),max_length=50,choices=DELIVERY_CHOICES,null=True)
     
     class Meta:
         verbose_name ="Time Slot"
         verbose_name_plural = "Time Slots"
         
-    def save(self,*args,**kwargs):
-        if not self.code:
-            self.code = str(time.time())
-        super().save(*args,**kwargs)
+    def __str__(self):
+        return f"{self.name} - {self.type}"
         
         
 class PortionSize(models.Model):
@@ -143,3 +146,9 @@ class Addons(models.Model):
     def __str__(self):
         return f"{self.name} - {self.price}"
     
+
+
+class WorkingDays(models.Model):
+    date = models.DateField(_("Date"),null=True)
+    time_slot = models.ManyToManyField(TimeSlots,verbose_name=_("Time Slot"),related_name="working_days")
+    is_active = models.BooleanField(_("Is Active"),default=True)

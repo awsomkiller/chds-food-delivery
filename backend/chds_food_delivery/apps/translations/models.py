@@ -22,7 +22,7 @@ class Translation(models.Model):
     label = models.CharField("Label Code", max_length=255, null=False, blank=False)
     language = models.CharField("Language", choices=LANGUAGE_CHOICES, null=False, blank=False ,max_length=20)
     value = models.CharField("Language Translation", max_length=255, default=None, null=False, blank=True)
-    module = models.ForeignKey(Module, verbose_name=_("Pages"), on_delete=models.CASCADE)
+    module = models.ForeignKey(Module, verbose_name=_("Pages"), on_delete=models.CASCADE,null=True)
    
 
     class Meta:
