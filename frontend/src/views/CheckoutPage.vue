@@ -1,9 +1,4 @@
 
-<script>
-export default {
-  name: 'CheckoutPage',
-}
-</script>
 
 
 <template>
@@ -23,15 +18,26 @@ export default {
                         </div>
 
                     </div>
+
+                    
                     
                     <div class="order-type-container">
-                        <button type="button" class="btn-active-order"> <span> Delivery </span>  <span class="delhivery-time">(20 Minutes)</span> </button>
-                        <button type="button" class="btn-inactive-order">Pick Up</button>
+                 
+                        <div class="delivery-option rounded w-100">
+                            <input type="radio" class="btn-check" name="optionsdelivery" id="deliverychosen" autocomplete="off" checked>
+                            <label class="btn btn-primary" for="deliverychosen"><span> Delivery </span>  <span class="delhivery-time">(20 Minutes)</span> </label>
+
+                            <input type="radio" class="btn-check" name="optionsdelivery" id="pickupchosen" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="pickupchosen"> Pick Up</label>
+                        </div>
+   
                         <!-- <button type="button" class="btn-inactive-order">In Car</button> -->
                     </div>
 
-                    <div class="selected-address-container p-2">
-                        <div class="no-address-container">
+                    
+
+                    <div class="selected-address-container mt-3 p-2">
+                        <!-- <div class="no-address-container">
                             <div class="no-address my-3">
 
                                 <i class="fa-solid fa-location-dot"></i>
@@ -41,7 +47,33 @@ export default {
 
                             <a class="my-3 " href=""> Select</a>
 
+                        </div> -->
+
+                        <div class="schedule-order mb-3">
+                            <h6> Select Delivery Date and Time</h6>
+                            <div class="row ">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2">
+                                    <!-- <label for="inputState" class="form-label">Select Day</label> -->
+                                    <select id="inputState" class="form-select">
+                                    <option selected>Select Day</option>
+                                    <option>Monday</option>
+                                    <option>Wednesday</option>
+                                    <option>Fiday</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2">
+                                    <!-- <label for="inputState" class="form-label">Choose day</label> -->
+                                    <select id="inputState" class="form-select">
+                                    <option selected>Choose Time Slot</option>
+                                    <option>Evening 4 PM-7 PM</option>
+                                    <option>Morning 6 AM-9 AM</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
                         </div>
+
                         <div  class="address-radio">
                             <input type="radio" class="btn-check " name="options" id="option1" autocomplete="off" checked>
                             <label class="btn btn-primary" for="option1">
@@ -67,6 +99,61 @@ export default {
                         </div>
 
                     </div>
+
+                    <div class="pickup-details-container mt-3 p-2">
+                        <div class="schedule-order mb-3">
+                            <h6> Select Delivery Date and Time</h6>
+                            <div class="row ">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2">
+                                    <!-- <label for="inputState" class="form-label">Select Day</label> -->
+                                    <select id="inputState" class="form-select">
+                                    <option selected>Select Day</option>
+                                    <option>Monday</option>
+                                    <option>Wednesday</option>
+                                    <option>Fiday</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2">
+                                    <!-- <label for="inputState" class="form-label">Choose day</label> -->
+                                    <select id="inputState" class="form-select">
+                                    <option selected>Choose Time Slot</option>
+                                    <option>Evening 4 PM-7 PM</option>
+                                    <option>Morning 6 AM-9 AM</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div>
+                            <h6> Select the outlet to pick up the order </h6>
+                            <div  class="address-radio">
+                                <input type="radio" class="btn-check " name="outlets" id="outlet1" autocomplete="off" checked>
+                                <label class="btn btn-primary" for="outlet1">
+                                    <p class="address-name mb-0">Outlet 1 </p>
+                                    <p class="address-description mb-0"> 2076, Sector 79, Mohali </p>
+                                </label>
+
+                                <input type="radio" class="btn-check" name="outlets" id="outlet2" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="outlet2"> 
+                                    <p class="address-name mb-0">Outlet 2 </p>
+                                    <p class="address-description mb-0"> 2076, Sector 79, Mohali </p>
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                      
+                    </div>
+
+                    <div class="coupon-code-apply">
+                        <label for="inputZip" class="form-label">Coupon Code (Optional)</label>
+                        <input type="text" class="form-control" placeholder="Enter Coupon Code" id="inputZip">
+                    </div>
+
+
                 </div>
 
                 <!-- items added in the cart list -->
@@ -172,7 +259,7 @@ export default {
             </div>
             <div class="  col-lg-4 col-md-12 col-sm-12 col-12 p-3">
                 <div class="offer-card-container bg-white mb-3 p-2 rounded">
-                    <div class="coupon-card bg-white rounded p-2 mb-3">
+                    <div class="coupon-card bg-white rounded p-2 ">
                         <div class="coupon-icon">
                             <i class="fa-solid fa-ticket"></i>
                         </div>
@@ -191,7 +278,55 @@ export default {
         </div>
 
     </div>
+
+
+
+
+
+    
+<!-- Login postal code popup -->
+<div class="modal modal-search-dish fade" id="postalcodeModal" tabindex="-1" aria-labelledby="postalcodeModalLabel" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-scrollable modal-dialog-centered">
+    <div class="modal-content">
+
+        <!-- <div class="modal-header">
+            <h5 class="modal-title">Search Dish</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+ -->
+
+        <div class="modal-body text-center ">
+            
+            <img class="mb-3 mx-auto " src="@/assets/icons/delivery-parcel.svg" width="80px">
+
+
+            <h5 class="text-secondary"> For going to checkout page you need to register or login first.</h5>
+           
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Register</button>
+        <button type="button" class="btn btn-primary">Login</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
 </template>
+
+<script>
+
+
+export default {
+  name: 'CheckoutPage',
+}
+
+
+
+</script>
 
 
 <style>
@@ -365,6 +500,43 @@ export default {
         color: var(--order-background-color);
         font-size: 12px
     }
+
+
+    .delivery-option{
+        display:flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    
+.delivery-option .btn-check:checked+.btn{
+    background-color: var(--order-background-color) ;
+    border-color: var(--order-background-color) ;
+    color: white;
+}
+
+.delivery-option .btn-check:checked+.btn:hover{
+    background-color: var(--order-background-color) ;
+    border-color: var(--order-background-color) ;
+    color: white;
+}
+
+.delivery-option .btn-check+.btn{
+    background-color: transparent ;
+    color: var(--order-background-color);
+    border-color: var(--order-background-color) ;
+    padding: 0.75rem 2rem;
+    border-radius:10px;
+    width:100%;
+}
+.delivery-option .btn-check+.btn:hover{
+    background-color: var(--order-background-color) ;
+    color: white !important;
+    color: var(--order-background-color);
+    border-color: var(--order-background-color);
+}
+
+
 
 
     @media screen and (max-width:767.91px) {
