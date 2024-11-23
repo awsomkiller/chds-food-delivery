@@ -34,16 +34,18 @@ class PortionSizeAdmin(admin.ModelAdmin):
     list_display=["id","name","weight"]
     fields=["name","weight"]
     search_fields = ['name']
-
-
+    
+   
     
   
 @admin.register(MenuPortionPriceList)
 class PortionSizePriceAdmin(admin.ModelAdmin):
-    list_display=["id","menu_item","portion_item","price"]
+    list_display=["id","menu_item","portion_item","formatted_price"]
     fields=["menu_item","portion_item","price"]
     search_fields = ['price',"menu_item__name","portion_item__name"]
    
+    def formatted_price(self, obj):
+        return f"{obj.price}$"
 
     
 @admin.register(Addons)
