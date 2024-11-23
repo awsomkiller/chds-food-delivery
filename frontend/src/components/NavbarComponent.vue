@@ -20,8 +20,8 @@
                         <div class="icon-location">
                             <i class="fa-solid fa-user"></i>
                         </div>
-                        <p class="mb-0"> Login / Register
-                        </p>
+                        <a class="mb-0" data-bs-toggle="modal" data-bs-target="#ragisterModal"> Login 
+                        </a>
                     </div>
                     <div class="follow-us d-flex align-items-center gap-3">
                         <span class="text-white top-text">Follow Us:</span>
@@ -82,6 +82,12 @@
               </div>
             </div>
         </nav>
+
+
+
+
+
+
 
 </template>
 

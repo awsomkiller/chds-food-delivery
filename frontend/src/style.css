@@ -102,27 +102,29 @@ body{
 
 
 
-.btn-check:checked+.btn{
+.meal-category .btn-check:checked+.btn{
     background-color: var(--dark-brown-color) ;
     border-color: var(--dark-brown-color) ;
 }
 
-.btn-check:checked+.btn:hover{
+.meal-category .btn-check:checked+.btn:hover{
     background-color: var(--dark-brown-color) ;
     border-color: var(--dark-brown-color) ;
 }
 
-.btn-check+.btn{
+.meal-category .btn-check+.btn{
     background-color: transparent ;
     color: var(--dark-brown-color);
     border-color: var(--dark-brown-color) ;
 }
-.btn-check+.btn:hover{
+.meal-category .btn-check+.btn:hover{
     background-color: var(--dark-brown-color) ;
     color: white !important;
     color: var(--dark-brown-color);
     border-color: var(--dark-brown-color) ;
 }
+
+
 
 
 
@@ -348,10 +350,10 @@ max-width: 2500px;
 }
 
 .login-content {
-  width: 500px;
+  /* width: 500px; */
   background: #fff;
-  padding: 16px;
-  border: 1px solid #8080802b;
+  /* padding: 16px; */
+  /* border: 1px solid #8080802b; */
   border-radius: 8px;
 }
 
@@ -608,7 +610,7 @@ input.search::placeholder {
   display: flex;
   align-items: center;
   padding: 16px 50px;
-  margin-top: 109px;
+  /* margin-top: 109px; */
 }
 
 span.wrap-text {

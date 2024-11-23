@@ -1,0 +1,30 @@
+<template>
+    
+<!-- Login check popup popup -->
+<div class="modal modal-search-dish fade" id="loginregisterModal" tabindex="-1" aria-labelledby="loginregisterModalLabel" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-scrollable modal-dialog-centered">
+    <div class="modal-content">
+
+        <!-- <div class="modal-header">
+            <h5 class="modal-title">Search Dish</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+ -->
+
+        <div class="modal-body text-center ">
+            
+            <img class="mb-3 mx-auto " src="../assets/icons/place-order.svg" width="80px">
+
+
+            <h5 class="text-secondary"> For going to checkout page you need to register or login first.</h5>
+           
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#postalcodeModal">Register</button>
+        <button type="button" class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#postalcodeModal">Login</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</template>
