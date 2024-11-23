@@ -1,0 +1,162 @@
+[   
+    {
+        "name" : "Garlic Honey Chicken Breast",
+        "price": "$19.00 – $31.00",
+        "description": "Pan-seared chicken breast with garlic and honey, golden on the outside and juicy inside, lightly sweet with a hint of garlic.",
+        "available_meal_size": ["Meal Set", "Main Dish (600g)"],
+        "protein": "52",
+        "carbs": "40",
+        "fat": "3",
+        "calories": "395" 
+    },
+    {
+        "name" : "Honey Teriyaki Chicken Breast",
+        "price": "$19.00 – $31.00",
+        "description": "Pan-seared chicken breast with a honey-soy glaze, crispy outside, tender inside, a perfect healthy and flavorful option.",
+        "available_meal_size": ["Meal Set", "Main Dish (600g)"],
+        "protein": "52",
+        "carbs": "41",
+        "fat": "1.5",
+        "calories": "385" 
+    },
+    {
+        "name" : "Curry Lemon Chicken Breast",
+        "price": "19.00 – $31.00",
+        "description": "Pan-seared chicken breast with a blend of curry and lemon, fragrant and tangy, offering a burst of fresh flavor.",
+        "available_meal_size": ["Meal Set", "Main Dish (600g)"],
+        "protein": "52",
+        "carbs": "41",
+        "fat": "2",
+        "calories": "390" 
+    },
+    {
+        "name" : "Korean Spicy Chicken Breast",
+        "price": "$19.00 – $31.00",
+        "description": "Pan-seared chicken breast with Korean spicy sauce, blending sweetness and heat for a tender and flavorful dish.",
+        "available_meal_size": ["Meal Set", "Main Dish (600g)"],
+        "protein": "52",
+        "carbs": "42",
+        "fat": "2",
+        "calories": "386" 
+    },
+    {
+        "name" : "Miso Glazed Chicken Breast",
+        "price": "$19.00 – $31.00",
+        "description": "Chicken breaast marinated in miso paste and seared to perfection, offering a rich, savory flavor.",
+        "available_meal_size": ["Meal Set", "Main Dish (600g)"],
+        "protein": "52",
+        "carbs": "39",
+        "fat": "2",
+        "calories": "382" 
+    },
+    {
+        "name" : "New Orleans Spiced Chicken",
+        "price": "$19.00 – $31.00",
+        "description": "Pan-seared chicken breast with New Orleans spices, crispy on the outside, tender inside, with a balanced spicy flavor.",
+        "available_meal_size": ["Meal Set", "Main Dish (600g)"],
+        "protein": "52",
+        "carbs": "40",
+        "fat": "2",
+        "calories": "386" 
+    },
+    {
+        "name" : "Garlic Lemon Chicken Breast",
+        "price": "$19.00 – $31.00",
+        "description": "",
+        "available_meal_size": ["Meal Set", "Main Dish (600g)"],
+        "protein": "52",
+        "carbs": "40",
+        "fat": "2",
+        "calories": "386"
+    },
+    {
+        "name" : "Soy Braised Beef Shank",
+        "price": "$21.00 – $36.00",
+        "description": "Selected beef shank is slowly braised with soy sauce, oyster sauce, and a variety of spices. The meat is tender with a rich, flavorful sauce.",
+        "available_meal_size": ["Meal Set", "Main Dish (500g)"],
+        "protein": "51",
+        "carbs": "39",
+        "fat": "6",
+        "calories": "414" 
+    },
+    {
+        "name" : "Spiced Braised Chicken Leg",
+        "price": "$19.00 – $31.00",
+        "description": "Chicken leg braised with star anise, cinnamon, and other aromatic spices. Tender and juicy, this dish is a low-fat, high-protein choice, perfect for fitness enthusiasts.",
+        "available_meal_size": ["Meal Set", "Main Dish (600g)"],
+        "protein": "49",
+        "carbs": "38",
+        "fat": "10",
+        "calories": "438" 
+    },
+    {
+        "name" : "Pickled Veg Chicken Stir-fry",
+        "price": "$17.00 – $31.00",
+        "description": "Crisp pickled vegetables and tender bamboo shoots stir-fried with lean chicken breast, creating a refreshing, light, and nutritious dish.",
+        "available_meal_size": ["Meal Set", "Main Dish (300g)", "Main Dish (600g)"],
+        "protein": "26",
+        "carbs": "40",
+        "fat": "1",
+        "calories": "272" 
+    },
+    {
+        "name" : "Cilantro Chicken with Vinegar",
+        "price": "$19.00 – $31.00",
+        "description": "Chicken breast mixed with cilantro, vinegar, chili, soy sauce, and oyster sauce. This tangy, refreshing dish is high in protein, perfect for fitness diets and light daily meals.",
+        "available_meal_size": ["Meal Set", "Main Dish (300g)", "Main Dish (600g)"],
+        "protein": "31",
+        "carbs": "1.5",
+        "fat": "2",
+        "calories": "147" 
+    },
+    {
+        "name" : "Chicken-Stuffed Bean Curd Rolls",
+        "price": "$19.00 – $31.00",
+        "description": "Minced chicken wrapped in soft bean curd sheets, steamed with ginger and seasonings. Tender, juicy, and packed with flavor, this is a healthy, light meal option.",
+        "available_meal_size": ["Meal Set", "Main Dish (600g)"],
+        "protein": "19",
+        "carbs": "0",
+        "fat": "1.5",
+        "calories": "89.5" 
+    },
+    {
+        "name" : "Steamed Egg with Chicken",
+        "price": "$19.00 – $31.00",
+        "description": "Smooth steamed egg paired with savory minced chicken, seasoned with ginger and rice wine. A high-protein, low-fat, and nutritious dish.",
+        "available_meal_size": ["Meal Set", "Main Dish (300g)", "Main Dish (600g)"],
+        "protein": "35",
+        "carbs": "37",
+        "fat": "4",
+        "calories": "324" 
+    },
+    {
+        "name" : "Wine-Marinated Pig Tongue",
+        "price": "$19.00 – $31.00",
+        "description": "Pig tongue marinated in traditional wine sauce, tender and flavorful with a rich, aromatic taste.",
+        "available_meal_size": ["Meal Set", "Main Dish (300g)"],
+        "protein": "37",
+        "carbs": "37",
+        "fat": "11",
+        "calories": "395" 
+    },
+    {
+        "name" : "Wine-Marinated Chicken Gizzards",
+        "price": "$19.00 – $31.00",
+        "description": "Crisp and tender chicken gizzards marinated in wine sauce, full of flavor. Perfect as a snack or appetizer.",
+        "available_meal_size": ["Meal Set", "Main Dish (300g)"],
+        "protein": "46",
+        "carbs": "37",
+        "fat": "4.2",
+        "calories": "370" 
+    },
+    {
+        "name" : "Wine-Marinated Chicken Hearts",
+        "price": "$19.00 – $31.00",
+        "description": "Tender chicken hearts marinated in wine sauce, offering a rich and unique flavor, perfect as a nutritious snack.",
+        "available_meal_size": ["Meal Set", "Main Dish (300g)"],
+        "protein": "44",
+        "carbs": "37",
+        "fat": "5",
+        "calories": "369" 
+    }
+]
