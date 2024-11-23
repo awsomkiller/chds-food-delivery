@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 class TransactionViewSet(ModelViewSet):
+    http_method_names = ['get','post',"delete"]
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
 

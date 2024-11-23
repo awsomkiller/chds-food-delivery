@@ -2,8 +2,9 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 import uuid
 import time
+
+
 class PickupLocation(models.Model):
-    
     name = models.CharField(_("Pickup Location Name") ,max_length=255)
     code = models.UUIDField(_("Pickup Location Code"),max_length=50, unique=True)
     street_address1 = models.CharField(_("Street Address"),max_length=255)
@@ -17,11 +18,10 @@ class PickupLocation(models.Model):
         return f"{self.name} ({self.code}) "
     
     def save(self, *args, **kwargs):
-        if not self.unique_id:
-            self.unique_id = uuid.uuid4()  
+        if not self.code:
+            self.code = uuid.uuid4()  
         super().save(*args, **kwargs)
-      
-    
+        
     class Meta:
         verbose_name ="PickupLocation"
         verbose_name_plural ="PickupLocations"
@@ -41,21 +41,18 @@ class MenuCategory(models.Model):
 
 class MenuItem(models.Model):
     name = models.CharField(_("Menu Item Name"),max_length=100)
-    price = models.CharField(_("Menu Item Price"),max_length=50, help_text="Price in  Australian dollars"
-    )
+    price = models.CharField(_("Menu Item Price"),max_length=50, help_text="Price in  Australian dollars")
     description = models.TextField(blank=True, null=True)
     calories = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
     protein = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     fats = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     carbs = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
-    category = models.ForeignKey(
-        MenuCategory, on_delete=models.CASCADE, related_name='menu_items'
-    )
+    category = models.ForeignKey(MenuCategory, on_delete=models.CASCADE, related_name='menu_items')
     portion_sizes= models.ManyToManyField("restaurants.PortionSize", verbose_name=_("Menu Items Sizes"),help_text="Select Portion")
 
     class Meta:
-        verbose_name = "Menu Item"
-        verbose_name_plural = "Menu Items"
+        verbose_name = "Menu Dish"
+        verbose_name_plural = "Menu Dishes"
         ordering = ['name']
 
     def __str__(self):
@@ -82,8 +79,8 @@ class MenuImage(models.Model):
     is_main = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name = "Menu Image"
-        verbose_name_plural = "Menu Images"
+        verbose_name = "Menu Dish Image"
+        verbose_name_plural = "Menu Dishes Images"
         ordering = ['-is_main'] 
 
     def __str__(self):
@@ -91,17 +88,20 @@ class MenuImage(models.Model):
 
 
 class TimeSlots(models.Model):
-    time = models.CharField(_("Time Slot"),max_length=50)
-    code =  models.CharField(_("Time Slot Code"),max_length=50)
+    DELIVERY_CHOICES =[
+        ('ALL', 'All'),
+        ('DELIVERY ONLY','Delivery Only'),
+        ('PICKUP ONLY', 'Pickup Only')
+    ]
+    name = models.CharField(_("Name"),max_length=50, null=True)
+    type = models.CharField(_("Type"),max_length=50,choices=DELIVERY_CHOICES,null=True)
     
     class Meta:
         verbose_name ="Time Slot"
         verbose_name_plural = "Time Slots"
         
-    def save(self,*args,**kwargs):
-        if not self.code:
-            self.code = str(time.time())
-        super().save(*args,**kwargs)
+    def __str__(self):
+        return f"{self.name} - {self.type}"
         
         
 class PortionSize(models.Model):
@@ -123,8 +123,8 @@ class MenuPortionPriceList(models.Model):
     
     
     class Meta:
-        verbose_name = "Menu Portion Price List"
-        verbose_name = "Menu Portion Price Lists"
+        verbose_name = "Price List"
+        verbose_name_plural = "Price Lists"
         ordering = ['id']
         
     def __str__(self):
@@ -136,10 +136,16 @@ class Addons(models.Model):
     price = models.CharField(_("Addon Price"),max_length=50, help_text="Price in  Australian dollars")
 
     class Meta:
-        verbose_name = "Addon"
-        verbose_name_plural = "Addons"
+        verbose_name = "Menu Dishes Addon"
+        verbose_name_plural = "Menu Dishes Addons"
         ordering = ['name']
         
     def __str__(self):
         return f"{self.name} - {self.price}"
     
+
+
+class WorkingDays(models.Model):
+    date = models.DateField(_("Date"),null=True)
+    time_slot = models.ManyToManyField(TimeSlots,verbose_name=_("Time Slot"),related_name="working_days")
+    is_active = models.BooleanField(_("Is Active"),default=True)

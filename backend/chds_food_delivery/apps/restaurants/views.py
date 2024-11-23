@@ -11,13 +11,10 @@ from apps.restaurants.serializers import (
 )
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
-<<<<<<< Updated upstream
-from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuImage
-from rest_framework.permissions import AllowAny
-=======
+
 from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuImage,Addons
 from rest_framework.permissions import AllowAny
->>>>>>> Stashed changes
+
 
 class RestaurantApi(ModelViewSet):
     """ 
@@ -38,8 +35,6 @@ class MenuItemApi(ModelViewSet):
     filterset_fields = ['category']
     search_fields = ['name',"category__name"]
     permission_classes = [AllowAny,]
-
-  
     
     def get_serializer_class(self):
         if self.action == 'list':

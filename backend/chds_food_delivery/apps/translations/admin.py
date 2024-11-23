@@ -1,7 +1,7 @@
 from django.contrib import admin
-from apps.translations.models import LanguageCategory,Translation
+from apps.translations.models import Translation , Module
 
-@admin.register(LanguageCategory)
+@admin.register(Module)
 class LanguageCategoryAdmin(admin.ModelAdmin):
     list_display = ['id',"feature_name","feature_code"]
     search_fields = ['feature_name']

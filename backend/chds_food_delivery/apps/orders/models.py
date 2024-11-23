@@ -1,5 +1,5 @@
 from django.db import models
-from apps.restaurants.models import PickupLocation,TimeSlots
+from apps.restaurants.models import PickupLocation,WorkingDays
 from apps.users.models import User
 from django.utils.translation import gettext_lazy as _
 from apps.transactions.models import Transaction
@@ -23,19 +23,18 @@ class Orders(models.Model):
     ]
     pickup_location = models.ForeignKey(PickupLocation,on_delete=models.DO_NOTHING, related_name="orders",null=True)
     user = models.ForeignKey(User,on_delete=models.CASCADE, related_name="userorders")
-    order_time = models.DateTimeField(_("Order Time"))
-    delivery_date= models.DateField(_("Delivery Date"),null=True)
-    time_slots = models.ForeignKey(TimeSlots,on_delete=models.DO_NOTHING,related_name="time_slots",null=True)
+    order_time = models.DateTimeField(_("Order Time"), auto_now_add=True)
+    deliverydate= models.ForeignKey(WorkingDays, verbose_name=_("Delivery Date"), on_delete=models.PROTECT,null=True)
     order_type = models.CharField(_("Order Type"),choices=ORDER_TYPES,max_length=10,null=True)
     delivery_location = models.TextField(_("Delivery Location"),default="NA")
     status = models.CharField(max_length=20,choices=ORDER_STATUS,default="ORDER_PLACED")
-    amount = models.DecimalField(decimal_places=2,max_digits=10)
+    amount = models.CharField(_("Amount"), max_length=50, help_text="In Australian Dollars")
     transaction = models.ForeignKey(Transaction,on_delete=models.CASCADE)
     menu_item = models.JSONField(_("Menu Items"),help_text="Selected Menu items Json object")
     
     
     def __str__(self)-> str:
-        return f"{self.user}-{self.pickup_location.name}"
+        return f"{self.user}"
     
     class Meta:
         ordering = ["-order_time"]
