@@ -6,12 +6,18 @@ from apps.restaurants.serializers import (
     MenuCategorySerializer,
     ListMenuItemSerializer,
     CreateMenuItemSerializer,
-    CreateMenuImagesSerializer
+    CreateMenuImagesSerializer,
+    ListAddonSerialzier
 )
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
+<<<<<<< Updated upstream
 from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuImage
 from rest_framework.permissions import AllowAny
+=======
+from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuImage,Addons
+from rest_framework.permissions import AllowAny
+>>>>>>> Stashed changes
 
 class RestaurantApi(ModelViewSet):
     """ 
@@ -68,4 +74,12 @@ class MenuImagesApi(ListCreateAPIView):
     
 
         
+class MenuCategoryApi(ListAPIView):
+    """     
+        API for listing categories
+    """
+    serializer_class = ListAddonSerialzier
+    queryset = Addons.objects.all()
+
+
     

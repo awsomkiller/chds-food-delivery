@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.restaurants.models import PickupLocation,MenuCategory,MenuImage,MenuItem
+from apps.restaurants.models import PickupLocation,MenuCategory,MenuImage,MenuItem,MenuPortionPriceList,Addons
 
 
 class RestaurantApiSerializer(serializers.ModelSerializer):
@@ -21,9 +21,17 @@ class ListMenuImagesSerializer(serializers.ModelSerializer):
         model = MenuImage
         fields = ["id", 'image', 'is_main']
             
+class ListPortionSerializer(serializers.ModelSerializer):
+    portion_name = serializers.CharField(source='portion_item.name')
+    portion_weight = serializers.CharField(source='portion_item.weight')
 
+    class Meta:
+        model = MenuPortionPriceList
+        fields = ["id", "portion_name", "portion_weight", "price"]
+        
 class ListMenuItemSerializer(serializers.ModelSerializer):
     item_images = serializers.SerializerMethodField()
+    portion = serializers.SerializerMethodField()
     class Meta:
         model = MenuItem
         fields = ["name","description","price","item_images"]
@@ -32,12 +40,10 @@ class ListMenuItemSerializer(serializers.ModelSerializer):
         images = obj.images.all()
         return ListMenuImagesSerializer(images,many=True).data
         
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        calories_payload = instance.get_caloric_breakdown()
-        final_payload = {**data,**calories_payload}
-        return final_payload
-
+    def get_portion(self,obj):
+        portions = obj.menu_items_prices.all()
+        return ListPortionSerializer(portions,many=True)
+   
 class CreateMenuItemSerializer(serializers.ModelSerializer):
     """     
         Serializer for for creating menu items
@@ -58,3 +64,11 @@ class CreateMenuImagesSerializer(serializers.ModelSerializer):
         if validated_data["is_main"]:
             MenuImage.objects.filter(menu_item=validated_data['menu_item']).update(is_main=False)
         super().create(validated_data)
+        
+class ListAddonSerialzier(serializers.ModelSerializer):
+    """ 
+        Serializer to fetch add on
+    """
+    class Meta:
+        model = Addons
+        fields = ['id',"name","price"]
