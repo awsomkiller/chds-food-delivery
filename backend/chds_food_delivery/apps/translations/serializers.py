@@ -1,17 +1,17 @@
 from rest_framework import serializers
-from apps.translations.models import LanguageCategory,Translation
+from apps.translations.models import Module,Translation
 
 
-class FeaturesSerializer(serializers.ModelSerializer):
+class ModulesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = LanguageCategory
+        model = Module
         fields = "__all__"
         
 class TranslationSerializer(serializers.ModelSerializer):
     """
     Serializer to only serialize GET request
     """
-    feature = FeaturesSerializer(many=True)
+    feature = ModulesSerializer(many=True)
     class Meta:
         model = Translation
         fields = ['id', 'label', 'value', 'language', 'feature']

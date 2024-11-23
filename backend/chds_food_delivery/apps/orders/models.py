@@ -23,13 +23,13 @@ class Orders(models.Model):
     ]
     pickup_location = models.ForeignKey(PickupLocation,on_delete=models.DO_NOTHING, related_name="orders",null=True)
     user = models.ForeignKey(User,on_delete=models.CASCADE, related_name="userorders")
-    order_time = models.DateTimeField(_("Order Time"))
+    order_time = models.DateTimeField(_("Order Time"), auto_now_add=True)
     delivery_date= models.DateField(_("Delivery Date"),null=True)
     time_slots = models.ForeignKey(TimeSlots,on_delete=models.DO_NOTHING,related_name="time_slots",null=True)
     order_type = models.CharField(_("Order Type"),choices=ORDER_TYPES,max_length=10,null=True)
     delivery_location = models.TextField(_("Delivery Location"),default="NA")
     status = models.CharField(max_length=20,choices=ORDER_STATUS,default="ORDER_PLACED")
-    amount = models.DecimalField(decimal_places=2,max_digits=10)
+    amount = models.CharField(_("Amount"), max_length=50, help_text="In Australian Dollars")
     transaction = models.ForeignKey(Transaction,on_delete=models.CASCADE)
     menu_item = models.JSONField(_("Menu Items"),help_text="Selected Menu items Json object")
     

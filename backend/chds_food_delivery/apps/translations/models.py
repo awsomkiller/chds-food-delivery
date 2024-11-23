@@ -2,9 +2,9 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-class LanguageCategory(models.Model):
-    feature_name = models.CharField('Feature', max_length=255, null=False, blank=False)
-    feature_code = models.CharField('Feature Code', max_length=255, default=None, null=False, blank=False, unique=True)
+class Module(models.Model):
+    feature_name = models.CharField('Page Name', max_length=255)
+    feature_code = models.CharField('Page Code', max_length=255, unique=True)
     
     class Meta:
         ordering = ['id']
@@ -21,9 +21,8 @@ class Translation(models.Model):
     ]
     label = models.CharField("Label Code", max_length=255, null=False, blank=False)
     language = models.CharField("Language", choices=LANGUAGE_CHOICES, null=False, blank=False ,max_length=20)
-    value = models.CharField("Language Translation ", max_length=255, default=None, null=False, blank=True)
-    #Added support for multiple features
-    feature = models.ManyToManyField(LanguageCategory, verbose_name=_("Features"), blank=True)
+    value = models.CharField("Language Translation", max_length=255, default=None, null=False, blank=True)
+    module = models.ForeignKey(Module, verbose_name=_("Pages"), on_delete=models.CASCADE)
    
 
     class Meta:

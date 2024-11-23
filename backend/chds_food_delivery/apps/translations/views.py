@@ -1,16 +1,16 @@
 from django.shortcuts import render
-from apps.translations.models import LanguageCategory,Translation
+from apps.translations.models import Module,Translation
 from rest_framework.viewsets import ReadOnlyModelViewSet,ModelViewSet,ViewSet
 from rest_framework.permissions import AllowAny
-from apps.translations.serializers import TranslationSerializer,FeaturesSerializer
+from apps.translations.serializers import TranslationSerializer,ModulesSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
 
 class ListLanguageFeatureView(ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
-    queryset = LanguageCategory.objects.all()
-    serializer_class = FeaturesSerializer
+    queryset = Module.objects.all()
+    serializer_class = ModulesSerializer
 
 
 class TranslationApi(ModelViewSet):
@@ -45,7 +45,7 @@ class FetchTranslationBasedOnFeatureView(ViewSet):
 
  
     def fetch_feature_instance(self, fc):
-        return get_object_or_404(LanguageCategory, feature_code=fc)
+        return get_object_or_404(Module, feature_code=fc)
     
     def fetch_translation_data(self, languageInstance, featureInstance):
         instances = Translation.objects.filter(language=languageInstance, feature=featureInstance.id)
