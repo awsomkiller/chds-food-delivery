@@ -272,7 +272,38 @@
 
                     </div>
                 </div>
-                checkout
+
+                <div class="biling-details-container bg-white p-2 rounded">
+                    <div class="billing-detail">
+                        <p class=""> Subtotal </p>
+
+                        <p class=""> $ 4125 </p>
+                    </div>
+
+                    <div class="billing-detail">
+                        <p class=""> Tax </p>
+
+                        <p class=""> $ 25 </p>
+                    </div>
+
+                    <div class="billing-detail detail-green">
+                        <p class=""> Delivery </p>
+
+                        <p class=""> Yay! Free Delivery </p>
+                    </div>
+
+
+                    
+                    <div class="billing-detail grand-total">
+                        <p class=""> Grand Total </p>
+
+                        <p class=""> $ 4150 </p>
+                    </div>
+
+
+                    <button type="button" class="btn btn-primary w-100" > Pay $ 4150 </button>
+
+                </div>
             </div>
 
         </div>
@@ -536,6 +567,30 @@ export default {
     border-color: var(--order-background-color);
 }
 
+.biling-details-container{
+
+}
+.billing-detail{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap:10px;
+}
+.billing-detail p{
+   width: fit-content;
+   color: var(--card-location-color);
+   font-size: 15px;
+}
+
+.detail-green p{
+    font-size: 16px;
+    color: var(--dark-brown-color);
+}
+
+.grand-total{
+    font-weight: bold;
+    color: var(--card-heading-color);
+}
 
 
 

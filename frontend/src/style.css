@@ -888,6 +888,10 @@ ul {
   color: #fff;
 }
 
+.footer-widgets-wrapper .single-footer-widget .footer-content .social-icon a:hover {
+  background-color: var(--order-background-color);
+}
+
 .footer-widgets-wrapper .single-footer-widget .widget-head h3 {
   font-weight: bold;
   color: #fff;

@@ -118,31 +118,25 @@
                 </div>
                 <ul class="list-area">
                   <li>
-                    <a href="about.html">
+                    <a href="/">
                       <i class="fa-solid fa-angles-right"></i>
-                      About Us
+                      Home
                     </a>
                   </li>
                   <li>
-                    <a href="gallery.html">
+                    <a href="/ordernow">
                       <i class="fa-solid fa-angles-right"></i>
-                      Our Gallery
+                      Order Now
                     </a>
                   </li>
                   <li>
-                    <a href="blog.html">
+                    <a href="/ourstory">
                       <i class="fa-solid fa-angles-right"></i>
-                      Our Blogs
+                      Our Story
                     </a>
                   </li>
                   <li>
-                    <a href="faq.html">
-                      <i class="fa-solid fa-angles-right"></i>
-                      FAQ’S
-                    </a>
-                  </li>
-                  <li>
-                    <a href="contact.html">
+                    <a href="/contact-us">
                       <i class="fa-solid fa-angles-right"></i>
                       Contact Us
                     </a>
