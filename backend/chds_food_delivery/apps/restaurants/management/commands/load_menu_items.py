@@ -8,10 +8,7 @@ class Command(BaseCommand):
     
     file_location = "apps/restaurants/files/data_meal.json"
     def handle(self, *args: Any, **options: Any):
-        if not MenuCategory.objects.filter(name="daily meals").exists:
-            category_instance = MenuCategory.objects.create(name="daily meals")
-        else:
-            category_instance = MenuCategory.objects.get(name="daily meals")
+        category_instance, created = MenuCategory.objects.get_or_create(name="daily meals")
             
         with open(self.file_location,"r") as file:
             menu_items = json.load(file)

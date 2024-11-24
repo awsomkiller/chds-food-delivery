@@ -149,3 +149,8 @@ class WorkingDays(models.Model):
     date = models.DateField(_("Date"),null=True)
     time_slot = models.ManyToManyField(TimeSlots,verbose_name=_("Time Slot"),related_name="working_days")
     is_active = models.BooleanField(_("Is Active"),default=True)
+
+    class Meta:
+        verbose_name = "Kitchen Open Day"
+        verbose_name_plural = "Kitchen Open Days"
+

@@ -6,6 +6,7 @@ class TransactionAdmin(admin.ModelAdmin):
     list_display=["id","user","amount","transaction_id","operation_type"]
     fields=["user","amount","order_type","transaction_id","transaction_from","operation_type"]
     search_fields=['user']
+    list_filter =["order_type", "operation_type", "transaction_from"]
     
 @admin.register(WalletCoupon)
 class WalletCouponAdmin(admin.ModelAdmin):

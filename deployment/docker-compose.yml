@@ -21,8 +21,6 @@ services:
     build:
       context: ..
       dockerfile: frontend/Dockerfile
-    ports:
-      - "80:80"
     depends_on:
       - backend
     networks:
@@ -58,7 +56,6 @@ services:
       - ./nginx/ssl:/etc/nginx/ssl  # If using SSL
     depends_on:
       - backend
-      - frontend
     networks:
       - app-network
 
