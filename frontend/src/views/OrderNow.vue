@@ -1,4 +1,8 @@
 <script>
+import CartData from "@/components/CartData.vue";
+
+
+
 import {
     ref,
     onMounted
@@ -10,7 +14,11 @@ import {
     storeToRefs
 } from "pinia";
 
+
 export default {
+    components: {
+        CartData,
+    },
     setup() {
         const menuStore = useMenuStore();
         const {
@@ -107,6 +115,7 @@ export default {
             incrementQuantity,
             decrementQuantity,
             addItemToCart,
+            CartData,
         };
     },
 };
@@ -215,94 +224,25 @@ export default {
         </div>
         <!-- cart  -->
         <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12 p-2 cart-desktop">
-            <div class="bg-white cart-section p-2 rounded ">
-                <div class="pb-3">
-                    <div class="outlet-card p-2 mb-4">
-                        <div class="restaurent-img">
-                            <img class="" src="../assets/CHDS logo Blk transparent.png">
-                        </div>
-                        <div class="outlet-detail">
-                            <h5> Chi Hun Da Su </h5>
-                            <p> Location </p>
-                        </div>
-                    </div>
-
-                    <h4 class="cart-heading mb-0"> Your Cart</h4>
-
-                </div>
-
-                <div>
-                    <ul class="list-unstyled orderl-list">
-                        <li class="order-item">
-                            <div class="order-desscription">
-                                <p class="item-small-hd">Wine-Marinated Chicken Hearts</p>
-                                <p class="item-type-hd mb-0">Q: Main Dish (300g)</p>
-                                <p class="item-type-hd mb-0">Extra Protein</p>
-                                <p class="item-type-hd mb-0">Extra Vegetable</p>
-                                <p class="item-type-hd mb-0">Extra Rice</p>
-                                <p class="item-price"><span>4 x $ 189</span> <b style="display: inline-block; font-weight: 500;"> $ 756</b></p>
-                            </div>
-                            <div class="order-count">
-                                <div class="item-action item-action-cart">
-                                    <a href="" class="subtract">
-                                        <i class="fa-solid fa-minus"></i>
-                                    </a>
-                                    <p>20</p>
-                                    <a href="" class="add">
-                                        <i class="fa-solid fa-plus"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="order-item">
-                            <div class="order-desscription">
-                                <p class="item-small-hd">Wine-Marinated Chicken Hearts</p>
-                                <p class="item-type-hd mb-0">Q: Main Dish (300g)</p>
-                                <p class="item-type-hd mb-0">Extra Protein</p>
-                                <p class="item-type-hd mb-0">Extra Vegetable</p>
-                                <p class="item-type-hd mb-0">Extra Rice</p>
-                                <p class="item-price"><span>4 x $ 189</span> <b style="display: inline-block; font-weight: 500;"> $ 756</b></p>
-                            </div>
-                            <div class="order-count">
-                                <div class="item-action item-action-cart">
-                                    <a href="" class="subtract">
-                                        <i class="fa-solid fa-minus"></i>
-                                    </a>
-                                    <p>20</p>
-                                    <a href="" class="add">
-                                        <i class="fa-solid fa-plus"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div>
-                    <!-- <div class="final-subtotal">
-                            <span>Subtotal </span>
-                            <span> $  800.00</span>
-                        </div> -->
-
-                    <div class="final-subtotal fw-normal">
-                        <span class=" ">You have total 8 items in your cart </span>
-                    </div>
-                    <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#loginregisterModal"> Proceed to Checkout </button>
-                </div>
-            </div>
+            
+            <CartData />
         </div>
     </div>
 </div>
 
-<!-- cart-button-mobile -->
-<div class="mobile-cart">
+
+
+ <!-- cart-button-mobile -->
+ <div class="mobile-cart">
     <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
         <div class="view-cart-mobile">
             <p class="mb-0"> 80 Items</p>
             <p class="mb-0"> View Cart </p>
-           </div>
-        </button>
-    </div>
+        </div>
+    </button>
+</div>
+
+
 
 
 <!-- item search popup -->
@@ -380,123 +320,11 @@ export default {
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Your Cart</h5>
+        <!-- <h5 class="offcanvas-title" id="offcanvasExampleLabel">Your Cart</h5> -->
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <div class="bg-white cart-section p-2 rounded ">
-            <div class="pb-3">
-                <div class="outlet-card p-2 mb-4">
-                    <div class="restaurent-img">
-                        <img class="" src="../assets/CHDS logo Blk transparent.png">
-                    </div>
-                    <div class="outlet-detail">
-                        <h5> Chi Hun Da Su </h5>
-                        <p> Location </p>
-                    </div>
-                </div>
-
-                <!-- <div class="order-type-container">
-                <button type="button" class="btn-active-order"> <span> Delivery </span> <br> <span class="delhivery-time">20 Minutes</span> </button>
-                <button type="button" class="btn-inactive-order">Pick Up</button>
-                <button type="button" class="btn-inactive-order">In Car</button>
-            </div> -->
-            </div>
-
-            <div>
-                <ul class="list-unstyled orderl-list">
-                    <li class="order-item">
-                        <div class="order-desscription">
-                            <p class="item-small-hd">Wine-Marinated Chicken Hearts</p>
-
-                            <p class="item-price"><span>4 x $ 189</span> <b style="display: inline-block; font-weight: 500;"> $ 756</b></p>
-                        </div>
-                        <div class="order-count">
-                            <div class="item-action item-action-cart">
-                                <a href="" class="subtract">
-                                    <i class="fa-solid fa-minus"></i>
-                                </a>
-                                <p>20</p>
-                                <a href="" class="add">
-                                    <i class="fa-solid fa-plus"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="order-item">
-                        <div class="order-desscription">
-                            <p class="item-small-hd">Wine-Marinated Chicken Hearts</p>
-
-                            <p class="item-price"><span>4 x $ 189</span> <b style="display: inline-block; font-weight: 500;"> $ 756</b></p>
-                        </div>
-                        <div class="order-count">
-                            <div class="item-action item-action-cart">
-                                <a href="" class="subtract">
-                                    <i class="fa-solid fa-minus"></i>
-                                </a>
-                                <p>20</p>
-                                <a href="" class="add">
-                                    <i class="fa-solid fa-plus"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="order-item">
-                        <div class="order-desscription">
-                            <p class="item-small-hd">Wine-Marinated Chicken Hearts</p>
-
-                            <p class="item-price"><span>4 x $ 189</span> <b style="display: inline-block; font-weight: 500;"> $ 756</b></p>
-                        </div>
-                        <div class="order-count">
-                            <div class="item-action item-action-cart">
-                                <a href="" class="subtract">
-                                    <i class="fa-solid fa-minus"></i>
-                                </a>
-                                <p>20</p>
-                                <a href="" class="add">
-                                    <i class="fa-solid fa-plus"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="order-item">
-                        <div class="order-desscription">
-                            <p class="item-small-hd">Wine-Marinated Chicken Hearts</p>
-
-                            <p class="item-price"><span>4 x $ 189</span> <b style="display: inline-block; font-weight: 500;"> $ 756</b></p>
-                        </div>
-                        <div class="order-count">
-                            <div class="item-action item-action-cart">
-                                <a href="" class="subtract">
-                                    <i class="fa-solid fa-minus"></i>
-                                </a>
-                                <p>20</p>
-                                <a href="" class="add">
-                                    <i class="fa-solid fa-plus"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </li>
-
-                </ul>
-            </div>
-            <div>
-                <!-- <div class="final-subtotal">
-                <span>Subtotal </span>
-                <span> $  800.00</span>
-            </div> -->
-
-                <div class="final-subtotal fw-normal">
-                    <span class=" ">You have total 8 items in your cart </span>
-                </div>
-
-                <button type="button" class="btn btn-primary w-100"> Proceed to Checkout </button>
-            </div>
-
-        </div>
+       <CartData />
     </div>
 </div>
 

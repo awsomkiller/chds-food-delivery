@@ -3,6 +3,8 @@ import HomeView from '../views/HomeView.vue';
 import OrderNow from '../views/OrderNow.vue';
 import CheckoutPage from '@/views/CheckoutPage.vue';
 import OurStory from '@/views/OurStory.vue';
+import ProfilePage from '@/views/ProfilePage.vue';
+import ContactUs from '@/views/ContactUs.vue';
 
 const routes = [
   {
@@ -27,6 +29,18 @@ const routes = [
     path: '/ourstory',
     name: 'Ourstory',
     component: OurStory,
+  },
+
+  {
+    path: '/profile',
+    name: 'profilepage',
+    component: ProfilePage,
+  },
+
+  {
+    path: '/contact-us',
+    name: 'contactus',
+    component: ContactUs,
   },
 ];
 
