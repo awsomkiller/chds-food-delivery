@@ -105,6 +105,7 @@ body{
 .meal-category .btn-check:checked+.btn{
     background-color: var(--dark-brown-color) ;
     border-color: var(--dark-brown-color) ;
+    color:white;
 }
 
 .meal-category .btn-check:checked+.btn:hover{
@@ -190,6 +191,7 @@ max-width: 2500px;
   text-align: center;
   background: white;
   transform: translate3d(0, 0, 0);
+  color:var(--dark-brown-color);
 }
 .can-toggle input[type=checkbox][disabled] ~ label {
   color: #944c22;
@@ -256,6 +258,7 @@ max-width: 2500px;
   line-height: 36px;
   width: 45px;
   padding: 0 12px;
+  color: white;
 }
 .can-toggle label .can-toggle__switch:after {
   top: 2px;
@@ -264,6 +267,7 @@ max-width: 2500px;
   width: 45px;
   line-height: 32px;
   font-size: 12px;
+  color: var(--dark-brown-color);
 }
 .can-toggle label .can-toggle__switch:hover:after {
   box-shadow: 0 3px 3px rgba(0, 0, 0, 0.4);

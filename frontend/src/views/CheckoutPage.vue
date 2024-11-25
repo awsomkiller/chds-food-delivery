@@ -87,7 +87,7 @@
                                 <p class="address-description mb-0"> 2076, Sector 79, Mohali </p>
                             </label>
 
-                            <a href="" class="text-decoration-none"  >
+                            <a href="" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#addressModal" >
                                 <div class="add-addrss-button">
                                     <div>
                                         <i class="fa-solid fa-plus"></i>

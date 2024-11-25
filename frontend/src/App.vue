@@ -7,6 +7,7 @@ import LoginCheck from "./components/LoginCheck.vue";
 import PostalCode from "./components/PostalCode.vue";
 import AddItem from "./components/AddItem.vue";
 import MobileSidebar from "./components/MobileSidebar.vue";
+import AddAddress from "./components/AddAddress.vue";
 
 
 </script>
@@ -20,6 +21,7 @@ import MobileSidebar from "./components/MobileSidebar.vue";
   <PostalCode/>
   <LoginCheck />
   <MobileSidebar />
+  <AddAddress />
 </template>
 
 <style></style>
