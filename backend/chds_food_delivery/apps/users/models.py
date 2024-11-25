@@ -152,7 +152,7 @@ class Wallet(models.Model):
     
     def save(self, *args, **kwargs):
         if not self.unique_id:
-            self.unique_id = uuid.uuid4()  # Generate unique ID if not set
+            self.unique_id = uuid.uuid4()
         super().save(*args, **kwargs)
             
     class Meta:

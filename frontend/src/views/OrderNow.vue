@@ -1,239 +1,246 @@
 <script>
 import CartData from "@/components/CartData.vue";
-
-
-
-import {
-    ref,
-    onMounted
-} from "vue";
-import {
-    useMenuStore
-} from "@/stores/menu";
-import {
-    storeToRefs
-} from "pinia";
-
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import { useMenuStore } from "@/stores/menu";
+import { storeToRefs } from "pinia";
 
 export default {
-    components: {
-        CartData,
-    },
-    setup() {
-        const menuStore = useMenuStore();
-        const {
-            items,
-            cart,
-            selectedItem,
-            cartItemCount,
-            loading,
-            isAllItemsLoaded,
-        } = storeToRefs(menuStore);
-        const searchQuery = ref("");
-        const quantity = ref(1);
+  components: {
+    CartData,
+  },
+  setup() {
+    const menuStore = useMenuStore();
+    const {
+      items,
+      cart,
+      selectedItem,
+      selectedCategory,
+      cartItemCount,
+      loading,
+      isAllItemsLoaded,
+      categories,
+      categoriesLoading,
+      categoriesError,
+    } = storeToRefs(menuStore);
+    const searchQuery = ref("");
+    const quantity = ref(1);
 
-        const performSearch = () => {
-            menuStore.searchItems(searchQuery.value);
-        };
+    const performSearch = () => {
+        console.log(searchQuery.value)
+      menuStore.searchItems(searchQuery.value);
+    };
 
-        const getItemImage = (item) => {
-            if (!item || !item.item_images) return "";
-            const mainImage = item.item_images.find((img) => img.is_main);
-            const path = mainImage ? mainImage.image : "";
-            return "http://localhost:8000" + path;
-        };
+    const getItemImage = (item) => {
+      if (!item || !item.item_images) return "";
+      const mainImage = item.item_images.find((img) => img.is_main);
+      const path = mainImage ? mainImage.image : "";
+      return "http://localhost:8000" + path;
+    };
 
-        const incrementCartItem = (item) => {
-            menuStore.updateCartItemQuantity(item, item.quantity + 1);
-        };
+    const incrementCartItem = (item) => {
+      menuStore.updateCartItemQuantity(item, item.quantity + 1);
+    };
 
-        const decrementCartItem = (item) => {
-            if (item.quantity > 1) {
-                menuStore.updateCartItemQuantity(item, item.quantity - 1);
-            } else {
-                menuStore.removeFromCart(item);
-            }
-        };
+    const decrementCartItem = (item) => {
+      if (item.quantity > 1) {
+        menuStore.updateCartItemQuantity(item, item.quantity - 1);
+      } else {
+        menuStore.removeFromCart(item);
+      }
+    };
 
-        const openItemModal = (item) => {
-            menuStore.updateSelectedItem(item);
-        };
+    const openItemModal = (item) => {
+      menuStore.updateSelectedItem(item);
+    };
 
-        const incrementQuantity = () => {
-            quantity.value += 1;
-        };
+    const incrementQuantity = () => {
+      quantity.value += 1;
+    };
 
-        const decrementQuantity = () => {
-            if (quantity.value > 1) {
-                quantity.value -= 1;
-            }
-        };
+    const decrementQuantity = () => {
+      if (quantity.value > 1) {
+        quantity.value -= 1;
+      }
+    };
 
-        const addItemToCart = () => {
-            if (selectedItem.value) {
-                menuStore.addToCart(selectedItem.value, quantity.value);
-                quantity.value = 1;
-                // Close the modal programmatically if necessary
-                menuStore.updateSelectedItem(null);
-            }
-        };
+    const addItemToCart = () => {
+      if (selectedItem.value) {
+        menuStore.addToCart(selectedItem.value, quantity.value);
+        quantity.value = 1;
+        menuStore.updateSelectedItem(null);
+      }
+    };
 
-        // Infinite Scroll Logic
-        const handleScroll = () => {
-            const bottomOfWindow =
-                window.innerHeight + window.scrollY >= document.body.offsetHeight - 2;
-            if (bottomOfWindow && !isAllItemsLoaded.value) {
-                menuStore.loadItems();
-            }
-        };
+    // Infinite Scroll Logic
+    const handleScroll = () => {
+      const bottomOfWindow =
+        window.innerHeight + window.scrollY >= document.body.offsetHeight - 2;
+      if (bottomOfWindow && !isAllItemsLoaded.value && !loading.value) {
+        menuStore.loadItems();
+      }
+    };
 
-        onMounted(() => {
-            menuStore.loadItems();
-            window.addEventListener("scroll", handleScroll);
+    // Method to truncate description
+    const truncateDescription = (text, maxLength=60) => {
+      if (!text) return "";
+      return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+    };
 
-            // Listen for the modal close event to reset selectedItem
-            const modalElement = document.getElementById("exampleModal");
-            modalElement.addEventListener("hidden.bs.modal", () => {
-                openItemModal(null);
-            });
+    const handleCategoryChange = (category) =>{
+        menuStore.selectCategory(category);
+    }
+
+    onMounted(() => {
+      menuStore.resetItems();
+      menuStore.loadCategories();
+      menuStore.loadItems();
+      window.addEventListener("scroll", handleScroll);
+
+      const modalElement = document.getElementById("exampleModal");
+      if (modalElement) {
+        modalElement.addEventListener("hidden.bs.modal", () => {
+          openItemModal(null);
         });
+      }
+    });
 
-        return {
-            items,
-            selectedItem,
-            cart,
-            searchQuery,
-            performSearch,
-            getItemImage,
-            addToCart: menuStore.addToCart,
-            incrementCartItem,
-            decrementCartItem,
-            cartItemCount,
-            loading,
-            openItemModal,
-            quantity,
-            incrementQuantity,
-            decrementQuantity,
-            addItemToCart,
-            CartData,
-        };
-    },
+    onBeforeUnmount(() => {
+      window.removeEventListener("scroll", handleScroll);
+    });
+
+    return {
+      items,
+      selectedItem,
+      cart,
+      searchQuery,
+      performSearch,
+      getItemImage,
+      addToCart: menuStore.addToCart,
+      incrementCartItem,
+      decrementCartItem,
+      cartItemCount,
+      loading,
+      isAllItemsLoaded,
+      openItemModal,
+      quantity,
+      incrementQuantity,
+      decrementQuantity,
+      addItemToCart,
+      truncateDescription,
+      categories,
+      categoriesLoading,
+      categoriesError,
+      CartData,
+      selectedCategory,
+      handleCategoryChange,
+    };
+  },
 };
 </script>
 
+
 <template>
-<div class="container-xxl">
-    <!-- <h2>Order Online</h2> -->
-    <div class="row">
-        <!-- <div class="col-lg-2 col-md-12 col-sm-12 col-12 p-3">
-                <div class="card-new bg-white categories-section  rounded">
-                    <h4 class="cart-heading p-2"> Categories</h4>
-
-                    <div>
-                       <ul class="list-unstyled categories-list" >
-                            <li class="category-item">
-                                <div class="category-desscription">
-                                    Veg 
-                                </div>
-                                <div class="order-count">
-                                   <p>(5)</p>
-                                </div>
-                            </li>
-                            <li class="category-item active">
-                                <div class="category-desscription">
-                                    Non-Veg 
-                                </div>
-                                <div class="order-count">
-                                   <p>(20)</p>
-                                </div>
-                            </li>
-                       </ul> 
-                    </div>
+    <div class="container-xxl">
+      <div class="row">
+        <!-- Menu Items -->
+        <div
+          class="col-xxl-10 col-xl-9 col-lg-8 col-md-12 col-sm-12 col-12 p-3"
+        >
+          <div class="menu-items">
+            <div class="row">
+              <div class="col-lg-8 col-md-6 col-sm-12 col-12 p-2 pt-0">
+                <div class="outlet-card p-2">
+                  <input
+                    class="form-control"
+                    type="search"
+                    placeholder="Search Dish"
+                    aria-label="Search"
+                    v-model="searchQuery"
+                    @keyup.enter="performSearch"
+                  />
                 </div>
-            </div> -->
+              </div>
+              <!-- Category Dropdown -->
+                <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-2 pt-0">
+                    <div class="search-filter h-100 p-2">
+                        <div class="">
+                            <div class="col-12">
+                                <select
+                                    id="inputState"
+                                    class="form-select"
+                                    v-model="selectedCategory"
+                                    @change="handleCategoryChange(selectedCategory)"
+                                    >
+                                    <option value="">All CHDS Food</option>
+                                    
+                                    <option v-if="categoriesLoading" disabled>Loading categories...</option>
+                                    <option v-else-if="categoriesError" disabled>Error loading categories</option>
+                                    
+                                    <option
+                                        v-for="category in categories"
+                                        :key="category.id"
+                                        :value="category.id"
+                                    >
+                                        {{ category.name }}
+                                    </option>
+                                </select>
 
-        <!-- menu items -->
-        <div class="col-xxl-10 col-xl-9 col-lg-8 col-md-12 col-sm-12 col-12 p-3">
-            <div class="menu-items">
-                <div class="row ">
-
-                    <div class="col-lg-8 col-md-6 col-sm-12 col-12 p-2 pt-0">
-                        <div class="outlet-card p-2">
-                            <input class="form-control " type="search" placeholder="Search Dish" aria-label="Search">
-
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-2 pt-0">
-                        <div class="search-filter h-100 p-2 ">
-
-                            <div class="">
-                                <div class="col-12">
-                                    <!-- <label for="inputState" class="form-label">Category</label> -->
-                                    <select id="inputState" class="form-select">
-                                        <option selected>Choose Category</option>
-                                        <option>...</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- <div class="divider-heading">
-                        <h3>
-                            Our Menu
-                        </h3>
-                    </div>
-                     -->
-                <div class="row p-0">
-                    <div class="col-xxl-4 col-xl-6 col-md-6 col-sm-12 col-12 p-2">
-                        <div class="card-item " type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            <div class="card-item-food p-3">
-                                <div class="food-item-detail">
-                                    <h5> Wine-Marinated Chicken Hearts </h5>
-                                    <p class="item-price"> $19-$31 </p>
-                                    <p class="item-description">
-                                        Tender chicken hearts marinated in wine sauce, offering a rich and unique flavor, perfect as…
-                                    </p>
-
-                                </div>
-                                <div class="food-image-n-add-item">
-                                    <div class="position-relative">
-                                        <img class="" src="../assets/dish-images/Soy Braised Beef Shank.png">
-                                        <a href="" class="add-item-action">
-                                            Add +
-                                        </a>
-                                        <div class="item-action">
-                                            <a href="" class="subtract">
-                                                <i class="fa-solid fa-minus"></i>
-                                            </a>
-                                            <p>20</p>
-                                            <a href="" class="add">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+  
+            <!-- Items List -->
+            <div class="row p-0">
+              <div
+                class="col-xxl-4 col-xl-6 col-md-6 col-sm-12 col-12 p-2"
+                v-for="item in items"
+                :key="item.id"
+              >
+                <div
+                  class="card-item"
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal"
+                  @click="openItemModal(item)"
+                >
+                  <div class="card-item-food p-3">
+                    <div class="food-item-detail">
+                      <h5>{{ item.name }}</h5>
+                      <p class="item-price">{{ item.price }}</p>
+                      <p class="item-description">{{ truncateDescription(item.description) }}</p>
+                    </div>
+                    <div class="food-image-n-add-item">
+                      <div class="position-relative">
+                        <img class="" :src="getItemImage(item)" />
+                        <a href="" class="add-item-action" data-bs-toggle="modal" data-bs-target="#exampleModal" @click="openItemModal(item)">Add +</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+  
+              <!-- Loading Indicator -->
+              <div v-if="loading" class="loading-indicator">
+                Loading more items...
+              </div>
+              <div v-if="isAllItemsLoaded" class="end-of-items">
+                All items loaded.
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- cart  -->
-        <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12 p-2 cart-desktop">
-            
-            <CartData />
+  
+        <!-- Cart -->
+        <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12 p-2 cart-desktop"        >
+          <CartData />
         </div>
+      </div>
     </div>
-</div>
 
-
-
- <!-- cart-button-mobile -->
- <div class="mobile-cart">
+<!-- cart-button-mobile -->
+<div class="mobile-cart">
     <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
         <div class="view-cart-mobile">
             <p class="mb-0"> 80 Items</p>
@@ -241,9 +248,6 @@ export default {
         </div>
     </button>
 </div>
-
-
-
 
 <!-- item search popup -->
 <div class="modal modal-search-dish fade" id="searchdishModal" tabindex="-1" aria-labelledby="searchdishModalLabel" aria-hidden="true">
@@ -258,13 +262,20 @@ export default {
             <div class="modal-body bg-modal-body-color ">
 
                 <div class=" mb-3">
-                    <input class="form-control me-2" type="search" placeholder="Search Dish" aria-label="Search">
+                    <input
+                        class="form-control"
+                        type="search"
+                        placeholder="Search Dish"
+                        aria-label="Search"
+                        v-model="searchQuery"
+                        @keyup.enter="performSearch"
+                    />
                 </div>
 
                 <div class="">
                     <div class="divider-heading">
                         <h3>
-                            Serach Results
+                            Search Results
                         </h3>
                     </div>
                     <div class="meal-category rounded ">
@@ -306,16 +317,6 @@ export default {
     </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
 <!-- item cart mobile popup -->
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
@@ -324,14 +325,9 @@ export default {
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-       <CartData />
+        <CartData />
     </div>
 </div>
-
-
-
-
-
 </template>
 
 <style>
