@@ -4,7 +4,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import authenticate
-from apps.users.models import EmailToken , User,UserAddress,UserProfile,UserCardDetails,Wallet
+from apps.users.models import EmailToken , User,UserAddress,UserProfile,UserCardDetails,Wallet,ContactUs
 from django.shortcuts import get_object_or_404
 
 class RegisterApiSerializer(serializers.ModelSerializer):
@@ -197,3 +197,18 @@ class WalletSerializer(serializers.ModelSerializer):
         model = Wallet
         fields = ['id', 'user', 'balance', 'expiry', 'unique_id']
         read_only_fields = ['unique_id']
+        
+        
+class ContactusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContactUs
+        fields = "__all__"
+        
+        
+class UpdateUserinfoSerializer(serializers.Serializer):
+    full_name = serializers.CharField(required=False, allow_blank=True)
+    email = serializers.EmailField(required=False, allow_blank=True)
+    mobile_number = serializers.CharField(required=False, allow_blank=True)
+    user_image = serializers.ImageField(required=False, allow_null=True)
+    date_of_birth = serializers.DateField(required=False, allow_null=True)
+

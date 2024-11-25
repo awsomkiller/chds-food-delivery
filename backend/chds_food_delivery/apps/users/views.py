@@ -13,13 +13,15 @@ from apps.users.serializers import (
     UserProfileSerializer,
     UserCardDetailsSerializer,
     WalletSerializer,
-    ListWalletSerializer
+    ListWalletSerializer,
+    ContactusSerializer,
+    UpdateUserinfoSerializer
 )
 from django.shortcuts import get_object_or_404
 import uuid
 from rest_framework import generics
-from rest_framework.viewsets import ModelViewSet
-from apps.users.models import User , EmailToken ,UserAddress,UserCardDetails,UserProfile,Wallet
+from rest_framework.viewsets import ModelViewSet, ViewSet
+from apps.users.models import User , EmailToken ,UserAddress,UserCardDetails,UserProfile,Wallet,ContactUs
 from django.utils.crypto import get_random_string
 from apps.users.email import Sendresetpasswordlinkapi
 
@@ -149,3 +151,75 @@ class WalletViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user) 
+        
+
+class ContactusApi(generics.CreateAPIView):
+    serializer_class = ContactusSerializer
+    queryset = ContactUs.objects.all()
+    permission_classes = (AllowAny,)
+    
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer,request)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    
+    def perform_create(self,serializer ,request):
+        if request.user.is_authenticated:
+            serializer.save(user =self.request.user)
+        else:
+            serializer.save()
+    
+class UpdateUserinfoApi(APIView):
+    serializer_class = UpdateUserinfoSerializer
+    
+    def update_user_profile(self,user_image,date_of_birth):
+        user_profile,_ = UserProfile.objects.get_or_create(user=self.request.user)
+        update_fields = {}
+        if date_of_birth:
+            update_fields["date_of_birth"] = date_of_birth
+        if user_image:
+            update_fields["user_image"] = user_image
+
+        if update_fields:
+            for field, value in update_fields.items():
+                setattr(user_profile, field, value)
+            user_profile.save(update_fields=update_fields.keys())
+            
+            
+    def update_user_info(self,full_name,email,mobile_number):
+        user = self.request.user
+        update_fields = {}
+        if full_name:
+            update_fields["full_name"] = full_name
+        if email:
+            update_fields["email"] = email
+        if mobile_number:
+            update_fields["mobile_number"] = mobile_number
+
+        if update_fields:
+            for field, value in update_fields.items():
+                setattr(user, field, value)
+            user.save(update_fields=update_fields.keys())
+    
+    def post(self,request,*args,**kwargs):
+        try:
+            serializer = self.serializer_class(data= request.data)
+            serializer.is_valid(raise_exception=True)
+            full_name = serializer.validated_data.get('full_name')
+            email = serializer.validated_data.get("email")
+            mobile_number = serializer.validated_data.get("mobile_number")
+            user_image =  serializer.validated_data.get("user_image")
+            date_of_birth = serializer.validated_data.get("date_of_birth")
+            self.update_user_profile(user_image,date_of_birth)
+            self.update_user_info(full_name,email,mobile_number)
+            return Response({"message":"Updated Successfully"},status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error":str(e)},status=status.HTTP_400_BAD_REQUEST)
+            
+        
+        
+        
+        
+    

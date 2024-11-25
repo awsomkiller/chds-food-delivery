@@ -1,5 +1,5 @@
 from django.contrib import admin
-from apps.users.models import User,UserAddress,UserProfile,UserCardDetails,Wallet
+from apps.users.models import User,UserAddress,UserProfile,UserCardDetails,Wallet,ContactUs
 from django.contrib.auth.admin import UserAdmin
 
 
@@ -44,5 +44,13 @@ class UserAdmin(admin.ModelAdmin):
 class UserAdmin(admin.ModelAdmin):
     fields=["user","balance","expiry"] 
     list_display =["id","user","expiry"]
+   
+    
+    
+@admin.register(ContactUs)
+class UserAdmin(admin.ModelAdmin):
+    list_display =["first_name","last_name","user",'email',"message","created_at"]
+ 
+
    
     
