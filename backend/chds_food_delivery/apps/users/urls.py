@@ -9,7 +9,9 @@ from apps.users.views import (
     UserProfileApi,
     UserCardDetailsViewSet,
     WalletViewSet,
-    ResetPasswordAPI
+    ResetPasswordAPI,
+    ContactusApi,
+    UpdateUserinfoApi
 )
 
 
@@ -25,6 +27,8 @@ urlpatterns = [
     path("forget-password/",ForgetApiView.as_view(), name="forget_password"),
     path("reset-password/",ResetPasswordAPI.as_view(), name="forget_password"),
     path("change-password/",ChangePasswordAPI.as_view() , name ="change_password"),
+    path("contactus/",ContactusApi.as_view(), name="contactus"),
+    path("update-user-info/",UpdateUserinfoApi.as_view(),name="update_user_info")
     # path("user-wallet/",UserWalletApi.as_view(),name="user_wallet")
 
 ]+router.urls

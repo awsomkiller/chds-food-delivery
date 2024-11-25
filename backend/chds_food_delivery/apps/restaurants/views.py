@@ -45,6 +45,7 @@ class MenuCategoryApi(ListAPIView):
     """     
         API for listing categories
     """
+    permission_classes = [AllowAny]
     serializer_class = MenuCategorySerializer
     queryset = MenuCategory.objects.all()
 
@@ -65,11 +66,8 @@ class MenuImagesApi(ListCreateAPIView):
         if menu_name:
             return queryset.filter(menu_item__name__icontains=menu_name)
         return queryset
-    
-    
-
-        
-class MenuCategoryApi(ListAPIView):
+      
+class MenuAddonApi(ListAPIView):
     """     
         API for listing categories
     """

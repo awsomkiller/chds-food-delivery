@@ -17,7 +17,7 @@ app.conf.broker_connection_retry_on_startup=True
 app.conf.beat_schedule = {
     'every_day_8_pm' :{
         'task':'apps.restaurants.tasks.Update_ordering_status',
-        # 'schedule':crontab(hour=20, minute=0)
-        "schedule":crontab(minute='*/1')
+        'schedule':crontab(hour=20, minute=0)
+        # "schedule":crontab(minute='*/1')
     }
 }

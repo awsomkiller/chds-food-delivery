@@ -152,7 +152,7 @@ class Wallet(models.Model):
     
     def save(self, *args, **kwargs):
         if not self.unique_id:
-            self.unique_id = uuid.uuid4()  # Generate unique ID if not set
+            self.unique_id = uuid.uuid4()
         super().save(*args, **kwargs)
             
     class Meta:
@@ -169,3 +169,16 @@ class EmailToken(models.Model):
         null=True,
     )
     email_token = models.CharField(max_length=50)
+
+
+class ContactUs(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    email = models.EmailField(_("Email"))
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)  
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} - {self.email}"
+    

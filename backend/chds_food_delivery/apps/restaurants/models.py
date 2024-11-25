@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 import uuid
-import time
 
 
 class PickupLocation(models.Model):
@@ -13,7 +12,6 @@ class PickupLocation(models.Model):
     state = models.CharField(_("State"),max_length=100)
     postal_code = models.CharField(_("Postal Code"),max_length=20,null=True,blank=True)
    
-
     def __str__(self):
         return f"{self.name} ({self.code}) "
     
@@ -26,6 +24,16 @@ class PickupLocation(models.Model):
         verbose_name ="PickupLocation"
         verbose_name_plural ="PickupLocations"
 
+
+class MenuItemTags(models.Model):
+    name = models.CharField(_("Name"), max_length=50)
+
+    class Meta:
+        verbose_name = "Item Tag"
+        verbose_name_plural = "Item Tags"
+    def __str__(self):
+        return self.name
+    
 
 class MenuCategory(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -47,8 +55,8 @@ class MenuItem(models.Model):
     protein = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     fats = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     carbs = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
-    category = models.ForeignKey(MenuCategory, on_delete=models.CASCADE, related_name='menu_items')
-    portion_sizes= models.ManyToManyField("restaurants.PortionSize", verbose_name=_("Menu Items Sizes"),help_text="Select Portion")
+    category = models.ManyToManyField(MenuCategory, verbose_name=_("Categories"))
+    tags = models.ManyToManyField(MenuItemTags, verbose_name=_("Tags"))
 
     class Meta:
         verbose_name = "Menu Dish"
@@ -56,7 +64,7 @@ class MenuItem(models.Model):
         ordering = ['name']
 
     def __str__(self):
-        return f"{self.name} - {self.category.name}"
+        return f"{self.name}"
 
     def get_caloric_breakdown(self):
         """Returns the caloric breakdown as a percentage of total calories."""
@@ -106,7 +114,9 @@ class TimeSlots(models.Model):
         
 class PortionSize(models.Model):
     name = models.CharField(_("Portion Size"),max_length=50)
+    code = models.CharField(_("Portion Code"), max_length=50, blank=True, null=True)
     weight = models.CharField(_("Portion Weight"),max_length=50, help_text="Weight in grams")
+    addons = models.ManyToManyField("restaurants.Addons", verbose_name=_("Any Addons"), blank=True)
     
     class Meta:
         verbose_name = "Portion Size"
@@ -116,11 +126,11 @@ class PortionSize(models.Model):
     def __str__(self):
         return f"{self.name} - {self.weight}"
     
+
 class MenuPortionPriceList(models.Model):
     menu_item = models.ForeignKey(MenuItem, verbose_name=_("Menu Item"), on_delete=models.CASCADE,related_name="menu_items_prices")
     portion_item = models.ForeignKey(PortionSize, verbose_name=_("Portion Item"), on_delete=models.CASCADE,related_name="portion_size_prices")
     price = models.CharField(_("Portion Price"),max_length=50, help_text="Price in  Australian dollars")
-    
     
     class Meta:
         verbose_name = "Price List"
@@ -143,7 +153,6 @@ class Addons(models.Model):
     def __str__(self):
         return f"{self.name} - {self.price}"
     
-
 
 class WorkingDays(models.Model):
     date = models.DateField(_("Date"),null=True)

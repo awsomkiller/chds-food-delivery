@@ -14,10 +14,10 @@ from django.conf.urls.static import static
 
 router = routers.DefaultRouter()
 router.register('pickup-location', RestaurantApi, basename="pickup_location")
-router.register("menu-items", MenuItemApi , basename="menu_items")
+router.register("items", MenuItemApi , basename="menu_items")
 
 urlpatterns = [
-    path("create-menu-images/",MenuImagesApi.as_view(),name="create-menu_images"),
-    path("menu-category/",MenuCategoryApi.as_view(),name="menu_category"),
+    path("images/",MenuImagesApi.as_view(),name="create-menu_images"),
+    path("category/",MenuCategoryApi.as_view(),name="menu_category"),
  
 ]+router.urls+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
