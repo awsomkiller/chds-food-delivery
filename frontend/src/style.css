@@ -491,7 +491,7 @@ max-width: 2500px;
 /* --------------------------------------------------------- */
 
 .navbar-brand img {
-  width: 100px;
+  width: 102px;
 }
 
 .navbar {
@@ -516,10 +516,11 @@ max-width: 2500px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 50px;
+  padding: 5px 50px;
   color: #fff;
   font-size: 12px;
   letter-spacing: 0.3px;
+  height: 52px;
 }
 
 .follow-us i {
@@ -531,7 +532,7 @@ a.nav-link {
 }
 
 .navbar-collapse {
-  padding: 14px 50px;
+  padding: 8px 50px;
 }
 
 ul.navbar-nav.me-auto.mb-2.mb-lg-0 {

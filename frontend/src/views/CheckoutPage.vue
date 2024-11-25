@@ -148,7 +148,7 @@
                       
                     </div>
 
-                    <div class="coupon-code-apply">
+                    <div class="coupon-code-apply p-2">
                         <label for="inputZip" class="form-label">Coupon Code (Optional)</label>
                         <input type="text" class="form-control" placeholder="Enter Coupon Code" id="inputZip">
                     </div>
@@ -258,22 +258,9 @@
                 </div>
             </div>
             <div class="  col-lg-4 col-md-12 col-sm-12 col-12 p-3">
-                <div class="offer-card-container bg-white mb-3 p-2 rounded">
-                    <div class="coupon-card bg-white rounded p-2 ">
-                        <div class="coupon-icon">
-                            <i class="fa-solid fa-ticket"></i>
-                        </div>
-                        <div class="">
-                            <p class="coupon-content"> LPN200 <span class="coupon-description"> Get Flat Discount of $ 20 on Minimum Billing of $ 999. </span> </p>
+               
 
-                        </div>
-
-                        <a class="apply-coupon"> Apply</a>
-
-                    </div>
-                </div>
-
-                <div class="biling-details-container bg-white p-2 rounded">
+                <div class="biling-details-container bg-white p-3 rounded">
                     <div class="billing-detail">
                         <p class=""> Subtotal </p>
 

@@ -1,7 +1,7 @@
 <template>
 
     <!-- Login postal code popup -->
-<div class="modal modal-search-dish fade" id="ragisterModal" tabindex="-1" aria-labelledby="ragisterModalLabel" aria-hidden="true">
+<div class="modal modal-search-dish fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
   <div class="modal-dialog  modal-dialog-scrollable modal-dialog-centered">
     <div class="modal-content">
 
