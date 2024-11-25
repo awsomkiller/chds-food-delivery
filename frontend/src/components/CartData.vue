@@ -1,147 +1,87 @@
-<script>
-    export default {
-    name: 'CartData',
-};
+<!-- CartData.vue -->
+<script> 
+    import { storeToRefs } from 'pinia';
+    import { useCartStore } from '@/stores/cart';
     
+    export default {
+        name: 'CartData',
+        setup(){
+            const cartStore = useCartStore();
+            const { cart, totalQty, TotalOrderPrice } = storeToRefs(cartStore);
+
+            const incrementItem = (itemId) => {
+                cartStore.increaseItemQuantity(itemId);
+            };
+
+            const decrementItem = (itemId) => {
+                cartStore.decreaseItemQuantity(itemId);
+            };
+
+            return{
+                cart,
+                totalQty,
+                TotalOrderPrice,
+                incrementItem,
+                decrementItem,
+            };
+        }
+    };
 </script>
 
 <template>
-
-        <div class="bg-white cart-section p-2 rounded ">
-            <div class="pb-3">
-                <div class="outlet-card p-2 mb-4">
-                    <div class="restaurent-img">
-                        <img class="" src="../assets/CHDS logo Blk transparent.png"> 
-                    </div>
-                    <div class="outlet-detail">
-                        <h5> Chi Hun Da Su </h5>
-                        <!-- <p> Location </p> -->
-                    </div>
+    <div class="bg-white cart-section p-2 rounded ">
+        <div class="pb-3">
+            <div class="outlet-card p-2 mb-4">
+                <div class="restaurent-img">
+                    <img class="" src="../assets/CHDS logo Blk transparent.png"> 
                 </div>
-
-                <h4 class="cart-heading mb-0"> Your Cart</h4>
-
-            </div>
-            
-
-
-            <div>
-                <ul class="list-unstyled orderl-list" >
-                    <li class="order-item">
-                        <div class="order-desscription">
-                            <p class="item-small-hd">Wine-Marinated Chicken Hearts</p>
-                            <p class="item-type-hd mb-0">Q: Main Dish (300g)</p>
-                            <p class="item-type-hd mb-0">Extra Protein</p>
-                            <p class="item-type-hd mb-0">Extra Vegetable</p>
-                            <p class="item-type-hd mb-0">Extra Rice</p>
-                            <p class="item-price"><span>4 x $ 189</span> <b style="display: inline-block; font-weight: 500;"> $ 756</b></p>
-                        </div>
-                        <div class="order-count">
-                            <div class="item-action item-action-cart">
-                                <a href="" class="subtract">
-                                    <i class="fa-solid fa-minus"></i>
-                                </a>
-                                <p>20</p>
-                                <a href="" class="add">
-                                    <i class="fa-solid fa-plus"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="order-item">
-                        <div class="order-desscription">
-                            <p class="item-small-hd">Wine-Marinated Chicken Hearts</p>
-                            <p class="item-type-hd mb-0">Q: Main Dish (300g)</p>
-                            <p class="item-type-hd mb-0">Extra Protein</p>
-                            <p class="item-type-hd mb-0">Extra Vegetable</p>
-                            <p class="item-type-hd mb-0">Extra Rice</p>
-                            <p class="item-price"><span>4 x $ 189</span> <b style="display: inline-block; font-weight: 500;"> $ 756</b></p>
-                        </div>
-                        <div class="order-count">
-                            <div class="item-action item-action-cart">
-                                    <a href="" class="subtract">
-                                        <i class="fa-solid fa-minus"></i>
-                                    </a>
-                                    <p>20</p>
-                                    <a href="" class="add">
-                                        <i class="fa-solid fa-plus"></i>
-                                    </a>
-                                </div>
-                        </div>
-                    </li>
-
-                    <li class="order-item">
-                        <div class="order-desscription">
-                            <p class="item-small-hd">Wine-Marinated Chicken Hearts</p>
-                            <p class="item-type-hd mb-0">Q: Main Dish (300g)</p>
-                            <p class="item-type-hd mb-0">Extra Protein</p>
-                            <p class="item-type-hd mb-0">Extra Vegetable</p>
-                            <p class="item-type-hd mb-0">Extra Rice</p>
-                            <p class="item-price"><span>4 x $ 189</span> <b style="display: inline-block; font-weight: 500;"> $ 756</b></p>
-                        </div>
-                        <div class="order-count">
-                            <div class="item-action item-action-cart">
-                                    <a href="" class="subtract">
-                                        <i class="fa-solid fa-minus"></i>
-                                    </a>
-                                    <p>20</p>
-                                    <a href="" class="add">
-                                        <i class="fa-solid fa-plus"></i>
-                                    </a>
-                                </div>
-                        </div>
-                    </li>
-
-                    <li class="order-item">
-                        <div class="order-desscription">
-                            <p class="item-small-hd">Wine-Marinated Chicken Hearts</p>
-                            <p class="item-type-hd mb-0">Q: Main Dish (300g)</p>
-                            <p class="item-type-hd mb-0">Extra Protein</p>
-                            <p class="item-type-hd mb-0">Extra Vegetable</p>
-                            <p class="item-type-hd mb-0">Extra Rice</p>
-                            <p class="item-price"><span>4 x $ 189</span> <b style="display: inline-block; font-weight: 500;"> $ 756</b></p>
-                        </div>
-                        <div class="order-count">
-                            <div class="item-action item-action-cart">
-                                    <a href="" class="subtract">
-                                        <i class="fa-solid fa-minus"></i>
-                                    </a>
-                                    <p>20</p>
-                                    <a href="" class="add">
-                                        <i class="fa-solid fa-plus"></i>
-                                    </a>
-                                </div>
-                        </div>
-                    </li>
-
-
-                </ul> 
-            </div>
-            <div>
-                <!-- <div class="final-subtotal">
-                    <span>Subtotal </span>
-                    <span> $  800.00</span>
-                </div> -->
-                
-                <div class="final-subtotal fw-normal">
-                    <span class=" ">You have total 8 items in your cart </span>
+                <div class="outlet-detail">
+                    <h5> Chi Hun Da Su </h5>
                 </div>
-
-                <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#loginregisterModal"> Proceed to Checkout </button>
             </div>
-            
+            <h4 class="cart-heading mb-0"> Your Cart</h4>
         </div>
-
-
-
-
+        <div>
+            <ul class="list-unstyled orderl-list">
+                <li class="order-item" v-for="item in cart" :key="item.id">
+                    <div class="order-desscription">
+                        <p class="item-small-hd">{{ item.meal_name }}</p>
+                        <p class="item-type-hd mb-0">Size: {{ item.selected_meal_portion_name }} ({{ item.selected_meal_portion_weight }}g)</p>
+                        <p class="item-type-hd mb-0" v-for="addon in item.addons" :key="addon.id">Extra {{ addon.name }}</p>
+                        <p class="item-price">
+                            <span>{{ item.quantity }} x ${{ item.selected_meal_portion_price }}</span>
+                            <b style="display: inline-block; font-weight: 500;"> ${{ item.total_price }}</b>
+                        </p>
+                    </div>
+                    <div class="order-count">
+                        <div class="item-action item-action-cart">
+                            <a href="javascript:void(0)" class="subtract" @click.prevent="decrementItem(item.id)">
+                                <i class="fa-solid fa-minus"></i>
+                            </a>
+                            <p>{{ item.quantity }}</p>
+                            <a href="javascript:void(0)" class="add" @click.prevent="incrementItem(item.id)">
+                                <i class="fa-solid fa-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+            </ul> 
+        </div>
+        <div>
+            <div class="final-subtotal">
+                <span>Subtotal </span>
+                <span> ${{ TotalOrderPrice }}</span>
+            </div>
+            <div class="final-subtotal fw-normal">
+                <span>You have total {{ totalQty }} items in your cart </span>
+            </div>
+            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#loginregisterModal"> Proceed to Checkout </button>
+        </div>         
+    </div>
 </template>
 
 
-
 <style>
-
     :root{
         --body-color: #f1f0f5;
         --divider-color: #e4e4e4;

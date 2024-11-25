@@ -7,11 +7,11 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
 
+
 class ListLanguageFeatureView(ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
     queryset = Module.objects.all()
     serializer_class = ModulesSerializer
-
 
 class TranslationApi(ModelViewSet):
     """

@@ -29,7 +29,7 @@ export default {
             <a class="nav-link" href="/ourstory" >Our Story</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/contactus">Contact Us</a>
+            <a class="nav-link" href="/contact-us">Contact Us</a>
         </li>
 
     

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuImage,PortionSize,MenuPortionPriceList,Addons ,TimeSlots,WorkingDays
+from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuImage,PortionSize,MenuPortionPriceList,Addons ,TimeSlots,WorkingDays, MenuItemTags
 
 
 @admin.register(PickupLocation)
@@ -8,19 +8,22 @@ class PickupLocationAdmin(admin.ModelAdmin):
     fields = ["name","street_address1","street_address2","city","state","postal_code"]
     search_fields = ['city', 'postal_code', 'name']
  
+
 @admin.register(MenuCategory)   
 class MenuCategoryAdmin(admin.ModelAdmin):
     list_display=["id","name"]
     fields=["name"]
     search_fields=['name']
     
+
 @admin.register(MenuItem)
 class MenuItemsAdmin(admin.ModelAdmin):
-    list_display=["id","name","price","category"]
-    fields=["name","price","description","calories","protein","fats","carbs","category","portion_sizes"]
+    list_display=["id","name","price"]
+    fields=["name","price","description","calories","protein","fats","carbs","category", "tags", "portion_sizes"]
     search_fields = ['name','price','category__name']
     list_filter = ['category',]
     
+
 @admin.register(MenuImage)
 class MenuImagesAdmin(admin.ModelAdmin):
     list_display=["id","is_main","menu_item"]
@@ -28,23 +31,28 @@ class MenuImagesAdmin(admin.ModelAdmin):
     search_fields = ['menu_item__name']
     list_filter = ['menu_item']    
   
+
 @admin.register(PortionSize)
 class PortionSizeAdmin(admin.ModelAdmin):
-    list_display=["id","name","weight"]
-    fields=["name","weight"]
-    search_fields = ['name']
+    list_display=["id", "code", "portion_weight", "name"]
+    fields=["name", "weight", "code", "addons"]
+    search_fields = ["name", "code", "addons"]
+
+    def portion_weight(self, obj):
+        return f"{obj.weight} g"
   
+
 @admin.register(MenuPortionPriceList)
 class PortionSizePriceAdmin(admin.ModelAdmin):
-    list_display=["id","menu_item","portion_item","formatted_price"]
+    list_display=["id","menu_item","portion_item","item_price"]
     fields=["menu_item","portion_item","price"]
     search_fields = ['price',"menu_item__name","portion_item__name"]
     list_filter = ["menu_item", "portion_item"]
    
-    def formatted_price(self, obj):
+    def item_price(self, obj):
         return f"{obj.price}$"
-
     
+
 @admin.register(Addons)
 class AddonsAdmin(admin.ModelAdmin):
     list_display=["id","name","price"]
@@ -52,7 +60,6 @@ class AddonsAdmin(admin.ModelAdmin):
     search_fields =['name','price']
     
    
-    
 @admin.register(TimeSlots)
 class TimeSlotAdmin(admin.ModelAdmin):
     list_display=["id","name","type"]
@@ -60,12 +67,16 @@ class TimeSlotAdmin(admin.ModelAdmin):
     search_fields =['name','type']
     
     
-    
 @admin.register(WorkingDays)
 class WorkingDaysAdmin(admin.ModelAdmin):
     list_display=["id","date","is_active"]
     fields=["date","time_slot","is_active"]
     search_fields =['date','is_active']
-    
+
+
+@admin.register(MenuItemTags)
+class TagsAdmin(admin.ModelAdmin):
+    list_display= ["id", "name"]
+    fields = ["name"]
     
 

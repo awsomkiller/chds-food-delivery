@@ -1,5 +1,5 @@
 <script setup>
-import FooterComponent from "./components/FooterComponent.vue";
+// import FooterComponent from "./components/FooterComponent.vue";
 import NavbarComponent from "./components/NavbarComponent.vue";
 import LoginModule from "./components/LoginModule.vue";
 import SignUp from "./components/SignUp.vue";
@@ -13,7 +13,7 @@ import MobileSidebar from "./components/MobileSidebar.vue";
 <template>
   <NavbarComponent />
   <router-view />
-  <FooterComponent />
+  <!-- <FooterComponent /> -->
   <LoginModule />
   <SignUp />
   <AddItem />
