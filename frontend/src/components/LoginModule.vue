@@ -1,30 +1,171 @@
+<script>
+import { ref } from 'vue';
+import { useAuthStore } from '@/stores/auth'; 
+import { useRouter } from 'vue-router';
+import { Modal } from 'bootstrap';
+
+export default {
+  name: 'LoginModule',
+  setup() {
+    const authStore = useAuthStore();
+    const router = useRouter();
+
+    // Form fields
+    const identifier = ref('');
+    const password = ref('');
+
+    // UI State
+    const showPassword = ref(false);
+    const loading = ref(false);
+
+    // Error handling
+    const errors = ref({});
+    const loginError = ref('');
+
+    // Toggle password visibility
+    const togglePasswordVisibility = () => {
+      showPassword.value = !showPassword.value;
+    };
+
+    // Clear specific field error
+    const clearIdentifierError = () => {
+      if (errors.value.identifier) {
+        errors.value.identifier = '';
+      }
+    };
+
+    // Validate form inputs
+    const validate = () => {
+      const tempErrors = {};
+
+      if (!identifier.value.trim()) {
+        tempErrors.identifier = 'Email address or phone number is required.';
+      } else {
+        // Simple regex for email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^\+?\d{10,15}$/;
+
+        if (
+          !emailRegex.test(identifier.value.trim()) &&
+          !phoneRegex.test(identifier.value.trim())
+        ) {
+          tempErrors.identifier = 'Please enter a valid email address or phone number.';
+        }
+      }
+
+      if (!password.value) {
+        tempErrors.password = 'Password is required.';
+      }
+
+      errors.value = tempErrors;
+
+      return Object.keys(tempErrors).length === 0;
+    };
+
+    // Handle form submission
+    const handleLogin = async () => {
+      if (!validate()) {
+        return;
+      }
+
+      loading.value = true;
+      loginError.value = '';
+
+      try {
+        const credentials = {
+          email: identifier.value.trim(),
+          password: password.value,
+        };
+
+        await authStore.login(credentials);
+
+        router.push({ name: 'Ordernow' });
+
+        const modalElement = document.getElementById('loginModal');
+        if (modalElement) {
+            const modalInstance = Modal.getInstance(modalElement);
+            if (modalInstance) {
+                modalInstance.hide();
+            }
+        }
+      } catch (error) {
+        console.log(error)
+        if (error.response && error.response.data && error.response.data.message) {
+          loginError.value = error.response.data.message;
+        } else {
+          loginError.value = 'An unexpected error occurred. Please try again.';
+        }
+      } finally {
+        loading.value = false;
+      }
+    };
+
+    // Placeholder functions for social logins
+    const handleGoogleLogin = () => {
+      // Implement Google OAuth login flow
+      // This typically involves redirecting to Google's OAuth endpoint
+      // or using a library to handle OAuth within your application
+      alert('Google login is not implemented yet.');
+    };
+
+    const handleFacebookLogin = () => {
+      // Implement Facebook OAuth login flow
+      // Similar to Google, you would redirect to Facebook's OAuth or use their SDK
+      alert('Facebook login is not implemented yet.');
+    };
+
+    return {
+      identifier,
+      password,
+      showPassword,
+      togglePasswordVisibility,
+      handleLogin,
+      handleGoogleLogin,
+      handleFacebookLogin,
+      errors,
+      loginError,
+      loading,
+      clearIdentifierError,
+    };
+  },
+};
+</script>
+
+
 <template>
+  <!-- Login Modal -->
+  <div
+    class="modal modal-search-dish fade"
+    id="loginModal"
+    tabindex="-1"
+    aria-labelledby="loginModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+      <div class="modal-content">
 
-    <!-- Login postal code popup -->
-<div class="modal modal-search-dish fade" id="ragisterModal" tabindex="-1" aria-labelledby="ragisterModalLabel" aria-hidden="true">
-  <div class="modal-dialog  modal-dialog-scrollable modal-dialog-centered">
-    <div class="modal-content">
-
-        <!-- <div class="modal-header">
-            <h5 class="modal-title">Register</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div> -->
-
-
-        <div class="modal-body text-center ">
+        <!-- Modal Body -->
+        <div class="modal-body text-center">
           <div class="login-content">
+            <!-- Logo -->
             <div class="logo-wrap">
-              <img src="@/assets/CHDS logo Blk transparent.png" alt="" />
+              <img src="@/assets/CHDS logo Blk transparent.png" alt="CHDS Logo" />
             </div>
+
+            <!-- Login Text -->
             <div class="login-text-wrap">
               <h4>Login</h4>
               <p>Hi 👋 there! Log in and let’s make today’s meals memorable</p>
             </div>
+
+            <!-- Social Login Options -->
             <div class="other-option-login d-flex gap-2 align-items-center">
               <button
                 type="button"
-                class="login-by-google google-btn btn d-flex gap-1 align-items-center"
+                class="login-by-facebook facebook-btn btn d-flex gap-1 align-items-center"
+                @click="handleFacebookLogin"
               >
+                <!-- Facebook SVG Icon -->
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="12"
@@ -37,13 +178,14 @@
                     d="M158.232 219.912v-94.461h31.707l4.747-36.813h-36.454V65.134c0-10.658 2.96-17.922 18.245-17.922l19.494-.009V14.278c-3.373-.447-14.944-1.449-28.406-1.449-28.106 0-47.348 17.155-47.348 48.661v27.149H88.428v36.813h31.788v94.461l38.016-.001z"
                   ></path>
                 </svg>
-
                 <p class="mb-0">Continue with Facebook</p>
               </button>
               <button
                 type="button"
-                class="login-by-facebook google-btn btn d-flex gap-1 align-items-center"
+                class="login-by-google google-btn btn d-flex gap-1 align-items-center"
+                @click="handleGoogleLogin"
               >
+                <!-- Google SVG Icon -->
                 <svg
                   version="1.1"
                   xmlns="http://www.w3.org/2000/svg"
@@ -73,73 +215,126 @@
                 <p class="mb-0">Continue with Google</p>
               </button>
             </div>
+
+            <!-- Divider -->
             <div class="or-div">
               <p>OR</p>
             </div>
-            <form>
+
+            <!-- Login Form -->
+            <form @submit.prevent="handleLogin">
               <div class="form-wrap">
-                <div class="mb-2 form-wrap-content">
-                  <label for="exampleFormControlInput1" class="form-label"
-                    >Email Address</label
-                  >
+                <!-- Email/Phone Input -->
+                <div class="mb-3 form-wrap-content">
+                  <label for="identifier" class="form-label">Email Address or Phone Number</label>
                   <div class="position-relative">
                     <div class="icon-email">
                       <i class="fa-solid fa-envelope"></i>
                     </div>
                     <input
                       type="text"
+                      id="identifier"
+                      v-model="identifier"
                       class="form-control"
                       placeholder="Enter Email Address or Phone Number"
+                      :class="{ 'is-invalid': errors.identifier }"
                     />
-                    <div class="info-icon">
+                    <div class="info-icon" @click="clearIdentifierError" v-if="errors.identifier">
                       <i class="fa-solid fa-circle-exclamation"></i>
                     </div>
                   </div>
-                  <div class="error-wrap d-none">
-                    <p>Please enter a valid email address or phone number</p>
+                  <div class="invalid-feedback" v-if="errors.identifier">
+                    {{ errors.identifier }}
                   </div>
                 </div>
 
-               
-                <div class="mb-2 form-wrap-content">
-                  <label for="exampleFormControlInput1" class="form-label"
-                    >Password</label
-                  >
+                <!-- Password Input -->
+                <div class="mb-3 form-wrap-content">
+                  <label for="password" class="form-label">Password</label>
                   <div class="position-relative">
                     <div class="icon-email">
                       <i class="fa-solid fa-lock"></i>
                     </div>
                     <input
-                      type="Password"
+                      :type="showPassword ? 'text' : 'password'"
+                      id="password"
+                      v-model="password"
                       class="form-control"
                       placeholder="Enter Password"
+                      :class="{ 'is-invalid': errors.password }"
                     />
-                    <div class="info-icon">
-                      <i class="fa-solid fa-eye"></i>
+                    <div class="info-icon" @click="togglePasswordVisibility">
+                      <i :class="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
                     </div>
                   </div>
-                  <div class="error-wrap d-none">
-                    <p>Password is required.</p>
+                  <div class="invalid-feedback" v-if="errors.password">
+                    {{ errors.password }}
                   </div>
                 </div>
-                
+
+                <!-- Login Button -->
                 <div class="button-wrap mb-3">
-                  <button class="btn btn-primary w-100" type="button">Login</button>
+                  <button class="btn btn-primary w-100" type="submit" :disabled="loading">
+                    <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span v-else>Login</span>
+                  </button>
+                </div>
+
+                <!-- Error Message -->
+                <div v-if="loginError" class="alert alert-danger" role="alert">
+                  {{ loginError }}
                 </div>
               </div>
+
+              <!-- Signup Prompt -->
               <div class="bottom-text">
-                <p>Already have an account? <span>SignUp Now !</span></p>
+                <p>
+                  Don't have an account?
+                  <router-link to="/signup">
+                    <span>Sign Up Now!</span>
+                  </router-link>
+                </p>
               </div>
             </form>
           </div>
-            
         </div>
 
-      <!-- <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Register</button>
-      </div> -->
+      </div>
     </div>
   </div>
-</div>
-
 </template>
+
+
+<style scoped>
+/* Add any component-specific styles here */
+
+.invalid-feedback {
+  display: block;
+}
+
+.info-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #dc3545; /* Bootstrap's danger color */
+}
+
+.form-control.is-invalid {
+  border-color: #dc3545;
+}
+
+.bottom-text p {
+  margin-top: 1rem;
+}
+
+.bottom-text a {
+  color: #0d6efd; /* Bootstrap's primary color */
+  text-decoration: none;
+}
+
+.bottom-text a:hover {
+  text-decoration: underline;
+}
+</style>

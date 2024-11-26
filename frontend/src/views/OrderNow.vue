@@ -10,6 +10,7 @@ export default {
   },
   setup() {
     const menuStore = useMenuStore();
+    
     const {
       items,
       cart,
@@ -22,6 +23,7 @@ export default {
       categoriesLoading,
       categoriesError,
     } = storeToRefs(menuStore);
+
     const searchQuery = ref("");
     const quantity = ref(1);
 

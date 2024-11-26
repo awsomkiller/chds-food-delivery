@@ -2,12 +2,16 @@
 <script> 
     import { storeToRefs } from 'pinia';
     import { useCartStore } from '@/stores/cart';
+    import { useAuthStore } from '@/stores/auth'; 
     
     export default {
         name: 'CartData',
         setup(){
             const cartStore = useCartStore();
+            const authStore = useAuthStore();
+
             const { cart, totalQty, TotalOrderPrice } = storeToRefs(cartStore);
+            const { user } = storeToRefs(authStore);
 
             const incrementItem = (itemId) => {
                 cartStore.increaseItemQuantity(itemId);
@@ -19,6 +23,7 @@
 
             return{
                 cart,
+                user,
                 totalQty,
                 TotalOrderPrice,
                 incrementItem,
@@ -49,7 +54,7 @@
                         <p class="item-type-hd mb-0">Size: {{ item.selected_meal_portion_name }} ({{ item.selected_meal_portion_weight }}g)</p>
                         <p class="item-type-hd mb-0" v-for="addon in item.addons" :key="addon.id">Extra {{ addon.name }}</p>
                         <p class="item-price">
-                            <span>{{ item.quantity }} x ${{ item.selected_meal_portion_price }}</span>
+                            <span>{{ item.quantity }} x ${{ (item.selected_meal_portion_price + item.selected_meal_addon_price) }}</span>
                             <b style="display: inline-block; font-weight: 500;"> ${{ item.total_price }}</b>
                         </p>
                     </div>
@@ -75,7 +80,10 @@
             <div class="final-subtotal fw-normal">
                 <span>You have total {{ totalQty }} items in your cart </span>
             </div>
-            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#loginregisterModal"> Proceed to Checkout </button>
+            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#loginModal" v-if="!user"> Login to continue </button>
+            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#addressModal" v-else-if="user && !user.primary_address"> Add your address </button>
+            <a href="/checkout" class="btn btn-primary w-100" v-else-if="user"> Proceed to Checkout </a>
+            
         </div>         
     </div>
 </template>

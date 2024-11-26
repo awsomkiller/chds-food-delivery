@@ -31,7 +31,7 @@ export default {
                         <div class="icon-location">
                             <i class="fa-solid fa-user"></i>
                         </div> 
-                        <a class="mb-0" data-bs-toggle="modal" data-bs-target="#ragisterModal"> Login 
+                        <a class="mb-0" data-bs-toggle="modal" data-bs-target="#loginModal"> Login 
                         </a>
                     </div>
                     <div class="follow-us d-flex align-items-center gap-3">

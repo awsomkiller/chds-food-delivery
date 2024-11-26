@@ -1,5 +1,23 @@
+<script>
+    import { storeToRefs } from 'pinia';
+    import { useCartStore } from '@/stores/cart';
+
+    export default {
+        name: 'CheckoutPage',
+        setup(){
+            const cartStore = useCartStore();
+            const { cart, totalQty, TotalOrderPrice } = storeToRefs(cartStore);
 
 
+            return{
+                cart,
+                totalQty,
+                TotalOrderPrice,
+            };
+        },
+            
+    }
+</script>
 
 <template>
     <div class="container">
@@ -16,17 +34,11 @@
                                 <p> Location </p>
                             </div>
                         </div>
-
                     </div>
-
-                    
-                    
-                    <div class="order-type-container">
-                 
+                    <div class="order-type-container">           
                         <div class="delivery-option rounded w-100">
                             <input type="radio" class="btn-check" name="optionsdelivery" id="deliverychosen" autocomplete="off" checked>
                             <label class="btn btn-primary" for="deliverychosen"><span> Delivery </span>  <span class="delhivery-time">(20 Minutes)</span> </label>
-
                             <input type="radio" class="btn-check" name="optionsdelivery" id="pickupchosen" autocomplete="off">
                             <label class="btn btn-outline-primary" for="pickupchosen"> Pick Up</label>
                         </div>

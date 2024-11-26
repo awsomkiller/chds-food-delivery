@@ -1,5 +1,3 @@
-// cart.js
-
 import { defineStore } from 'pinia';
 
 export const useCartStore = defineStore('cart', {
@@ -14,6 +12,7 @@ export const useCartStore = defineStore('cart', {
       selected_meal_portion_name: '',
       selected_meal_portion_weight: 0,
       selected_meal_portion_price: 0,
+      selected_meal_addon_price: 0,
       addons: [],
       quantity: 1,
       total_price: 0,
@@ -35,6 +34,7 @@ export const useCartStore = defineStore('cart', {
         selected_meal_portion_name: '',
         selected_meal_portion_weight: 0,
         selected_meal_portion_price: 0,
+        selected_meal_addon_price: 0,
         addons: [],
         quantity: 1,
         total_price: 0,
@@ -55,16 +55,16 @@ export const useCartStore = defineStore('cart', {
       this.updateTotal();
     },
     updateActivePortion(portion) {
-      const addonTotal = this.active.addons.reduce((sum, addon) => sum + parseFloat(addon.price), 0);
       this.active.selected_meal_portion_id = portion.id;
       this.active.selected_meal_portion_name = portion.portion_name;
       this.active.selected_meal_portion_weight = portion.portion_weight;
-      this.active.selected_meal_portion_price = parseFloat(portion.price) + addonTotal;
+      this.active.selected_meal_portion_price = parseFloat(portion.price);
       this.active.addons = [];
       this.updateActiveTotalPrice();
     },
-    updateActiveAddons(addonList) {
-      this.active.addons = addonList;
+    updateActiveAddons() {
+      const addonTotal = this.active.addons.reduce((sum, addon) => sum + parseFloat(addon.price), 0);
+      this.active.selected_meal_addon_price = addonTotal;
       this.updateActiveTotalPrice();
     },
     updateActiveQuantity(quantity) {
@@ -76,7 +76,8 @@ export const useCartStore = defineStore('cart', {
     },
     updateActiveTotalPrice() {
       const itemPrice = parseFloat(this.active.selected_meal_portion_price);
-      const totalPrice = itemPrice * this.active.quantity;
+      const addonPrice = parseFloat(this.active.selected_meal_addon_price)
+      const totalPrice = (itemPrice + addonPrice) * this.active.quantity;
       this.active.total_price = totalPrice;
     },
     increaseItemQuantity(itemId) {
