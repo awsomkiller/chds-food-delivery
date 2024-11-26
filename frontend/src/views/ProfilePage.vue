@@ -18,16 +18,17 @@
                             <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Personal Detail</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#ewallet-tab-pane" type="button" role="tab" aria-controls="ewallet-tab-pane" aria-selected="false">Wallet</button>
+                            <button class="nav-link" id="ewallet-tab" data-bs-toggle="tab" data-bs-target="#ewallet-tab-pane" type="button" role="tab" aria-controls="ewallet-tab-pane" aria-selected="false">Wallet</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Order History</button>
+                            <button class="nav-link" id="ewallethistory-tab" data-bs-toggle="tab" data-bs-target="#ewallethistory-tab-pane" type="button" role="tab" aria-controls="ewallethistory-tab-pane" aria-selected="false">Wallet History</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Change Password</button>
+                            <button class="nav-link" id="orderhistory-tab" data-bs-toggle="tab" data-bs-target="#orderhistory-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Order History</button>
                         </li>
-
-                       
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="changepassword-tab" data-bs-toggle="tab" data-bs-target="#changepassword-tab-pane" type="button" role="tab" aria-controls="changepassword-tab-pane" aria-selected="false">Change Password</button>
+                        </li>
                     </ul>
                     
               </div>
@@ -39,162 +40,205 @@
                     <div class="tab-pane profile-settings fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0"> <div class="input-wrap">
                         <div class="row m-0">
                             <div class="col-md-12">
-                            <div class="profile-img-container">
-                                <div class="profile-img">
-                                <!-- Dummy image shown initially -->
-                                <img id="profileImg" src="https://images.news18.com/ibnlive/uploads/2017/05/pankhuri-gidwani.jpg" alt="Profile Picture">
+                                <div class="profile-img-container">
+                                    <div class="profile-img">
+                                    <!-- Dummy image shown initially -->
+                                    <img id="profileImg" src="https://images.news18.com/ibnlive/uploads/2017/05/pankhuri-gidwani.jpg" alt="Profile Picture">
+                                    </div>
+                                    <label for="fileInput" class="edit-icon">
+                                    <i class="fa fa-pencil-alt"></i> <!-- Pencil icon for editing -->
+                                    </label>
+                                    <input type="file" id="fileInput" class="file-input" accept="image/*">
                                 </div>
-                                <label for="fileInput" class="edit-icon">
-                                <i class="fa fa-pencil-alt"></i> <!-- Pencil icon for editing -->
-                                </label>
-                                <input type="file" id="fileInput" class="file-input" accept="image/*">
-                            </div>
-                            </div>
-                            <div class="col-md-6 p-2">
-                            <div class="input-wrap-withouticon password-bottom-space">
-                                <!-- <label>Company Name</label> -->
-                                <label for="exampleFormControlInput1" class="form-label"
-                        >First Name</label>
-                                <input
-                                type="text"
-                                name="username"
-                                class="form-control"
-                                placeholder="Enter First Name"
-                                />
-                            </div>
-                            </div>
-                            <div class="col-md-6 p-2">
-                            <div class="input-wrap-withouticon password-bottom-space">
-                                <!-- <label>Company Name</label> -->
-                                <label for="exampleFormControlInput1" class="form-label"
-                        >Last Name</label>
-                                <input
-                                type="text"
-                                name="username"
-                                class="form-control"
-                                placeholder="Enter Last Name"
-                                />
-                            </div>
-                            </div>
-                            <div class="col-md-6 p-2">
-                            <div class="input-wrap-withouticon password-bottom-space">
-                                <!-- <label>Company Name</label> -->
-                                <label for="exampleFormControlInput1" class="form-label"
-                        >Email Address</label>
-                                <input
-                                type="text"
-                                name="username"
-                                class="form-control"
-                                placeholder="Enter Email Address"
-                                />
-                            </div>
-                            </div>
-                            <div class="col-md-6 p-2">
-                            <div class="input-wrap-withouticon password-bottom-space">
-                                <!-- <label>Company Name</label> -->
-                                <label for="exampleFormControlInput1" class="form-label"
-                        >Phone Number</label>
-                                <input
-                                type="text"
-                                name="username"
-                                class="form-control"
-                                placeholder="Enter Phone Number"
-                                />
-                            </div>
                             </div>
 
                             <div class="col-md-6 p-2">
-                            <div class="input-wrap-withouticon password-bottom-space">
-                                <!-- <label>Company Name</label> -->
-                                <label for="exampleFormControlInput1" class="form-label"
-                        >First Name</label>
-                                <input
-                                type="text"
-                                name="username"
-                                class="form-control"
-                                placeholder="Enter First Name"
-                                />
-                            </div>
-                            </div>
-                            <div class="col-md-6 p-2">
-                            <div class="input-wrap-withouticon password-bottom-space">
-                                <!-- <label>Company Name</label> -->
-                                <label for="exampleFormControlInput1" class="form-label"
-                        >Last Name</label>
-                                <input
-                                type="text"
-                                name="username"
-                                class="form-control"
-                                placeholder="Enter Last Name"
-                                />
-                            </div>
-                            </div>
-                            <div class="col-md-6 p-2">
-                            <div class="input-wrap-withouticon password-bottom-space">
-                                <!-- <label>Company Name</label> -->
-                                <label for="exampleFormControlInput1" class="form-label"
-                        >Email Address</label>
-                                <input
-                                type="text"
-                                name="username"
-                                class="form-control"
-                                placeholder="Enter Email Address"
-                                />
-                            </div>
-                            </div>
-                            <div class="col-md-6 p-2">
-                            <div class="input-wrap-withouticon password-bottom-space">
-                                <!-- <label>Company Name</label> -->
-                                <label for="exampleFormControlInput1" class="form-label"
-                            >Phone Number</label>
+                                <div class="input-wrap-withouticon password-bottom-space">
+                                    <!-- <label>Company Name</label> -->
+                                    <label for="exampleFormControlInput1" class="form-label"
+                            >First Name</label>
                                     <input
                                     type="text"
                                     name="username"
                                     class="form-control"
-                                    placeholder="Enter Phone Number"
+                                    placeholder="Enter First Name"
                                     />
                                 </div>
                             </div>
+                            <div class="col-md-6 p-2">
+                                <div class="input-wrap-withouticon password-bottom-space">
+                                    <!-- <label>Company Name</label> -->
+                                    <label for="exampleFormControlInput1" class="form-label"
+                            >Last Name</label>
+                                    <input
+                                    type="text"
+                                    name="username"
+                                    class="form-control"
+                                    placeholder="Enter Last Name"
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-2">
+                                <div class="input-wrap-withouticon password-bottom-space">
+                                    <!-- <label>Company Name</label> -->
+                                    <label for="exampleFormControlInput1" class="form-label"
+                            >Email Address</label>
+                                    <input
+                                    type="text"
+                                    name="username"
+                                    class="form-control"
+                                    placeholder="Enter Email Address"
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-2">
+                                <div class="input-wrap-withouticon password-bottom-space">
+                                    <!-- <label>Company Name</label> -->
+                                    <label for="exampleFormControlInput1" class="form-label"
+                                >Phone Number</label>
+                                        <input
+                                        type="text"
+                                        name="username"
+                                        class="form-control"
+                                        placeholder="Enter Phone Number"
+                                        />
+                                </div>
+                            </div>
                             
-                            
+                            <div class="col-md-6">
+                                <div class="mb-2">
+                                    <label for="exampleFormControlInput1" class="form-label"
+                                        >Street 1</label
+                                    >
+                                    <div class="position-relative">
+                                        
+                                        <input
+                                        type="Password"
+                                        class="form-control"
+                                        placeholder="Enter Street 1"
+                                        />
+                                        
+                                    </div>
+                                    <!-- <div class="error-wrap d-none">
+                                        <p>Password is required.</p>
+                                    </div> -->
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-2">
+                                    <label for="exampleFormControlInput1" class="form-label"
+                                        >Street 2</label
+                                    >
+                                    <div class="position-relative">
+                                    
+                                        <input
+                                        type="phone number"
+                                        class="form-control"
+                                        placeholder="Enter Street 2"
+                                        />
+                                        
+                                    </div>
+                                    <!-- <div class="error-wrap d-none">
+                                        <p>Please enter a 10-digit phone number.</p>
+                                    </div> -->
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-2">
+                                    <label for="exampleFormControlInput1" class="form-label"
+                                        >Suburb</label
+                                    >
+                                    <div class="position-relative">
+                                    
+                                        <input
+                                        type="phone number"
+                                        class="form-control"
+                                        placeholder="Enter Suburb"
+                                        />
+                                        
+                                    </div>
+                                    <!-- <div class="error-wrap d-none">
+                                        <p>Please enter a 10-digit phone number.</p>
+                                    </div> -->
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-2">
+                                    <label for="exampleFormControlInput1" class="form-label"
+                                        >Pincode</label
+                                    >
+                                    <div class="position-relative">
+                                    
+                                        <input
+                                        type="phone number"
+                                        class="form-control"
+                                        placeholder="Enter Pincode"
+                                        />
+                                        
+                                    </div>
+                                    <!-- <div class="error-wrap d-none">
+                                        <p>Please enter a 10-digit phone number.</p>
+                                    </div> -->
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-2">
+                                    <label for="exampleFormControlInput1" class="form-label"
+                                        >State</label
+                                    >
+                                    <select class="form-select" aria-label="Default select example">
+                                        <option selected>Select State</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                    <!-- <div class="error-wrap d-none">
+                                        <p>Please enter a 10-digit phone number.</p>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="footer-button p-0 pt-3">
+                            <button class=" btn btn-secondary sm">Back</button>
+                            <a href="#" class="btn btn-primary sm">Save</a>
                         </div>
                     </div>
-                    <div class="footer-button p-0 pt-3">
-                        <button class=" btn btn-secondary sm">Back</button>
-                        <a href="#" class="btn btn-primary sm">Save</a>
                     </div>
-                </div>
-                <div class="tab-pane ewallet-tab fade" id="ewallet-tab-pane" role="tabpanel" aria-labelledby="ewallet-tab" tabindex="0">
-                        <div class="e-wallet bg-white rounded mb-3">
-                            <div class="wallet-container text-center">
-                             
-                                <div class="amount-box text-center">
-                                    <img src="https://lh3.googleusercontent.com/ohLHGNvMvQjOcmRpL4rjS3YQlcpO0D_80jJpJ-QA7-fQln9p3n7BAnqu3mxQ6kI4Sw" alt="wallet">
+                    <div class="tab-pane ewallet-tab fade" id="ewallet-tab-pane" role="tabpanel" aria-labelledby="ewallet-tab" tabindex="0">
+                        <div class="e-wallet bg-white rounded row p-3 mb-0">
+                            <div class="col-md-6 border wallet-container text-center p-3 ">
+                                <div class=" amount-box text-center p-3">
+                                    <div class="wallet-icon">
+                                        <i class="fa-solid fa-wallet"></i>
+                                    </div>                                      
                                     <p>Total Balance</p>
                                     <p class="amount">$ 123</p>
                                 </div>
-
-                                <div class="btn-group d-flex gap-3 align-items-center text-center">
-                                    <button type="button" class="btn btn-outline-primary">Add Money</button>
-                                    <!-- <button type="button" class="btn btn-outline-primary">Widthdraw</button> -->
-                                    </div>
-
-                                    <div class="txn-history">
-                                        <p class="" ><b>Paymeny History</b></p>
-                                        <p class="txn-list">Payment to xyz shop<span class="debit-amount">-$100</span></p>
-
-                                        <p class="txn-list">Payment to abc shop<span class="debit-amount">-$150</span></p>
-
-                                        <p class="txn-list">Credit From abc ltd<span class="credit-amount">+$300</span></p>
-
-                                        <p class="txn-list">Transfer From John Doe<span class="credit-amount">+$100</span></p>
-                                    </div>
-
-                                
+                            </div>
+                            <div class="col-md-6 p-3  mb-3">
+                                <label for="formGroupExampleInput" class="form-label">Add Amount In Wallet</label>
+                                <input type="text mb-3" class="form-control" id="formGroupExampleInput" placeholder="Example: $200">
+                                <button type="button" class=" mt-3 btn btn-primary">Add to Wallet</button>
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane profile-settings fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                    <div class="tab-pane ewallethistory-tab fade" id="ewallethistory-tab-pane" role="tabpanel" aria-labelledby="ewallethistory-tab" tabindex="0">
+                        <div class="e-wallet bg-white rounded mb-3">
+                            <div class="wallet-container text-center">
+                                <div class="txn-history">
+                                    <p class="" ><b>Paymeny History</b></p>
+                                    <p class="txn-list">Payment to xyz shop<span class="debit-amount">-$100</span></p>
+
+                                    <p class="txn-list">Payment to abc shop<span class="debit-amount">-$150</span></p>
+
+                                    <p class="txn-list">Credit From abc ltd<span class="credit-amount">+$300</span></p>
+
+                                    <p class="txn-list">Transfer From John Doe<span class="credit-amount">+$100</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane orderhistory-settings fade" id="orderhistory-tab-pane" role="tabpanel" aria-labelledby="orderhistory-tab" tabindex="0">
                         <div class="store-n-diliveri order-history bg-white  rounded mb-3">
                             <ul class="list-unstyled mb-0">
 
@@ -206,9 +250,13 @@
                                         <p class="mb-0">2<span> <i class="fa-solid fa-xmark"></i></span> Wine-Marinated Chicken Hearts 2</p>
                                     </div>
                                     <div class="price-n-item-option">
-                                        
                                         <p class="mb-0 ">2nd june 2024  </p>
-                                        <p class="mb-0 w-100 fw-bold fs-5 ">$ 20  </p>
+                                        <p class="mb-0 w-100 overall-price fw-bold fs-5 ">$ 20  </p>
+                                        <div class="payment-type-history">
+                                            <p class="mb-0">Payment Type  </p>
+                                            <p class="payment-portal mb-0"> Payment Portal Name</p>
+                                        </div>
+                                        
 
                                     </div>
                                 </li>
@@ -217,7 +265,7 @@
 
 
                              <!-- ---- addons ---------------------- -->
-                            <div class=" py-2">
+                            <!-- <div class=" py-2">
                                 <h4 class="extra-status"> Extra Add-ons : <span  class="text-status"> Meal Set </span> </h4>
                                 <div class="meal-addons rounded ">
                                     <input type="checkbox" class="btn-check" name="options" id="addons1">
@@ -251,14 +299,14 @@
                                     </label>
                                 </div>
                                
-                            </div>
+                            </div> -->
         
                         </div>
                     </div>
-                    <div class="tab-pane profile-settings fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+                    <div class="tab-pane changepassword-settings fade" id="changepassword-tab-pane" role="tabpanel" aria-labelledby="changepassword-tab" tabindex="0">
                         <div class="row">
                             
-                            <div class="col-md-6 p-2">
+                            <div class="col-md-12 p-2">
                                 <div class="input-wrap-withouticon password-bottom-space">
                                     <!-- <label>Company Name</label> -->
                                     <label for="exampleFormControlInput1" class="form-label"
@@ -272,7 +320,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6 p-2">
+                            <div class="col-md-12 p-2">
                                 <div class="input-wrap-withouticon password-bottom-space">
                                     <!-- <label>Company Name</label> -->
                                     <label for="exampleFormControlInput1" class="form-label"
@@ -358,7 +406,6 @@
                                 <p class="item-type-hd mb-0">Extra Rice</p>
                             </div>
                             <div class="price-n-item-option">
-                                
                                 <p class="mb-0">2nd june 2024  </p>
                             </div>
                         </li>
@@ -374,8 +421,7 @@
                                 <p class="item-type-hd mb-0">Extra Rice</p>
                             </div>
                             <div class="price-n-item-option">
-                                
-                                <p class="mb-0">2nd june 2024  </p>
+                                <p class="mb-0">2nd june 2024 </p>
                             </div>
                         </li>
 
@@ -515,6 +561,10 @@
     border-bottom: 1px solid #ffe0ce;
 }
 
+.profile-form-wrap-content .form-input-wrap{
+    min-height: 50vh;
+}
+
 .form-input-wrap {
     padding: 16px;
     overflow-y: auto;
@@ -622,6 +672,10 @@
     padding:0;
   }
 
+  .order-history .order-item p{
+    color: var(--card-location-color);
+  }
+
   .order-history .Item-for-checkout .price-n-item-option{
     flex-direction: column;
     justify-content: flex-end;
@@ -645,9 +699,6 @@
     margin-bottom: 1rem;
   }
 
-  .meal-addons .btn-check:checked+.btn p{
-    
-  }
 
   .meal-addons .btn-check+.btn{
     background-color: white;
@@ -661,10 +712,42 @@
     padding: 1rem;
   }
 
+  .price-n-item-option {
+    text-align: left;
+  }
+
+  .price-n-item-option .payment-type-history {
+    padding-top: 0.5rem ;
+    bottom: 1px solid #d2d2d2;
+    width:100%;
+  }
+  .price-n-item-option .payment-type-history p{
+    color: var(--card-location-color);
+    font-size: 12px;
+    text-align: left;
+  }
+
+  .price-n-item-option .payment-type-history .payment-portal{
+    font-size: 12px;
+    color: var(--order-background-color);
+    font-weight: 700;
+    }
+
+    .price-n-item-option .overall-price{
+        color: var(--order-background-color);
+    }
+
 
 
   /* ------------------------- e-wallet -------------------- */
 
+  .e-wallet{
+  }
+
+  .wallet-icon i{
+    font-size: 48px;
+    color: var(--card-location-color);
+  }
 
 .wallet-container {
 	/* background: #f1f5f0; */
@@ -749,7 +832,7 @@
   .wallet-container {
     height: 115%;
     bottom: 20px;
-    margin-top: 100px;
+    /* margin-top: 100px; */
   }
   
 }
@@ -781,6 +864,7 @@
         border-top: 1px dashed var(--card-location-color);
         padding-top: 1rem;
     }
+    
     .order-history .Item-for-checkout .price-n-item-option p{
         width: 100%;
         text-align: start;
