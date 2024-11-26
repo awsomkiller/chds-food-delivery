@@ -2,6 +2,7 @@
 import CartData from "@/components/CartData.vue";
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useMenuStore } from "@/stores/menu";
+import { useCartStore } from "@/stores/cart";
 import { storeToRefs } from "pinia";
 
 export default {
@@ -10,6 +11,8 @@ export default {
   },
   setup() {
     const menuStore = useMenuStore();
+    const cartStore = useCartStore();
+    
     const {
       items,
       cart,
@@ -22,6 +25,10 @@ export default {
       categoriesLoading,
       categoriesError,
     } = storeToRefs(menuStore);
+
+    const {
+        totalQty
+    } = storeToRefs(cartStore)
     const searchQuery = ref("");
     const quantity = ref(1);
 
@@ -112,6 +119,7 @@ export default {
       items,
       selectedItem,
       cart,
+      totalQty,
       searchQuery,
       performSearch,
       getItemImage,
@@ -243,78 +251,10 @@ export default {
 <div class="mobile-cart">
     <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
         <div class="view-cart-mobile">
-            <p class="mb-0"> 80 Items</p>
+            <p class="mb-0"> {{ totalQty }} Items</p>
             <p class="mb-0"> View Cart </p>
         </div>
     </button>
-</div>
-
-<!-- item search popup -->
-<div class="modal modal-search-dish fade" id="searchdishModal" tabindex="-1" aria-labelledby="searchdishModalLabel" aria-hidden="true">
-    <div class="modal-dialog  modal-dialog-scrollable modal-dialog-centered">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <h5 class="modal-title">Search Dish</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body bg-modal-body-color ">
-
-                <div class=" mb-3">
-                    <input
-                        class="form-control"
-                        type="search"
-                        placeholder="Search Dish"
-                        aria-label="Search"
-                        v-model="searchQuery"
-                        @keyup.enter="performSearch"
-                    />
-                </div>
-
-                <div class="">
-                    <div class="divider-heading">
-                        <h3>
-                            Search Results
-                        </h3>
-                    </div>
-                    <div class="meal-category rounded ">
-                        <ul class="list-unstyled search-item-list mb-0">
-                            <li class="d-flex align-items-center p-3">
-                                <img class="searchitem-dish-image" src="../assets/dish-images/Pickled Veg Chicken Stir-fry.png">
-                                <p class="searchitem-dish-name mb-0">Wine-Marinated Chicken Hearts</p>
-                            </li>
-
-                            <li class="d-flex align-items-center p-3">
-                                <img class="searchitem-dish-image" src="../assets/dish-images/Pickled Veg Chicken Stir-fry.png">
-                                <p class="searchitem-dish-name mb-0">Wine-Marinated Chicken Hearts</p>
-                            </li>
-
-                            <li class="d-flex align-items-center p-3">
-                                <img class="searchitem-dish-image" src="../assets/dish-images/Pickled Veg Chicken Stir-fry.png">
-                                <p class="searchitem-dish-name mb-0">Wine-Marinated Chicken Hearts</p>
-                            </li>
-
-                            <li class="d-flex align-items-center p-3">
-                                <img class="searchitem-dish-image" src="../assets/dish-images/Pickled Veg Chicken Stir-fry.png">
-                                <p class="searchitem-dish-name mb-0">Wine-Marinated Chicken Hearts</p>
-                            </li>
-
-                            <li class="d-flex align-items-center p-3">
-                                <img class="searchitem-dish-image" src="../assets/dish-images/Pickled Veg Chicken Stir-fry.png">
-                                <p class="searchitem-dish-name mb-0">Wine-Marinated Chicken Hearts</p>
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-            <!-- <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Add to Cart</button>
-      </div> -->
-        </div>
-    </div>
 </div>
 
 <!-- item cart mobile popup -->

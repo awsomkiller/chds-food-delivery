@@ -32,7 +32,7 @@ export default {
                         <a class="mb-0" type="button" data-bs-toggle="modal" data-bs-target="#loginModal"> Login 
                         </a>
 
-                        <a class="mb-0" type="button" data-bs-toggle="modal" data-bs-target="#ragisterModal"> Register 
+                        <a class="mb-0" type="button" data-bs-toggle="modal" data-bs-target="#loginModal"> Register 
                         </a>
                     </div>
 

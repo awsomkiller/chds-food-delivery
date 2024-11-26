@@ -22,14 +22,14 @@ export default {
             <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/ordernow">Order Now</a>
+            <router-link class="nav-link" to="/ordernow">Order Now</router-link>
         </li>
         
         <li class="nav-item">
-            <a class="nav-link" href="/ourstory" >Our Story</a>
+            <router-link class="nav-link" to="/ourstory" >Our Story</router-link>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/contact-us">Contact Us</a>
+            <router-link class="nav-link" to="/contact-us">Contact Us</router-link>
         </li>
 
     

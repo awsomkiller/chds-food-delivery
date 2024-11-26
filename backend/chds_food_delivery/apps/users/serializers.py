@@ -57,11 +57,12 @@ class LoginSerializer(TokenObtainPairSerializer):
         return token
     
     def _get_user_address(self,user):
-        user_address = UserAddress.objects.filter(user=user,is_primary = True).first()
+        user_address = UserAddress.objects.filter(user=user,is_billing = True).first()
         return {
-            "street_address":user_address.street_address,
-            "state":user_address.state,
-            "country":user_address.country,
+            "street_address1":user_address.street_address1,
+            "street_address2":user_address.street_address2,
+            "suburbs": user_address.suburbs,
+            "name": user_address.name,
             "city":user_address.city,
             "postal_code":user_address.postal_code 
         } if user_address else None
@@ -125,8 +126,6 @@ class ResetPasswordSerializer(serializers.Serializer):
         return data
 
 
-
-
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(
@@ -157,7 +156,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 class UserAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAddress
-        fields = ["street_address","city","state","country","postal_code","is_primary"]
+        fields = ["name", "street_address1", "street_address2", "city", "postal_code", "suburbs"]
         
     def validate(self, attrs):
         if not attrs['postal_code']:

@@ -34,7 +34,7 @@ export default {
             } else {
                 cartStore.active.addons.push(addon);
             }
-            cartStore.updateActiveTotalPrice();
+            cartStore.updateActiveAddons();
         };
 
         const incrementQuantity = () => {

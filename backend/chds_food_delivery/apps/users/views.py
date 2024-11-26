@@ -18,7 +18,7 @@ from apps.users.serializers import (
     UpdateUserinfoSerializer
 )
 from django.shortcuts import get_object_or_404
-import uuid
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
 from rest_framework.viewsets import ModelViewSet, ViewSet
 from apps.users.models import User , EmailToken ,UserAddress,UserCardDetails,UserProfile,Wallet,ContactUs
@@ -106,6 +106,7 @@ class UserAddressesApi(ModelViewSet):
     """
     http_method_names=['get',"post","delete"]
     serializer_class = UserAddressSerializer
+    permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
         return UserAddress.objects.filter(user=self.request.user)
@@ -116,6 +117,7 @@ class UserProfileApi(ModelViewSet):
     """
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user) 
@@ -127,6 +129,7 @@ class UserCardDetailsViewSet(ModelViewSet):
     """
     queryset = UserCardDetails.objects.all()
     serializer_class = UserCardDetailsSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user) 
@@ -139,6 +142,7 @@ class WalletViewSet(ModelViewSet):
     """
     queryset = Wallet.objects.all()
     serializer_class = WalletSerializer
+    permission_classes = [IsAuthenticated]
     
     def get_serializer_class(self):
         if self.action=="list":

@@ -1,4 +1,104 @@
+<script>
+import { storeToRefs } from 'pinia';
+import { useCartStore } from '@/stores/cart';
+import { useWorkingDaysStore } from '@/stores/workingdays';
+import { useAddressStore } from '@/stores/address';
+import { onMounted, ref, watch } from 'vue';
+import { useRouter } from 'vue-router'; // Import useRouter
 
+export default {
+  name: 'CheckoutPage',
+  setup() {
+    const cartStore = useCartStore();
+    const workingDaysStore = useWorkingDaysStore();
+    const addressStore = useAddressStore();
+
+    const { cart, totalQty, TotalOrderPrice } = storeToRefs(cartStore);
+    const { 
+      deliverydays, 
+      pickupdays, 
+      activeDeliveryDay, 
+      activePickUpDay 
+    } = storeToRefs(workingDaysStore);
+    const { eligibleAddress, pickUpAddresses } = storeToRefs(addressStore);
+
+    const selectedDeliveryDayId = ref('');
+    const selectedDeliveryTimeSlotId = ref('');
+    const selectedPickupDayId = ref('');
+    const selectedPickupTimeSlotId = ref('');
+    const selectedOption = ref('delivery');
+
+    const router = useRouter(); // Initialize router
+
+    // Handle delivery day selection change
+    const handleDeliveryDayChange = (event) => {
+      const dayId = event.target.value;
+      workingDaysStore.setActiveDeliveryDay(dayId);
+      selectedDeliveryTimeSlotId.value = workingDaysStore.activeDeliveryTimeSlot?.id || '';
+    };
+
+    // Handle delivery time slot selection change
+    const handleDeliveryTimeSlotChange = (event) => {
+      const timeSlotId = event.target.value;
+      workingDaysStore.setActiveDeliveryTimeSlot(timeSlotId);
+    };
+
+    // Handle pickup day selection change
+    const handlePickupDayChange = (event) => {
+      const dayId = event.target.value;
+      workingDaysStore.setActivePickupDay(dayId);
+      selectedPickupTimeSlotId.value = workingDaysStore.activePickupTimeSlot?.id || '';
+    };
+
+    // Handle pickup time slot selection change
+    const handlePickupTimeSlotChange = (event) => {
+      const timeSlotId = event.target.value;
+      workingDaysStore.setActivePickupTimeSlot(timeSlotId);
+    };
+
+    const handleDelete = (id) => {
+      cartStore.removeFromCart(id);
+    };
+
+    watch(
+      totalQty,
+      (newCount, oldCount) => {
+        console.log(`totalQty changed from ${oldCount} to ${newCount}`);
+        if (newCount <= 0 && newCount !== oldCount) {
+          console.log('Navigating to Ordernow');
+          router.push({ name: 'Ordernow' });
+        }
+      }
+    );
+
+    onMounted(() => {
+      workingDaysStore.fetchWorkingDays();
+    });
+
+    return {
+      cart,
+      totalQty,
+      eligibleAddress,
+      pickUpAddresses,
+      TotalOrderPrice,
+      handleDelete,
+      selectedOption,
+      deliverydays,
+      pickupdays,
+      activeDeliveryDay,
+      activePickUpDay,
+      selectedDeliveryDayId,
+      selectedDeliveryTimeSlotId,
+      selectedPickupDayId,
+      selectedPickupTimeSlotId,
+      handleDeliveryDayChange,
+      handleDeliveryTimeSlotChange,
+      handlePickupDayChange,
+      handlePickupTimeSlotChange
+    };
+  }
+};
+</script>
 
 
 <template>
@@ -16,76 +116,107 @@
                                 <p> Location </p>
                             </div>
                         </div>
+                    </div>
+                    <div class="order-type-container">           
+                    <div class="delivery-option rounded w-100">
+                    <!-- Delivery Option -->
+                    <input
+                        type="radio"
+                        class="btn-check"
+                        name="optionsdelivery"
+                        id="deliverychosen"
+                        autocomplete="off"
+                        value="delivery"
+                        v-model="selectedOption"
+                        checked
+                    >
+                    <label class="btn btn-primary" for="deliverychosen">
+                        <span> Delivery </span>  
+                    </label>
 
+                    <!-- Pickup Option -->
+                    <input
+                        type="radio"
+                        class="btn-check"
+                        name="optionsdelivery"
+                        id="pickupchosen"
+                        autocomplete="off"
+                        value="pickup"
+                        v-model="selectedOption"
+                    >
+                    <label class="btn btn-outline-primary" for="pickupchosen">
+                        Pick Up
+                    </label>
                     </div>
 
-                    
-                    
-                    <div class="order-type-container">
-                 
-                        <div class="delivery-option rounded w-100">
-                            <input type="radio" class="btn-check" name="optionsdelivery" id="deliverychosen" autocomplete="off" checked>
-                            <label class="btn btn-primary" for="deliverychosen"><span> Delivery </span>  <span class="delhivery-time">(20 Minutes)</span> </label>
+                    <!-- Uncomment and customize as needed -->
+                    <!-- <button type="button" class="btn-inactive-order">In Car</button> -->
+                </div>
 
-                            <input type="radio" class="btn-check" name="optionsdelivery" id="pickupchosen" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="pickupchosen"> Pick Up</label>
+                    
+
+                    <div class="selected-address-container mt-3 p-2" v-if="selectedOption == 'delivery'">
+                        <div class="alert alert-danger" role="alert" v-if="!deliverydays.length">
+                            Kitchen is not taking any delivery orders right now, Try Pick Up !
                         </div>
-   
-                        <!-- <button type="button" class="btn-inactive-order">In Car</button> -->
-                    </div>
-
-                    
-
-                    <div class="selected-address-container mt-3 p-2">
-                        <!-- <div class="no-address-container">
-                            <div class="no-address my-3">
-
-                                <i class="fa-solid fa-location-dot"></i>
-                                <p class="mb-0"> No Delivery Address Selected</p>
-
+                        <div class="schedule-order mb-3" v-else>
+                            <h6>Select Delivery Date and Time</h6>
+                            <div class="row">
+                            <!-- Select Delivery Day -->
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2">
+                                <label for="deliveryDay" class="form-label">Select Day</label>
+                                <select 
+                                id="deliveryDay" 
+                                class="form-select" 
+                                v-model="selectedDeliveryDayId" 
+                                @change="handleDeliveryDayChange"
+                                >
+                                <option disabled value="">Select Day</option>
+                                <option 
+                                    v-for="day in deliverydays" 
+                                    :key="day.id" 
+                                    :value="day.id"
+                                >
+                                    {{ day.date }}
+                                </option>
+                                </select>
                             </div>
 
-                            <a class="my-3 " href=""> Select</a>
-
-                        </div> -->
-
-                        <div class="schedule-order mb-3">
-                            <h6> Select Delivery Date and Time</h6>
-                            <div class="row ">
-                                <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2">
-                                    <!-- <label for="inputState" class="form-label">Select Day</label> -->
-                                    <select id="inputState" class="form-select">
-                                    <option selected>Select Day</option>
-                                    <option>Monday</option>
-                                    <option>Wednesday</option>
-                                    <option>Fiday</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2">
-                                    <!-- <label for="inputState" class="form-label">Choose day</label> -->
-                                    <select id="inputState" class="form-select">
-                                    <option selected>Choose Time Slot</option>
-                                    <option>Evening 4 PM-7 PM</option>
-                                    <option>Morning 6 AM-9 AM</option>
-                                    </select>
-                                </div>
+                            <!-- Select Delivery Time Slot -->
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2">
+                                <label for="deliveryTimeSlot" class="form-label">Choose Time Slot</label>
+                                <select 
+                                id="deliveryTimeSlot" 
+                                class="form-select" 
+                                v-model="selectedDeliveryTimeSlotId" 
+                                :disabled="!activeDeliveryDay"
+                                @change="handleDeliveryTimeSlotChange"
+                                >
+                                <option disabled value="">
+                                    {{ activeDeliveryDay && activeDeliveryDay.time_slot && activeDeliveryDay.time_slot.length ? 'Choose Time Slot' : 'No Time Slots Available' }}
+                                </option>
+                                <option 
+                                    v-for="slot in activeDeliveryDay.time_slot" 
+                                    :key="slot.id" 
+                                    :value="slot.id"
+                                >
+                                    {{ slot.name }}
+                                </option>
+                                </select>
                             </div>
-                            
+                            </div>
                         </div>
-
+                        <div class="alert alert-danger" role="alert" v-if="!eligibleAddress.length">
+                            You don't have any address eligible for delivery, Please choose pickup option.
+                        </div>
                         <div  class="address-radio">
-                            <input type="radio" class="btn-check " name="options" id="option1" autocomplete="off" checked>
-                            <label class="btn btn-primary" for="option1">
-                                <p class="address-name mb-0">Address 1 </p>
-                                <p class="address-description mb-0"> 2076, Sector 79, Mohali </p>
-                            </label>
-
-                            <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="option2"> 
-                                <p class="address-name mb-0">Address 2 </p>
-                                <p class="address-description mb-0"> 2076, Sector 79, Mohali </p>
-                            </label>
+                            <div v-for="address in eligibleAddress" :key="address.id">
+                                <input type="radio" class="btn-check " name="options" id="option1" autocomplete="off" checked>
+                                <label class="btn btn-primary" for="option1">
+                                    <p class="address-name mb-0">{{ address.name }} </p>
+                                    <p class="address-description mb-0"> {{ address.street_address1 }}, {{ address.street_address2 }}, {{ address.suburbs }}, {{ address.postal_code }} </p>
+                                </label>
+                            </div>
 
                             <a href="" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#addressModal" >
                                 <div class="add-addrss-button">
@@ -95,65 +226,81 @@
                                     <p class="mb-0"> Add New Address </p>
                                 </div>
                             </a>
-                            
                         </div>
-
                     </div>
-
-                    <div class="pickup-details-container mt-3 p-2">
-                        <div class="schedule-order mb-3">
-                            <h6> Select Delivery Date and Time</h6>
-                            <div class="row ">
+                    
+                    <div class="pickup-details-container mt-3 p-2" v-else>
+                        <div class="alert alert-danger" role="alert" v-if="!pickupdays.length">
+                            Kitchen is closed for new orders.
+                        </div>
+                        <div class="schedule-order mb-3" v-else>
+                            <h6>Select Pickup Date and Time</h6>
+                            <div class="row">
+                                <!-- Select Pickup Day -->
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2">
-                                    <!-- <label for="inputState" class="form-label">Select Day</label> -->
-                                    <select id="inputState" class="form-select">
-                                    <option selected>Select Day</option>
-                                    <option>Monday</option>
-                                    <option>Wednesday</option>
-                                    <option>Fiday</option>
+                                    <label for="pickupDay" class="form-label">Select Day</label>
+                                    <select 
+                                        id="pickupDay" 
+                                        class="form-select" 
+                                        v-model="selectedPickupDayId" 
+                                        @change="handlePickupDayChange"
+                                    >
+                                        <option disabled value="">Select Day</option>
+                                        <option 
+                                            v-for="day in pickupdays" 
+                                            :key="day.id" 
+                                            :value="day.id"
+                                        >
+                                            {{ day.date }}
+                                        </option>
                                     </select>
                                 </div>
 
+                                <!-- Select Pickup Time Slot -->
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2">
-                                    <!-- <label for="inputState" class="form-label">Choose day</label> -->
-                                    <select id="inputState" class="form-select">
-                                    <option selected>Choose Time Slot</option>
-                                    <option>Evening 4 PM-7 PM</option>
-                                    <option>Morning 6 AM-9 AM</option>
+                                    <label for="pickupTimeSlot" class="form-label">Choose Time Slot</label>
+                                    <select 
+                                        id="pickupTimeSlot" 
+                                        class="form-select" 
+                                        v-model="selectedPickupTimeSlotId" 
+                                        :disabled="!activePickUpDay.time_slot || !activePickUpDay.time_slot.length"
+                                        @change="handlePickupTimeSlotChange"
+                                    >
+                                        <option disabled value="">
+                                            {{ activePickUpDay && activePickUpDay.time_slot && activePickUpDay.time_slot.length ? 'Choose Time Slot' : 'No Time Slots Available' }}
+                                        </option>
+                                        <option 
+                                            v-for="slot in activePickUpDay.time_slot" 
+                                            :key="slot.id" 
+                                            :value="slot.id"
+                                        >
+                                            {{ slot.name }}
+                                        </option>
                                     </select>
                                 </div>
                             </div>
-                            
                         </div>
-
                         <div>
                             <h6> Select the outlet to pick up the order </h6>
                             <div  class="address-radio">
-                                <input type="radio" class="btn-check " name="outlets" id="outlet1" autocomplete="off" checked>
-                                <label class="btn btn-primary" for="outlet1">
-                                    <p class="address-name mb-0">Outlet 1 </p>
-                                    <p class="address-description mb-0"> 2076, Sector 79, Mohali </p>
-                                </label>
-
-                                <input type="radio" class="btn-check" name="outlets" id="outlet2" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="outlet2"> 
-                                    <p class="address-name mb-0">Outlet 2 </p>
-                                    <p class="address-description mb-0"> 2076, Sector 79, Mohali </p>
-                                </label>
-
+                                <div v-for="address in pickUpAddresses" :key="address.id">
+                                    <input type="radio" class="btn-check " name="outlets" id="outlet1" autocomplete="off" checked>
+                                    <label class="btn btn-primary" for="outlet1">
+                                        <p class="address-name mb-0">{{ address.name }} </p>
+                                        <p class="address-description mb-0"> {{ address.street_address1 }},{{ address.street_address2 }},</p>
+                                        <p class="address-description mb-0">{{ address.city }}, {{ address.state }},</p>
+                                        <p class="address-description mb-0">{{ address.postal_code }}, Australia</p>
+                                    </label>
+                                </div>
                             </div>
 
                         </div>
-
-                      
                     </div>
 
-                    <div class="coupon-code-apply p-2">
+                    <!-- <div class="coupon-code-apply p-2">
                         <label for="inputZip" class="form-label">Coupon Code (Optional)</label>
                         <input type="text" class="form-control" placeholder="Enter Coupon Code" id="inputZip">
-                    </div>
-
-
+                    </div> -->
                 </div>
 
                 <!-- items added in the cart list -->
@@ -162,139 +309,42 @@
                     <ul class="list-unstyled mb-0">
 
                         <!-- item for checkout -->
-                        <li class="Item-for-checkout">
+                        <li class="Item-for-checkout" v-for="item in cart" :key="item.id">
                             <div>
-                                <p class="mb-0">5 <span> <i class="fa-solid fa-xmark"></i></span> Wine-Marinated Chicken Hearts </p>
-                                <p class="item-type-hd mb-0">Q: Main Dish (300g)</p>
-                                <p class="item-type-hd mb-0">Extra Protein</p>
-                                <p class="item-type-hd mb-0">Extra Vegetable</p>
-                                <p class="item-type-hd mb-0">Extra Rice</p>
+                                <p class="mb-0">{{ item.quantity }} <span> <i class="fa-solid fa-xmark"></i></span> {{ item.meal_name }} </p>
+                                <p class="item-type-hd mb-0">size: {{ item.selected_meal_portion_name }} ({{item.selected_meal_portion_weight}}g)</p>
+                                <p class="item-type-hd mb-0" v-for="addon in item.addons" :key="addon.id">Extra {{ addon.name }}</p>
                             </div>
                             <div class="price-n-item-option">
-                                <button type="button" class="btn btn-primary">Delete</button>
-                                <p class="mb-0"> $ 765 </p>
-                            </div>
-                        </li>
-
-
-                         <!-- item for checkout -->
-                        <li class="Item-for-checkout">
-                            <div>
-                                <p class="mb-0">5 <span> <i class="fa-solid fa-xmark"></i></span> Wine-Marinated Chicken Hearts </p>
-                                <p class="item-type-hd mb-0">Q: Main Dish (300g)</p>
-                                <p class="item-type-hd mb-0">Extra Protein</p>
-                                <p class="item-type-hd mb-0">Extra Vegetable</p>
-                                <p class="item-type-hd mb-0">Extra Rice</p>
-                            </div>
-                            <div class="price-n-item-option">
-                                <button type="button" class="btn btn-primary">Delete</button>
-                                <p class="mb-0"> $ 765 </p>
-                            </div>
-                        </li>
-
-                         <!-- item for checkout -->
-                         <li class="Item-for-checkout">
-                            <div>
-                                <p class="mb-0">5 <span> <i class="fa-solid fa-xmark"></i></span> Wine-Marinated Chicken Hearts </p>
-                                <p class="item-type-hd mb-0">Q: Main Dish (300g)</p>
-                                <p class="item-type-hd mb-0">Extra Protein</p>
-                                <p class="item-type-hd mb-0">Extra Vegetable</p>
-                                <p class="item-type-hd mb-0">Extra Rice</p>
-                            </div>
-                            <div class="price-n-item-option">
-                                <button type="button" class="btn btn-primary">Delete</button>
-                                <p class="mb-0"> $ 765 </p>
-                            </div>
-                        </li>
-
-
-                         <!-- item for checkout -->
-                         <li class="Item-for-checkout">
-                            <div>
-                                <p class="mb-0">5 <span> <i class="fa-solid fa-xmark"></i></span> Wine-Marinated Chicken Hearts </p>
-                                <p class="item-type-hd mb-0">Q: Main Dish (300g)</p>
-                                <p class="item-type-hd mb-0">Extra Protein</p>
-                                <p class="item-type-hd mb-0">Extra Vegetable</p>
-                                <p class="item-type-hd mb-0">Extra Rice</p>
-                            </div>
-                            <div class="price-n-item-option">
-                                <button type="button" class="btn btn-primary">Delete</button>
-                                <p class="mb-0"> $ 765 </p>
-                            </div>
-                        </li>
-
-
-                         <!-- item for checkout -->
-                         <li class="Item-for-checkout">
-                            <div>
-                                <p class="mb-0">5 <span> <i class="fa-solid fa-xmark"></i></span> Wine-Marinated Chicken Hearts </p>
-                                <p class="item-type-hd mb-0">Q: Main Dish (300g)</p>
-                                <p class="item-type-hd mb-0">Extra Protein</p>
-                                <p class="item-type-hd mb-0">Extra Vegetable</p>
-                                <p class="item-type-hd mb-0">Extra Rice</p>
-                            </div>
-                            <div class="price-n-item-option">
-                                <button type="button" class="btn btn-primary">Delete</button>
-                                <p class="mb-0"> $ 765 </p>
-                            </div>
-                        </li>
-
-
-                         <!-- item for checkout -->
-                         <li class="Item-for-checkout">
-                            <div>
-                                <p class="mb-0">5 <span> <i class="fa-solid fa-xmark"></i></span> Wine-Marinated Chicken Hearts </p>
-                                <p class="item-type-hd mb-0">Q: Main Dish (300g)</p>
-                                <p class="item-type-hd mb-0">Extra Protein</p>
-                                <p class="item-type-hd mb-0">Extra Vegetable</p>
-                                <p class="item-type-hd mb-0">Extra Rice</p>
-                            </div>
-                            <div class="price-n-item-option">
-                                <button type="button" class="btn btn-primary">Delete</button>
-                                <p class="mb-0"> $ 765 </p>
+                                <button type="button" class="btn btn-danger" @click="handleDelete(item.id)">Delete</button>
+                                <p class="mb-0"> $ {{ item.total_price }} </p>
                             </div>
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="  col-lg-4 col-md-12 col-sm-12 col-12 p-3">
-               
-
                 <div class="biling-details-container bg-white p-3 rounded">
                     <div class="billing-detail">
                         <p class=""> Subtotal </p>
-
-                        <p class=""> $ 4125 </p>
+                        <p class=""> $ {{ TotalOrderPrice }} </p>
                     </div>
-
                     <div class="billing-detail">
                         <p class=""> Tax </p>
-
-                        <p class=""> $ 25 </p>
+                        <p class=""> $ 0</p>
                     </div>
-
                     <div class="billing-detail detail-green">
                         <p class=""> Delivery </p>
-
                         <p class=""> Yay! Free Delivery </p>
-                    </div>
-
-
-                    
+                    </div>     
                     <div class="billing-detail grand-total">
                         <p class=""> Grand Total </p>
-
-                        <p class=""> $ 4150 </p>
+                        <p class=""> $ {{ TotalOrderPrice }} </p>
                     </div>
-
-
-                    <button type="button" class="btn btn-primary w-100" > Pay $ 4150 </button>
-
+                    <button type="button" class="btn btn-primary w-100" > Pay $ {{ TotalOrderPrice }} </button>
                 </div>
             </div>
-
         </div>
-
     </div>
 
 
@@ -328,24 +378,7 @@
     </div>
   </div>
 </div>
-
-
-
-
-
 </template>
-
-<script>
-
-
-export default {
-  name: 'CheckoutPage',
-}
-
-
-
-</script>
-
 
 <style>
 

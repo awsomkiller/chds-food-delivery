@@ -63,6 +63,7 @@ class UserAddress(models.Model):
         Model for storing User Address
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="addresses")
+    name = models.CharField(_("Name"), max_length=50,null=True,blank=True)
     street_address1 = models.CharField(_("Street Address1"),max_length=255,null=True,blank=True)
     street_address2 = models.CharField(_("Street Address2"),max_length=255,null=True,blank=True)
     suburbs = models.CharField(_("Suburbs"),max_length=255,null=True,blank=True)

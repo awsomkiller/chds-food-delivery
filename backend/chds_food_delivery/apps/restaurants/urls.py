@@ -4,8 +4,8 @@ from apps.restaurants.views import (
     RestaurantApi,
     MenuCategoryApi,
     MenuItemApi,
-    MenuImagesApi
-
+    MenuImagesApi,
+    WorkingDaysAPI
 )
 
 from django.conf import settings
@@ -19,5 +19,6 @@ router.register("items", MenuItemApi , basename="menu_items")
 urlpatterns = [
     path("images/",MenuImagesApi.as_view(),name="create-menu_images"),
     path("category/",MenuCategoryApi.as_view(),name="menu_category"),
+    path("working-days/", WorkingDaysAPI.as_view(), name="list-working-days-api")
  
 ]+router.urls+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
