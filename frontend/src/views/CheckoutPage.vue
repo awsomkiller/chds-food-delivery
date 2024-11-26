@@ -240,48 +240,79 @@ export default {
         <div class="row">
             <div class="  col-lg-8 col-md-12 col-sm-12 col-12 p-3">
                 <div class="store-n-diliveri bg-white p-2 rounded mb-3">
-                    <div class="checkout-title-card">
-                        <a href="" class="back-button text-decoration-none">
-                            <i class="fa-regular fa-circle-left"></i>
-                        </a>
-                        <div class="outlet-card p-2 ">
-                            <div class="outlet-detail">
-                                <h5> Chi Hun Da Su </h5>
-                                <p> Location </p>
+                    <div class="outlet-with-billing-add">
+                        <div class="checkout-title-card">
+                            <a href="" class="back-button text-decoration-none">
+                                <i class="fa-regular fa-circle-left"></i>
+                            </a>
+                            <div class="outlet-card p-2 ">
+                                <div class="outlet-detail">
+                                    <h5> Chi Hun Da Su </h5>
+                                    <p> Location </p>
+                                </div>
                             </div>
                         </div>
+                        <div class="billing-addshown">
+                            <p> Billing-Address</p>
+                            <h6> H. No 2076, Sector 79, Distt. Mohali (Punjab)</h6>
+                        </div>
                     </div>
-                    <div class="order-type-container">           
-                    <div class="delivery-option rounded w-100">
-                    <!-- Delivery Option -->
-                    <input
-                        type="radio"
-                        class="btn-check"
-                        name="optionsdelivery"
-                        id="deliverychosen"
-                        autocomplete="off"
-                        value="delivery"
-                        v-model="selectedOption"
-                        checked
-                    >
-                    <label class="btn btn-primary" for="deliverychosen">
-                        <span> Delivery </span>  
-                    </label>
 
-                    <!-- Pickup Option -->
-                    <input
-                        type="radio"
-                        class="btn-check"
-                        name="optionsdelivery"
-                        id="pickupchosen"
-                        autocomplete="off"
-                        value="pickup"
-                        v-model="selectedOption"
-                    >
-                    <label class="btn btn-outline-primary" for="pickupchosen">
-                        Pick Up
-                    </label>
+                     <!-- ---- addons ---------------------- -->
+                    <div class="p-3 py-2">
+                        <h4 class="extra-status"> Select Payment Method </h4>
+                        <div class="meal-addons payment-method rounded ">
+                            <input type="radio" class="btn-check" name="options" id="addons1" checked>
+                            <label class="btn btn-primary w-100" for="addons1">
+                                <p class="mb-0">
+                                    Pay by Wallet
+                                </p>
+                              
+                            </label>
+
+                            <input type="radio" class="btn-check" name="options" id="addons2">
+                            <label class="btn btn-primary w-100" for="addons2">
+                                <p class="mb-0">
+                                    Pay Online
+                                </p>
+                               
+                            </label>
+                           
+                        </div>
                     </div>
+
+                    <div class="p-2">
+                        <div class="order-type-container">           
+                            <div class="delivery-option rounded w-100">
+                            <!-- Delivery Option -->
+                            <input
+                                type="radio"
+                                class="btn-check"
+                                name="optionsdelivery"
+                                id="deliverychosen"
+                                autocomplete="off"
+                                value="delivery"
+                                v-model="selectedOption"
+                                checked
+                            >
+                            <label class="btn btn-primary" for="deliverychosen">
+                                <span> Delivery </span>  
+                            </label>
+
+                            <!-- Pickup Option -->
+                            <input
+                                type="radio"
+                                class="btn-check"
+                                name="optionsdelivery"
+                                id="pickupchosen"
+                                autocomplete="off"
+                                value="pickup"
+                                v-model="selectedOption"
+                            >
+                            <label class="btn btn-outline-primary" for="pickupchosen">
+                                Pick Up
+                            </label>
+                            </div>
 
                     <!-- Uncomment and customize as needed -->
                     <!-- <button type="button" class="btn-inactive-order">In Car</button> -->
@@ -725,6 +756,49 @@ export default {
 .grand-total{
     font-weight: bold;
     color: var(--card-heading-color);
+}
+
+.outlet-with-billing-add{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.outlet-with-billing-add .billing-addshown {
+    padding: 0.5rem;
+}
+
+.outlet-with-billing-add .billing-addshown p{
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--card-location-color);
+    margin-bottom: 0;
+
+}
+.outlet-with-billing-add .billing-addshown h6{
+    font-size: 14px;
+    color: var(--card-heading-color);
+
+}
+
+.payment-method{
+    display: flex;
+}
+.payment-method .btn-check+.btn{
+    width:fit-content !important;
+    padding: 5px 20px !important;
+    height: 36px;
+    border:2px solid #d2d2d2 !important;
+    color:#d2d2d2 !important ;
+}
+.payment-method .btn-check:checked+.btn{
+    width:fit-content !important;
+    background-color: #d2d2d2 !important;
+    border:2px solid #d2d2d2 !important;
+    color: var(--card-heading-color) !important;
+    padding: 5px 20px !important;
+    height: 36px;
 }
 
 

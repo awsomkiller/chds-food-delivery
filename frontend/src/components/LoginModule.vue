@@ -162,7 +162,7 @@ export default {
             <div class="other-option-login d-flex gap-2 align-items-center">
               <button
                 type="button"
-                class="login-by-facebook facebook-btn btn d-flex gap-1 align-items-center"
+                class="login-by-facebook facebook-btn google-btn btn d-flex gap-1 align-items-center"
                 @click="handleFacebookLogin"
               >
                 <!-- Facebook SVG Icon -->

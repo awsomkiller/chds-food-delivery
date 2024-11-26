@@ -1807,7 +1807,8 @@ ul {
 }
 
 .main-layout{
-  max-width: 800px;
+  max-width: 1000px;
+  margin: auto;
 }
 
 @media screen and (max-width:992px) {
