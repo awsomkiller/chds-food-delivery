@@ -477,7 +477,7 @@ export default {
                         <input type="text" class="form-control" placeholder="Enter Coupon Code" id="inputZip">
                     </div> -->
                 </div>
-
+            </div>
                 <!-- items added in the cart list -->
                 <h6>Items Added</h6>
                 <div class="store-n-diliveri bg-white p-3 rounded mb-3">
@@ -518,7 +518,7 @@ export default {
                     </div>
                     <!-- <form @submit.prevent="handleCheckOutSubmit"> -->
                         <div id="card-element" ref="cardElementRef"></div>
-                        <button type="button" class="btn btn-primary w-100" @click="handleCheckOutSubmit"> Pay $ {{ TotalOrderPrice }} </button>
+                        <button type="button" class="btn btn-primary w-100 mt-2" @click="handleCheckOutSubmit"> Pay $ {{ TotalOrderPrice }} </button>
                     <!-- </form> -->
                 </div>
             </div>
