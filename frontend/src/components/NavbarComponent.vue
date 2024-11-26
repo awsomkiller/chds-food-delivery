@@ -48,6 +48,8 @@ export default {
                       </button>
                       <ul class="dropdown-menu py-3">
                         <li><a class="dropdown-item " href="#">My Profile</a></li>
+                        <li><a class="dropdown-item " href="#">My Wallet</a></li>
+                        <li><a class="dropdown-item " href="#">Order History</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item text-danger" href="#">Logout</a></li>
                       </ul>
