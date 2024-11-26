@@ -3,8 +3,10 @@ import { storeToRefs } from 'pinia';
 import { useCartStore } from '@/stores/cart';
 import { useWorkingDaysStore } from '@/stores/workingdays';
 import { useAddressStore } from '@/stores/address';
-import { onMounted, ref, watch } from 'vue';
-import { useRouter } from 'vue-router'; // Import useRouter
+import { onMounted, ref, watch, nextTick } from 'vue';
+import { useRouter } from 'vue-router';
+import { stripePromise } from '@/stripe.js';
+import caxios from '../../axios';
 
 export default {
   name: 'CheckoutPage',
@@ -14,11 +16,13 @@ export default {
     const addressStore = useAddressStore();
 
     const { cart, totalQty, TotalOrderPrice } = storeToRefs(cartStore);
-    const { 
-      deliverydays, 
-      pickupdays, 
-      activeDeliveryDay, 
-      activePickUpDay 
+    const {
+      deliverydays,
+      pickupdays,
+      activeDeliveryDay,
+      activePickUpDay,
+      activePickupTimeSlot,
+      activeDeliveryTimeSlot,
     } = storeToRefs(workingDaysStore);
     const { eligibleAddress, pickUpAddresses } = storeToRefs(addressStore);
 
@@ -27,8 +31,98 @@ export default {
     const selectedPickupDayId = ref('');
     const selectedPickupTimeSlotId = ref('');
     const selectedOption = ref('delivery');
+    const selectedDeliveryAddress = ref({});
+    const selectedPickupAddress = ref({});
 
-    const router = useRouter(); // Initialize router
+    const router = useRouter();
+
+    if (totalQty.value <= 0) {
+      router.push({ name: 'Ordernow' });
+    }
+
+    const stripe = ref(null);
+    const elements = ref(null);
+    const cardElement = ref(null);
+    const cardElementRef = ref(null);
+
+    const initializeStripe = async () => {
+      stripe.value = await stripePromise;
+      elements.value = stripe.value.elements();
+      cardElement.value = elements.value.create('card');
+
+      if (cardElementRef.value) {
+        cardElement.value.mount(cardElementRef.value);
+      } else {
+        console.error('cardElementRef is null');
+      }
+    };
+
+    const handleCheckOutSubmit = async () => {
+      const payload = {};
+      if (selectedOption.value == 'delivery') {
+        if (
+          Object.keys(activeDeliveryDay.value).length === 0 ||
+          Object.keys(activeDeliveryTimeSlot.value).length === 0
+        ) {
+          alert('Delivery Date/Time Not Selected');
+          return;
+        }
+        if(Object.keys(selectedDeliveryAddress.value).length === 0){
+            alert('Delivery Address is not selected')
+        }
+        payload.schedule_date = activeDeliveryDay.value.date;
+        payload.time_slot = activeDeliveryTimeSlot.value.name;
+        payload.order_type = 'DELIVERY';
+        payload.delivery_location = formatAddress(selectedDeliveryAddress.value)
+      } else {
+        if (
+          Object.keys(activePickUpDay.value).length === 0 ||
+          Object.keys(activePickupTimeSlot.value).length === 0
+        ) {
+          alert('Pickup Date/Time Not Selected');
+          return;
+        }
+        if(Object.keys(selectedPickupAddress.value).length === 0){
+            alert('Delivery Address is not selected')
+        }
+        payload.schedule_date = activePickUpDay.value.date;
+        payload.time_slot = activePickupTimeSlot.value.name;
+        payload.order_type = 'PICKUP';
+        payload.pickup_location = formatAddress(pickUpAddresses.value);
+      }
+      payload.amount = TotalOrderPrice.value;
+      payload.menu_item = JSON.stringify(cart.value);
+
+      try {
+        const response = await caxios.post('/orders/create/', payload);
+        const { order_id, client_secret } = response.data;
+
+        // Confirm the payment
+        const result = await stripe.value.confirmCardPayment(client_secret, {
+          payment_method: {
+            card: cardElement.value,
+            billing_details: {
+              // Include billing details if needed
+            },
+          },
+        });
+
+        if (result.error) {
+          // Show error to customer
+          console.error(result.error.message);
+          alert('Payment failed: ' + result.error.message);
+        } else {
+          if (result.paymentIntent.status === 'succeeded') {
+            // Payment succeeded
+            alert('Payment successful!');
+            router.push({ name: 'OrderConfirmation', params: { orderId: order_id } });
+          }
+        }
+      } catch (error) {
+        console.error('Error during checkout:', error.response || error);
+        alert('An error occurred during checkout: ' + (error.response?.data?.detail || error.message));
+      }
+    };
 
     // Handle delivery day selection change
     const handleDeliveryDayChange = (event) => {
@@ -60,18 +154,53 @@ export default {
       cartStore.removeFromCart(id);
     };
 
+    const formatAddress = (addressObj) => {
+        const {
+            name,
+            street_address1,
+            street_address2,
+            suburbs,
+            city,
+            postal_code
+        } = addressObj;
+        const addressParts = [];
+        if (name) {
+            addressParts.push(name);
+        }
+        let street = street_address1 || "";
+        if (street_address2) {
+            street += `, ${street_address2}`;
+        }
+        if (street) {
+            addressParts.push(street);
+        }
+        if (suburbs) {
+            addressParts.push(suburbs);
+        }
+        let cityLine = city || "";
+        if (postal_code) {
+            cityLine += postal_code ? `, ${postal_code}` : "";
+        }
+        if (cityLine) {
+            addressParts.push(cityLine);
+        }
+        const formattedAddress = addressParts.join("\n");
+
+        return formattedAddress;
+        }
+
     watch(
       totalQty,
       (newCount, oldCount) => {
-        console.log(`totalQty changed from ${oldCount} to ${newCount}`);
         if (newCount <= 0 && newCount !== oldCount) {
-          console.log('Navigating to Ordernow');
           router.push({ name: 'Ordernow' });
         }
       }
     );
 
-    onMounted(() => {
+    onMounted(async () => {
+      await nextTick();
+      initializeStripe();
       workingDaysStore.fetchWorkingDays();
     });
 
@@ -91,14 +220,19 @@ export default {
       selectedDeliveryTimeSlotId,
       selectedPickupDayId,
       selectedPickupTimeSlotId,
+      selectedDeliveryAddress,
+      selectedPickupAddress,
+      handleCheckOutSubmit,
       handleDeliveryDayChange,
       handleDeliveryTimeSlotChange,
       handlePickupDayChange,
-      handlePickupTimeSlotChange
+      handlePickupTimeSlotChange,
+      cardElementRef,
     };
-  }
+  },
 };
 </script>
+
 
 
 <template>
@@ -152,9 +286,6 @@ export default {
                     <!-- Uncomment and customize as needed -->
                     <!-- <button type="button" class="btn-inactive-order">In Car</button> -->
                 </div>
-
-                    
-
                     <div class="selected-address-container mt-3 p-2" v-if="selectedOption == 'delivery'">
                         <div class="alert alert-danger" role="alert" v-if="!deliverydays.length">
                             Kitchen is not taking any delivery orders right now, Try Pick Up !
@@ -182,7 +313,6 @@ export default {
                                 </select>
                             </div>
 
-                            <!-- Select Delivery Time Slot -->
                             <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2">
                                 <label for="deliveryTimeSlot" class="form-label">Choose Time Slot</label>
                                 <select 
@@ -211,8 +341,16 @@ export default {
                         </div>
                         <div  class="address-radio">
                             <div v-for="address in eligibleAddress" :key="address.id">
-                                <input type="radio" class="btn-check " name="options" id="option1" autocomplete="off" checked>
-                                <label class="btn btn-primary" for="option1">
+                                <input 
+                                    type="radio" 
+                                    class="btn-check" 
+                                    name="deliveryAddress" 
+                                    :id="'delivery-' + address.id" 
+                                    autocomplete="off" 
+                                    v-model="selectedDeliveryAddress" 
+                                    :value="address" 
+                                >
+                                <label class="btn btn-primary" :for="'delivery-' + address.id">
                                     <p class="address-name mb-0">{{ address.name }} </p>
                                     <p class="address-description mb-0"> {{ address.street_address1 }}, {{ address.street_address2 }}, {{ address.suburbs }}, {{ address.postal_code }} </p>
                                 </label>
@@ -284,8 +422,16 @@ export default {
                             <h6> Select the outlet to pick up the order </h6>
                             <div  class="address-radio">
                                 <div v-for="address in pickUpAddresses" :key="address.id">
-                                    <input type="radio" class="btn-check " name="outlets" id="outlet1" autocomplete="off" checked>
-                                    <label class="btn btn-primary" for="outlet1">
+                                    <input 
+                                        type="radio" 
+                                        class="btn-check" 
+                                        name="outlets" 
+                                        id="outlet1" 
+                                        autocomplete="off" 
+                                        v-model="selectedPickupAddress" 
+                                        checked
+                                    >
+                                    <label class="btn btn-primary" :for="'pickup-' + address.id">
                                         <p class="address-name mb-0">{{ address.name }} </p>
                                         <p class="address-description mb-0"> {{ address.street_address1 }},{{ address.street_address2 }},</p>
                                         <p class="address-description mb-0">{{ address.city }}, {{ address.state }},</p>
@@ -293,10 +439,8 @@ export default {
                                     </label>
                                 </div>
                             </div>
-
                         </div>
                     </div>
-
                     <!-- <div class="coupon-code-apply p-2">
                         <label for="inputZip" class="form-label">Coupon Code (Optional)</label>
                         <input type="text" class="form-control" placeholder="Enter Coupon Code" id="inputZip">
@@ -341,43 +485,14 @@ export default {
                         <p class=""> Grand Total </p>
                         <p class=""> $ {{ TotalOrderPrice }} </p>
                     </div>
-                    <button type="button" class="btn btn-primary w-100" > Pay $ {{ TotalOrderPrice }} </button>
+                    <!-- <form @submit.prevent="handleCheckOutSubmit"> -->
+                        <div id="card-element" ref="cardElementRef"></div>
+                        <button type="button" class="btn btn-primary w-100" @click="handleCheckOutSubmit"> Pay $ {{ TotalOrderPrice }} </button>
+                    <!-- </form> -->
                 </div>
             </div>
         </div>
     </div>
-
-
-
-
-
-    
-<!-- Login postal code popup -->
-<div class="modal modal-search-dish fade" id="postalcodeModal" tabindex="-1" aria-labelledby="postalcodeModalLabel" aria-hidden="true">
-  <div class="modal-dialog  modal-dialog-scrollable modal-dialog-centered">
-    <div class="modal-content">
-
-        <!-- <div class="modal-header">
-            <h5 class="modal-title">Search Dish</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
- -->
-
-        <div class="modal-body text-center ">
-            
-            <img class="mb-3 mx-auto " src="@/assets/icons/delivery-parcel.svg" width="80px">
-
-
-            <h5 class="text-secondary"> For going to checkout page you need to register or login first.</h5>
-           
-        </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Register</button>
-        <button type="button" class="btn btn-primary">Login</button>
-      </div>
-    </div>
-  </div>
-</div>
 </template>
 
 <style>

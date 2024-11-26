@@ -156,7 +156,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 class UserAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAddress
-        fields = ["name", "street_address1", "street_address2", "city", "postal_code", "suburbs"]
+        fields = ["id", "name", "street_address1", "street_address2", "city", "postal_code", "suburbs"]
         
     def validate(self, attrs):
         if not attrs['postal_code']:

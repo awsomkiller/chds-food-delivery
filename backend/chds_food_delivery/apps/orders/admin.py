@@ -1,10 +1,15 @@
+# admin.py
+
 from django.contrib import admin
-from apps.orders.models import Orders
+from .models import Orders
+from apps.transactions.models import Transaction
 
 @admin.register(Orders)
 class OrdersAdmin(admin.ModelAdmin):
-    list_display = ['id',"pickup_location","user","order_time","status","amount"]
-    fields = ["pickup_location","user","order_time","order_type","delivery_location","status","amount","transaction","menu_item"]
-    readonly_fields=['order_time']
-    search_fields =['transaction__transaction_id','pickup_location__name', 'user__mobile_number', 'user__email']
-    list_filter = ['pickup_location__name', "status"]
+    list_display = ('order_id', 'user', 'status', 'amount', 'order_time')
+    search_fields = ('order_id', 'user__username', 'status')
+
+@admin.register(Transaction)
+class TransactionAdmin(admin.ModelAdmin):
+    list_display = ('transaction_id', 'user', 'amount', 'status', 'transaction_from', 'operation_type', 'created_at')
+    search_fields = ('transaction_id', 'user__username', 'status', 'stripe_payment_intent_id')
