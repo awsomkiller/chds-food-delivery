@@ -28,19 +28,31 @@ export default {
                         <p class="mb-0">243 Burwood Rd Hawthorn, VIC 3122</p>
                     </div>
                     <div class="login-register d-flex align-items-center gap-3 login-hidden">
-                        <div class="icon-location">
-                            <i class="fa-solid fa-user"></i>
-                        </div> 
-                        <a class="mb-0" data-bs-toggle="modal" data-bs-target="#loginModal"> Login 
+                        
+                        <a class="mb-0" type="button" data-bs-toggle="modal" data-bs-target="#loginModal"> Login 
+                        </a>
+
+                        <a class="mb-0" type="button" data-bs-toggle="modal" data-bs-target="#loginModal"> Register 
                         </a>
                     </div>
-                    <div class="follow-us d-flex align-items-center gap-3">
-                        <span class="text-white top-text">Follow Us:</span>
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+
+                    <div class="dropdown ">
+                      <button class=" profile-header d-flex align-items-center gap-2 btn p-0  dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div>
+                          <img class="profile-image"  src="../assets/homepage/45img.png">
+                        </div>
+                        <div class="text-mania">
+                          <h6 class="mb-0" >John Doe</h6>
+                          <small> Delivery Available</small>
+                        </div>
+                      </button>
+                      <ul class="dropdown-menu py-3">
+                        <li><a class="dropdown-item " href="#">My Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="#">Logout</a></li>
+                      </ul>
                     </div>
+
                   </div>
                   <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobilemenu" aria-controls="mobilemenu"  >
                     <span class="navbar-toggler-icon"></span>
@@ -95,6 +107,42 @@ if ($(this).scrollTop() > 1){
 .desktop-menu{
     display: none
   }
+  .profile-header{
+    color:white;
+    text-align: left;
+    border-radius: none;
+  }
+
+  .profile-header:hover{
+    background-color: transparent;
+  }
+  .profile-header:focus{
+    border: none;
+  }
+
+  .profile-header .profile-image{
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50px;
+    border: 1px solid #d2d2d2;
+    background-color: white;
+  }
+  .text-mania{
+    line-height: 1;
+  }
+
+  .profile-header h6{
+    font-size: 14px;
+    color: white;
+  }
+
+  .profile-header small{
+    font-size: 12px;
+    color: white;
+  }
+
+
 
 @media screen and (min-width:991.91px) {
   .desktop-menu{
