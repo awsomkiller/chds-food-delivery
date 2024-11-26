@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.generics import ListAPIView,CreateAPIView,ListCreateAPIView
 from apps.restaurants.serializers import (
     RestaurantApiSerializer ,
@@ -7,12 +7,16 @@ from apps.restaurants.serializers import (
     ListMenuItemSerializer,
     CreateMenuItemSerializer,
     CreateMenuImagesSerializer,
-    ListAddonSerialzier
+    ListAddonSerialzier,
+    WorkingDaysSerializer
 )
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
-from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuImage,Addons
+from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuImage,Addons, WorkingDays
 from rest_framework.permissions import AllowAny
 
 
@@ -73,6 +77,17 @@ class MenuAddonApi(ListAPIView):
     """
     serializer_class = ListAddonSerialzier
     queryset = Addons.objects.all()
+
+
+class WorkingDaysAPI(APIView):
+
+    serializer_class = WorkingDaysSerializer
+    permission_classes = [AllowAny]
+    
+    def get(self, request):
+        instances = WorkingDays.objects.filter(is_active=True)
+        serializer = self.serializer_class(instances, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
     

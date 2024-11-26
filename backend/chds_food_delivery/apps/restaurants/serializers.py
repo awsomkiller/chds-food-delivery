@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.restaurants.models import PickupLocation, MenuCategory, MenuImage, MenuItem, MenuPortionPriceList, Addons, MenuItemTags
+from apps.restaurants.models import PickupLocation, MenuCategory, MenuImage, MenuItem, MenuPortionPriceList, Addons, MenuItemTags, WorkingDays, TimeSlots
 
 
 class RestaurantApiSerializer(serializers.ModelSerializer):
@@ -84,3 +84,15 @@ class CreateMenuImagesSerializer(serializers.ModelSerializer):
         if validated_data["is_main"]:
             MenuImage.objects.filter(menu_item=validated_data['menu_item']).update(is_main=False)
         super().create(validated_data)
+
+
+class TimeslotsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TimeSlots
+        fields = "__all__"
+
+class WorkingDaysSerializer(serializers.ModelSerializer):
+    time_slot = TimeslotsSerializer(many=True)
+    class Meta:
+        model = WorkingDays
+        fields = "__all__"

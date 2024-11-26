@@ -2,7 +2,7 @@
 <script> 
     import { storeToRefs } from 'pinia';
     import { useCartStore } from '@/stores/cart';
-    import { useAuthStore } from '@/stores/auth'; 
+    import { useAuthStore } from '@/stores/auth';
     
     export default {
         name: 'CartData',
@@ -82,8 +82,8 @@
             </div>
             <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#loginModal" v-if="!user"> Login to continue </button>
             <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#addressModal" v-else-if="user && !user.primary_address"> Add your address </button>
-            <a href="/checkout" class="btn btn-primary w-100" v-else-if="user"> Proceed to Checkout </a>
-            
+            <router-link to="/checkout" class="btn btn-primary w-100" v-else-if="user && totalQty > 0">Proceed to Checkout </router-link>
+            <button v-else-if="user && totalQty <= 0" class="btn btn-primary w-100 " disabled > Proceed to Checkout  </button>
         </div>         
     </div>
 </template>
