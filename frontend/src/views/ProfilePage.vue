@@ -1,4 +1,89 @@
 <script>
+import { storeToRefs } from 'pinia';
+import { onMounted, ref,  nextTick } from 'vue';
+import { useWalletStore } from '@/stores/wallet';
+import axios  from '../../axios';
+import { stripePromise } from '@/stripe.js';
+import { useRouter } from 'vue-router';
+export default {
+  name: 'ProfilePage',
+  setup() {
+    const walletStore = useWalletStore();
+    const {balance, transactions} = storeToRefs(walletStore);
+
+    const rechargeAmount = ref(0);
+    const stripe = ref(null);
+    const elements = ref(null);
+    const cardElement = ref(null);
+    const cardElementRef = ref(null);
+
+    const router = useRouter();
+
+    const initializeStripe = async () => {
+      stripe.value = await stripePromise;
+      elements.value = stripe.value.elements();
+      cardElement.value = elements.value.create('card');
+
+      if (cardElementRef.value) {
+        cardElement.value.mount(cardElementRef.value);
+      } else {
+        console.error('cardElementRef is null');
+      }
+    };
+
+    const rechargeValidation = () => {
+        if(rechargeAmount.value > 0){
+            return false;
+        }
+        return true;
+    }
+
+    const handleRechargeClick = async() => {
+        try {
+        const response = await axios.post('/transactions/wallet/recharge/', {amount: rechargeAmount.value});
+        const { order_id, client_secret } = response.data;
+
+        const result = await stripe.value.confirmCardPayment(client_secret, {
+          payment_method: {
+            card: cardElement.value,
+            billing_details: {
+              // Include billing details if needed
+            },
+          },
+        });
+
+        if (result.error) {
+          // Show error to customer
+          console.error(result.error.message);
+          alert('Payment failed: ' + result.error.message);
+        } else {
+          if (result.paymentIntent.status === 'succeeded') {
+            // Payment succeeded
+            alert('Payment successful!');
+            router.push({ name: 'OrderConfirmation', params: { orderId: order_id } });
+          }
+        }
+      } catch (error) {
+        console.error('Error during checkout:', error.response || error);
+        alert('An error occurred during checkout: ' + (error.response?.data?.detail || error.message));
+      }
+    }
+
+    onMounted(async () => {
+      await nextTick();
+      initializeStripe();
+    });
+
+    return{
+        balance,
+        transactions,
+        cardElementRef,
+        rechargeAmount,
+        rechargeValidation,
+        handleRechargeClick
+    }
+  }
+}
 </script>
 
 <template>
@@ -43,7 +128,7 @@
                                 <div class="profile-img-container">
                                     <div class="profile-img">
                                     <!-- Dummy image shown initially -->
-                                    <img id="profileImg" src="https://images.news18.com/ibnlive/uploads/2017/05/pankhuri-gidwani.jpg" alt="Profile Picture">
+                                    <img id="profileImg" src="	https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png" alt="Profile Picture">
                                     </div>
                                     <label for="fileInput" class="edit-icon">
                                     <i class="fa fa-pencil-alt"></i> <!-- Pencil icon for editing -->
@@ -199,7 +284,7 @@
                             </div>
                         </div>
                         <div class="footer-button p-0 pt-3">
-                            <button class=" btn btn-secondary sm">Back</button>
+                            <button class=" btn btn-secondary sm" style="background-color: #1d0b00;">Back</button>
                             <a href="#" class="btn btn-primary sm">Save</a>
                         </div>
                     </div>
@@ -212,13 +297,15 @@
                                         <i class="fa-solid fa-wallet"></i>
                                     </div>                                      
                                     <p>Total Balance</p>
-                                    <p class="amount">$ 123</p>
+                                    <p class="amount">A$ {{ balance }}</p>
                                 </div>
                             </div>
                             <div class="col-md-6 p-3  mb-3">
                                 <label for="formGroupExampleInput" class="form-label">Add Amount In Wallet</label>
-                                <input type="text mb-3" class="form-control" id="formGroupExampleInput" placeholder="Example: $200">
-                                <button type="button" class=" mt-3 btn btn-primary">Add to Wallet</button>
+                                <input type="number mb-3" class="form-control" id="formGroupExampleInput" placeholder="A$100" v-model="rechargeAmount">
+                                <label for="card-element" class="form-label">Enter Card Details</label>
+                                <div id="card-element" ref="cardElementRef"></div>
+                                <button type="button" class=" mt-3 btn btn-primary" :disabled="rechargeValidation()" @click="handleRechargeClick">Add to Wallet</button>
                             </div>
                         </div>
                     </div>
