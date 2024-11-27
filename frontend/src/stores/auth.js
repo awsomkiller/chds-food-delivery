@@ -1,4 +1,3 @@
-// src/stores/auth.js
 import { defineStore } from 'pinia';
 import axios from '../../axios'; // Adjust the path as needed
 
@@ -28,6 +27,15 @@ export const useAuthStore = defineStore('auth', {
         return response.data;
       } catch (error) {
         console.error('Login failed:', error.response?.data || error.message);
+        throw error;
+      }
+    },
+
+    async handlePasswordChange(payload) {
+      try {
+        await axios.post('/change-password/', payload);
+      } catch (error) {
+        console.error('Password Change failed:', error.response?.data || error.message);
         throw error;
       }
     },

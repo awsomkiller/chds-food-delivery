@@ -1,29 +1,75 @@
 <script>
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { storeToRefs } from 'pinia';
 import NavbarMenu from './NavbarMenu.vue';
 import { useAuthStore } from '@/stores/auth';
 
-
 export default {
+  name: 'UserDropdown',
   components: {
     NavbarMenu,
   },
-  setup(){
+  setup() {
+    // Initialize the authentication store
     const authStore = useAuthStore();
-
+    
+    // Destructure the 'user' from the store's reactive references
     const { user } = storeToRefs(authStore);
-
+    
+    // Reactive state to manage dropdown visibility
+    const isDropdownOpen = ref(false);
+    
+    // Reference to the dropdown element for detecting outside clicks
+    const dropdown = ref(null);
+    
+    /**
+     * Toggles the dropdown's visibility.
+     */
+    const toggleDropdown = () => {
+      isDropdownOpen.value = !isDropdownOpen.value;
+    };
+    
+    /**
+     * Handles logout functionality.
+     */
     const handleLogout = () => {
-      authStore.logout()
-    }
-    return{
+      authStore.logout();
+      // Optionally, navigate the user after logout
+      // For example: router.push('/login');
+    };
+    
+    /**
+     * Closes the dropdown if a click is detected outside of it.
+     * @param {Event} event - The click event
+     */
+    const handleClickOutside = (event) => {
+      if (dropdown.value && !dropdown.value.contains(event.target)) {
+        isDropdownOpen.value = false;
+      }
+    };
+    
+    // Add event listener for detecting outside clicks when component is mounted
+    onMounted(() => {
+      document.addEventListener('click', handleClickOutside);
+    });
+    
+    // Remove event listener when component is about to unmount
+    onBeforeUnmount(() => {
+      document.removeEventListener('click', handleClickOutside);
+    });
+    
+    // Return all reactive properties and methods to the template
+    return {
       user,
+      isDropdownOpen,
+      toggleDropdown,
       handleLogout,
-    }
-
-  }
-}
+      dropdown,
+    };
+  },
+};
 </script>
+
 
 <template>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -52,20 +98,41 @@ export default {
                         </a>
                     </div>
 
-                    <div class="dropdown " v-if="user">
-                      <button class=" profile-header d-flex align-items-center gap-2 btn p-0  dropdown-toggle" type="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="dropdown" v-if="user" ref="dropdown">
+                      <button
+                        class="profile-header d-flex align-items-center gap-2 btn p-0 dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuLink"
+                        @click.stop="toggleDropdown"
+                        :aria-haspopup="true"
+                        :aria-expanded="isDropdownOpen"
+                      >
                         <div>
-                          <img class="profile-image" v-if="user.profile" :src="user.profile">
-                          <img class="profile-image" v-else src="../assets/homepage/45img.png">
+                          <img
+                            class="profile-image"
+                            v-if="user.profile"
+                            :src="user.profile"
+                            alt="Profile Image"
+                          />
+                          <img
+                            class="profile-image"
+                            v-else
+                            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+                            alt="Default Profile Image"
+                          />
                         </div>
                         <div class="text-mania">
-                          <h6 class="mb-0" >{{ user.full_name }}</h6>
-                          <small> Delivery Available</small>
+                          <h6 class="mb-0">{{ user.full_name }}</h6>
+                          <small>Delivery Available</small>
                         </div>
                       </button>
-                      <div class="dropdown-menu py-3" aria-labelledby="dropdownMenuLink">
+                      <div
+                        class="dropdown-menu py-3"
+                        :class="{ show: isDropdownOpen }"
+                        aria-labelledby="dropdownMenuLink"
+                      >
                         <router-link class="dropdown-item" to="/profile">My Profile</router-link>
-                        <hr class="dropdown-divider">
+                        <hr class="dropdown-divider" />
                         <a class="dropdown-item text-danger" @click="handleLogout">Logout</a>
                       </div>
                     </div>
@@ -167,5 +234,12 @@ if ($(this).scrollTop() > 1){
   }
  
 }
-
+/* Ensure the dropdown-menu is positioned correctly when shown */
+.dropdown-menu {
+  transition: opacity 0.3s ease;
+}
+.dropdown-menu.show {
+  display: block;
+  opacity: 1;
+}
 </style>

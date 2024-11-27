@@ -5,7 +5,7 @@ from apps.transactions.models import Transaction,WalletCoupon, OrderCoupon
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
-        fields = '__all__'
+        fields = ['id', 'amount', 'order_type', 'transaction_id', 'transaction_from', 'status']
 
 class WalletCouponSerializer(serializers.ModelSerializer):
     class Meta:

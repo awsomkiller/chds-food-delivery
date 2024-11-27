@@ -8,6 +8,7 @@ import stripe
 from django.conf import settings
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
+from django.db.models import Q
 
 from .models import Transaction, Wallet
 from .serializers import WalletRechargeSerializer
@@ -119,3 +120,16 @@ class WalletRechargeView(APIView):
                 "message": "An error occurred during the wallet recharge.",
                 "error": str(exc).strip("\n")
             }, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class WalletTransactionsView(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = TransactionSerializer
+
+    def get(self, request):
+        instances = Transaction.objects.filter(Q(user=request.user) & (Q(transaction_from="WALLET") | Q(order_type="WALLET_RECHARGE")))
+        serializer = self.serializer_class(instances, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+

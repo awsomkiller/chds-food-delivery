@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import axios from 'axios';
+import axios from '../../axios';
 
 export const useWalletStore = defineStore('wallet', {
   state: () => ({
@@ -46,17 +46,8 @@ export const useWalletStore = defineStore('wallet', {
       this.error = null;
       
       try {
-        const response = await axios.get('/api/wallet/transactions/'); // Adjust the endpoint
-        this.transactions = response.data.transactions.map(tx => ({
-          id: tx.transaction_id,
-          amount: parseFloat(tx.amount),
-          currency: tx.currency,
-          type: tx.operation_type, // 'CREDIT' or 'DEBIT'
-          orderType: tx.order_type,
-          status: tx.status,
-          createdAt: tx.created_at,
-          description: tx.description,
-        }));
+        const response = await axios.get('/transactions/wallet/');
+        this.transactions = response.data
       } catch (err) {
         this.error = err.response?.data?.message || 'Failed to fetch transactions.';
         console.error('Error fetching transactions:', err);

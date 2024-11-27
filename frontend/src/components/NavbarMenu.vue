@@ -44,10 +44,6 @@ export default {
         </ul>
         
         <div class="d-flex gap-2 contact-wrap">
-            <form class="d-flex bg-white p-1 rounded" role="search">
-                <input class="form-control me-2" type="search" placeholder="Street address, city, zip code" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-            </form>
             <form class="d-flex position-relative border-set" role="search">
                 <select class="form-select search" aria-label="Default select example">
                 <option selected>English</option>
