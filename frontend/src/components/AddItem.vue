@@ -20,7 +20,7 @@ export default {
             if (!item || !item.item_images) return "";
             const mainImage = item.item_images.find((img) => img.is_main);
             const path = mainImage ? mainImage.image : "";
-            return "http://localhost:8000" + path;
+            return "https://api.chds.com.au" + path;
         };
 
         const selectPortion = (portion) => {

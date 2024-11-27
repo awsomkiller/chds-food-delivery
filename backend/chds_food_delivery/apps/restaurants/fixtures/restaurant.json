@@ -1,0 +1,693 @@
+[
+    {
+      "model": "restaurants.pickuplocation",
+      "pk": 1,
+      "fields": {
+        "name": "Pick up 1",
+        "code": "6543bfbb-a652-4547-ac4f-50f32eaac0fd",
+        "street_address1": "street 1",
+        "street_address2": "street 2",
+        "city": "jorhat",
+        "state": "Chandigarh",
+        "postal_code": "2001"
+      }
+    },
+    {
+      "model": "restaurants.menuitemtags",
+      "pk": 1,
+      "fields": { "name": "Chicken" }
+    },
+    {
+      "model": "restaurants.menuitemtags",
+      "pk": 2,
+      "fields": { "name": "Beef" }
+    },
+    {
+      "model": "restaurants.menuitemtags",
+      "pk": 3,
+      "fields": { "name": "High Protein" }
+    },
+    {
+      "model": "restaurants.menuitemtags",
+      "pk": 4,
+      "fields": { "name": "Pork" }
+    },
+    {
+      "model": "restaurants.menucategory",
+      "pk": 1,
+      "fields": { "name": "Chicken Dish" }
+    },
+    {
+      "model": "restaurants.menucategory",
+      "pk": 2,
+      "fields": { "name": "Pork Dish" }
+    },
+    {
+      "model": "restaurants.menucategory",
+      "pk": 3,
+      "fields": { "name": "Beef Dish" }
+    },
+    {
+      "model": "restaurants.menuitem",
+      "pk": 2,
+      "fields": {
+        "name": "Garlic Honey Chicken Breast",
+        "price": "$19.00 – $31.00",
+        "description": "Pan-seared chicken breast with garlic and honey, golden on the outside and juicy inside, lightly sweet with a hint of garlic.",
+        "calories": "395.00",
+        "protein": "52.00",
+        "fats": "3.00",
+        "carbs": "40.00",
+        "category": [1],
+        "tags": [1]
+      }
+    },
+    {
+      "model": "restaurants.menuitem",
+      "pk": 3,
+      "fields": {
+        "name": "Honey Teriyaki Chicken Breast",
+        "price": "$19.00 – $31.00",
+        "description": "Pan-seared chicken breast with a honey-soy glaze, crispy outside, tender inside, a perfect healthy and flavorful option.",
+        "calories": "385.00",
+        "protein": "52.00",
+        "fats": "1.50",
+        "carbs": "41.00",
+        "category": [1],
+        "tags": [1]
+      }
+    },
+    {
+      "model": "restaurants.menuitem",
+      "pk": 4,
+      "fields": {
+        "name": "Curry Lemon Chicken Breast",
+        "price": "19.00 – $31.00",
+        "description": "Pan-seared chicken breast with a blend of curry and lemon, fragrant and tangy, offering a burst of fresh flavor.",
+        "calories": "390.00",
+        "protein": "52.00",
+        "fats": "2.00",
+        "carbs": "41.00",
+        "category": [1],
+        "tags": [1, 3]
+      }
+    },
+    {
+      "model": "restaurants.menuitem",
+      "pk": 5,
+      "fields": {
+        "name": "Korean Spicy Chicken Breast",
+        "price": "$19.00 – $31.00",
+        "description": "Pan-seared chicken breast with Korean spicy sauce, blending sweetness and heat for a tender and flavorful dish.",
+        "calories": "386.00",
+        "protein": "52.00",
+        "fats": "2.00",
+        "carbs": "42.00",
+        "category": [1],
+        "tags": [1, 3]
+      }
+    },
+    {
+      "model": "restaurants.menuitem",
+      "pk": 6,
+      "fields": {
+        "name": "Miso Glazed Chicken Breast",
+        "price": "$19.00 – $31.00",
+        "description": "Chicken breaast marinated in miso paste and seared to perfection, offering a rich, savory flavor.",
+        "calories": "382.00",
+        "protein": "52.00",
+        "fats": "2.00",
+        "carbs": "39.00",
+        "category": [1],
+        "tags": [1, 3]
+      }
+    },
+    {
+      "model": "restaurants.menuitem",
+      "pk": 7,
+      "fields": {
+        "name": "New Orleans Spiced Chicken",
+        "price": "$19.00 – $31.00",
+        "description": "Pan-seared chicken breast with New Orleans spices, crispy on the outside, tender inside, with a balanced spicy flavor.",
+        "calories": "386.00",
+        "protein": "52.00",
+        "fats": "2.00",
+        "carbs": "40.00",
+        "category": [1],
+        "tags": [1, 3]
+      }
+    },
+    {
+      "model": "restaurants.menuitem",
+      "pk": 8,
+      "fields": {
+        "name": "Garlic Lemon Chicken Breast",
+        "price": "$19.00 – $31.00",
+        "description": "",
+        "calories": "386.00",
+        "protein": "52.00",
+        "fats": "2.00",
+        "carbs": "40.00",
+        "category": [1],
+        "tags": [1, 3]
+      }
+    },
+    {
+      "model": "restaurants.menuitem",
+      "pk": 9,
+      "fields": {
+        "name": "Soy Braised Beef Shank",
+        "price": "$21.00 – $36.00",
+        "description": "Selected beef shank is slowly braised with soy sauce, oyster sauce, and a variety of spices. The meat is tender with a rich, flavorful sauce.",
+        "calories": "414.00",
+        "protein": "51.00",
+        "fats": "6.00",
+        "carbs": "39.00",
+        "category": [3],
+        "tags": [2]
+      }
+    },
+    {
+      "model": "restaurants.menuitem",
+      "pk": 10,
+      "fields": {
+        "name": "Spiced Braised Chicken Leg",
+        "price": "$19.00 – $31.00",
+        "description": "Chicken leg braised with star anise, cinnamon, and other aromatic spices. Tender and juicy, this dish is a low-fat, high-protein choice, perfect for fitness enthusiasts.",
+        "calories": "438.00",
+        "protein": "49.00",
+        "fats": "10.00",
+        "carbs": "38.00",
+        "category": [1],
+        "tags": [1]
+      }
+    },
+    {
+      "model": "restaurants.menuitem",
+      "pk": 11,
+      "fields": {
+        "name": "Pickled Veg Chicken Stir-fry",
+        "price": "$17.00 – $31.00",
+        "description": "Crisp pickled vegetables and tender bamboo shoots stir-fried with lean chicken breast, creating a refreshing, light, and nutritious dish.",
+        "calories": "272.00",
+        "protein": "26.00",
+        "fats": "1.00",
+        "carbs": "40.00",
+        "category": [1],
+        "tags": [1]
+      }
+    },
+    {
+      "model": "restaurants.menuitem",
+      "pk": 12,
+      "fields": {
+        "name": "Cilantro Chicken with Vinegar",
+        "price": "$19.00 – $31.00",
+        "description": "Chicken breast mixed with cilantro, vinegar, chili, soy sauce, and oyster sauce. This tangy, refreshing dish is high in protein, perfect for fitness diets and light daily meals.",
+        "calories": "147.00",
+        "protein": "31.00",
+        "fats": "2.00",
+        "carbs": "1.50",
+        "category": [1],
+        "tags": [1, 3]
+      }
+    },
+    {
+      "model": "restaurants.menuitem",
+      "pk": 13,
+      "fields": {
+        "name": "Chicken-Stuffed Bean Curd Rolls",
+        "price": "$19.00 – $31.00",
+        "description": "Minced chicken wrapped in soft bean curd sheets, steamed with ginger and seasonings. Tender, juicy, and packed with flavor, this is a healthy, light meal option.",
+        "calories": "89.50",
+        "protein": "19.00",
+        "fats": "1.50",
+        "carbs": "0.00",
+        "category": [1],
+        "tags": [1]
+      }
+    },
+    {
+      "model": "restaurants.menuitem",
+      "pk": 14,
+      "fields": {
+        "name": "Steamed Egg with Chicken",
+        "price": "$19.00 – $31.00",
+        "description": "Smooth steamed egg paired with savory minced chicken, seasoned with ginger and rice wine. A high-protein, low-fat, and nutritious dish.",
+        "calories": "324.00",
+        "protein": "35.00",
+        "fats": "4.00",
+        "carbs": "37.00",
+        "category": [1],
+        "tags": [1, 3]
+      }
+    },
+    {
+      "model": "restaurants.menuitem",
+      "pk": 15,
+      "fields": {
+        "name": "Wine-Marinated Pig Tongue",
+        "price": "$19.00 – $31.00",
+        "description": "Pig tongue marinated in traditional wine sauce, tender and flavorful with a rich, aromatic taste.",
+        "calories": "395.00",
+        "protein": "37.00",
+        "fats": "11.00",
+        "carbs": "37.00",
+        "category": [2],
+        "tags": [4]
+      }
+    },
+    {
+      "model": "restaurants.menuitem",
+      "pk": 16,
+      "fields": {
+        "name": "Wine-Marinated Chicken Gizzards",
+        "price": "$19.00 – $31.00",
+        "description": "Crisp and tender chicken gizzards marinated in wine sauce, full of flavor. Perfect as a snack or appetizer.",
+        "calories": "370.00",
+        "protein": "46.00",
+        "fats": "4.20",
+        "carbs": "37.00",
+        "category": [1],
+        "tags": [1, 3]
+      }
+    },
+    {
+      "model": "restaurants.menuitem",
+      "pk": 17,
+      "fields": {
+        "name": "Wine-Marinated Chicken Hearts",
+        "price": "$19.00 – $31.00",
+        "description": "Tender chicken hearts marinated in wine sauce, offering a rich and unique flavor, perfect as a nutritious snack.",
+        "calories": "369.00",
+        "protein": "44.00",
+        "fats": "5.00",
+        "carbs": "37.00",
+        "category": [1],
+        "tags": [1, 3]
+      }
+    },
+    {
+      "model": "restaurants.menuimage",
+      "pk": 3,
+      "fields": {
+        "menu_item": 13,
+        "image": "menu_images/Chicken-Stuffed_Bean_Curd_Rolls.webp",
+        "is_main": true
+      }
+    },
+    {
+      "model": "restaurants.menuimage",
+      "pk": 4,
+      "fields": {
+        "menu_item": 12,
+        "image": "menu_images/Cilantro_Chicken_with_Vinegar.png",
+        "is_main": true
+      }
+    },
+    {
+      "model": "restaurants.menuimage",
+      "pk": 5,
+      "fields": {
+        "menu_item": 4,
+        "image": "menu_images/Curry_Lemon_Chicken_Breast.webp",
+        "is_main": true
+      }
+    },
+    {
+      "model": "restaurants.menuimage",
+      "pk": 6,
+      "fields": {
+        "menu_item": 2,
+        "image": "menu_images/Garlic_Honey_Chicken_Breast.webp",
+        "is_main": true
+      }
+    },
+    {
+      "model": "restaurants.menuimage",
+      "pk": 7,
+      "fields": {
+        "menu_item": 8,
+        "image": "menu_images/Garlic_Lemon_Chicken_Breast_.webp",
+        "is_main": true
+      }
+    },
+    {
+      "model": "restaurants.menuimage",
+      "pk": 8,
+      "fields": {
+        "menu_item": 3,
+        "image": "menu_images/Honey_Teriyaki_Chicken_Breast.webp",
+        "is_main": true
+      }
+    },
+    {
+      "model": "restaurants.menuimage",
+      "pk": 9,
+      "fields": {
+        "menu_item": 5,
+        "image": "menu_images/Korean_Spicy_Chicken_Breast.webp",
+        "is_main": true
+      }
+    },
+    {
+      "model": "restaurants.menuimage",
+      "pk": 10,
+      "fields": {
+        "menu_item": 6,
+        "image": "menu_images/Miso_Glazed_Chicken_Breast.webp",
+        "is_main": true
+      }
+    },
+    {
+      "model": "restaurants.menuimage",
+      "pk": 11,
+      "fields": {
+        "menu_item": 7,
+        "image": "menu_images/New_Orleans_Spiced_Chicken.png",
+        "is_main": true
+      }
+    },
+    {
+      "model": "restaurants.menuimage",
+      "pk": 12,
+      "fields": {
+        "menu_item": 11,
+        "image": "menu_images/Pickled_Veg_Chicken_Stir-fry.png",
+        "is_main": true
+      }
+    },
+    {
+      "model": "restaurants.menuimage",
+      "pk": 13,
+      "fields": {
+        "menu_item": 9,
+        "image": "menu_images/Soy_Braised_Beef_Shank.png",
+        "is_main": true
+      }
+    },
+    {
+      "model": "restaurants.menuimage",
+      "pk": 14,
+      "fields": {
+        "menu_item": 10,
+        "image": "menu_images/Spiced_Braised_Chicken_Leg.png",
+        "is_main": true
+      }
+    },
+    {
+      "model": "restaurants.menuimage",
+      "pk": 15,
+      "fields": {
+        "menu_item": 14,
+        "image": "menu_images/Steamed_Egg_with_Chicken.webp",
+        "is_main": true
+      }
+    },
+    {
+      "model": "restaurants.menuimage",
+      "pk": 16,
+      "fields": {
+        "menu_item": 16,
+        "image": "menu_images/Wine-Marinated_Chicken_Gizzards.webp",
+        "is_main": true
+      }
+    },
+    {
+      "model": "restaurants.menuimage",
+      "pk": 17,
+      "fields": {
+        "menu_item": 17,
+        "image": "menu_images/Wine-Marinated_Chicken_Hearts.webp",
+        "is_main": true
+      }
+    },
+    {
+      "model": "restaurants.menuimage",
+      "pk": 18,
+      "fields": {
+        "menu_item": 15,
+        "image": "menu_images/Wine-Marinated_Pig_Tongue.png",
+        "is_main": true
+      }
+    },
+    {
+      "model": "restaurants.timeslots",
+      "pk": 1,
+      "fields": { "name": "2pm - 9pm", "type": "PICKUP ONLY" }
+    },
+    {
+      "model": "restaurants.timeslots",
+      "pk": 2,
+      "fields": { "name": "2pm - 4pm", "type": "DELIVERY ONLY" }
+    },
+    {
+      "model": "restaurants.timeslots",
+      "pk": 3,
+      "fields": { "name": "7pm - 9pm", "type": "DELIVERY ONLY" }
+    },
+    {
+      "model": "restaurants.timeslots",
+      "pk": 4,
+      "fields": { "name": "7am - 9am", "type": "ALL" }
+    },
+    {
+      "model": "restaurants.portionsize",
+      "pk": 1,
+      "fields": {
+        "name": "small",
+        "code": null,
+        "weight": "150",
+        "addons": [1, 2, 3]
+      }
+    },
+    {
+      "model": "restaurants.portionsize",
+      "pk": 2,
+      "fields": { "name": "medium", "code": null, "weight": "300", "addons": [] }
+    },
+    {
+      "model": "restaurants.portionsize",
+      "pk": 3,
+      "fields": { "name": "large", "code": null, "weight": "600", "addons": [] }
+    },
+    {
+      "model": "restaurants.portionsize",
+      "pk": 20,
+      "fields": { "name": "large", "code": null, "weight": "500", "addons": [] }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 2,
+      "fields": { "menu_item": 9, "portion_item": 3, "price": "32" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 3,
+      "fields": { "menu_item": 9, "portion_item": 1, "price": "21" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 4,
+      "fields": { "menu_item": 10, "portion_item": 3, "price": "25" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 5,
+      "fields": { "menu_item": 10, "portion_item": 1, "price": "19" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 6,
+      "fields": { "menu_item": 11, "portion_item": 1, "price": "17" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 7,
+      "fields": { "menu_item": 11, "portion_item": 2, "price": "19" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 8,
+      "fields": { "menu_item": 11, "portion_item": 3, "price": "23" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 9,
+      "fields": { "menu_item": 12, "portion_item": 1, "price": "19" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 10,
+      "fields": { "menu_item": 12, "portion_item": 2, "price": "19" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 11,
+      "fields": { "menu_item": 12, "portion_item": 3, "price": "27" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 12,
+      "fields": { "menu_item": 13, "portion_item": 2, "price": "19" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 13,
+      "fields": { "menu_item": 13, "portion_item": 3, "price": "28" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 14,
+      "fields": { "menu_item": 14, "portion_item": 1, "price": "19" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 15,
+      "fields": { "menu_item": 14, "portion_item": 2, "price": "19" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 16,
+      "fields": { "menu_item": 14, "portion_item": 3, "price": "27" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 17,
+      "fields": { "menu_item": 15, "portion_item": 1, "price": "19" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 18,
+      "fields": { "menu_item": 15, "portion_item": 2, "price": "25" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 19,
+      "fields": { "menu_item": 16, "portion_item": 1, "price": "19" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 20,
+      "fields": { "menu_item": 16, "portion_item": 2, "price": "24" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 21,
+      "fields": { "menu_item": 17, "portion_item": 1, "price": "19" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 22,
+      "fields": { "menu_item": 17, "portion_item": 2, "price": "22" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 23,
+      "fields": { "menu_item": 2, "portion_item": 1, "price": "19" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 24,
+      "fields": { "menu_item": 2, "portion_item": 3, "price": "27" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 25,
+      "fields": { "menu_item": 3, "portion_item": 20, "price": "27" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 26,
+      "fields": { "menu_item": 3, "portion_item": 1, "price": "19" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 27,
+      "fields": { "menu_item": 4, "portion_item": 3, "price": "27" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 28,
+      "fields": { "menu_item": 4, "portion_item": 1, "price": "19" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 29,
+      "fields": { "menu_item": 5, "portion_item": 3, "price": "27" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 30,
+      "fields": { "menu_item": 5, "portion_item": 2, "price": "19" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 31,
+      "fields": { "menu_item": 6, "portion_item": 3, "price": "27" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 32,
+      "fields": { "menu_item": 6, "portion_item": 1, "price": "19" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 33,
+      "fields": { "menu_item": 7, "portion_item": 3, "price": "27" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 34,
+      "fields": { "menu_item": 7, "portion_item": 1, "price": "19" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 35,
+      "fields": { "menu_item": 8, "portion_item": 3, "price": "27" }
+    },
+    {
+      "model": "restaurants.menuportionpricelist",
+      "pk": 36,
+      "fields": { "menu_item": 8, "portion_item": 1, "price": "19" }
+    },
+    {
+      "model": "restaurants.addons",
+      "pk": 1,
+      "fields": { "name": "Protein", "price": "6" }
+    },
+    {
+      "model": "restaurants.addons",
+      "pk": 2,
+      "fields": { "name": "Rice", "price": "2" }
+    },
+    {
+      "model": "restaurants.addons",
+      "pk": 3,
+      "fields": { "name": "Vegitable", "price": "4" }
+    },
+    {
+      "model": "restaurants.workingdays",
+      "pk": 1,
+      "fields": { "date": "2024-11-26", "is_active": true, "time_slot": [2, 3] }
+    },
+    {
+      "model": "restaurants.workingdays",
+      "pk": 2,
+      "fields": {
+        "date": "2024-11-27",
+        "is_active": true,
+        "time_slot": [1, 2, 3]
+      }
+    },
+    {
+      "model": "restaurants.workingdays",
+      "pk": 3,
+      "fields": {
+        "date": "2024-11-28",
+        "is_active": true,
+        "time_slot": [1, 2, 3]
+      }
+    }
+  ]
+  
