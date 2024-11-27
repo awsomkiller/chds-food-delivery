@@ -1,10 +1,26 @@
 <script>
+import { storeToRefs } from 'pinia';
 import NavbarMenu from './NavbarMenu.vue';
+import { useAuthStore } from '@/stores/auth';
 
 
 export default {
   components: {
     NavbarMenu,
+  },
+  setup(){
+    const authStore = useAuthStore();
+
+    const { user } = storeToRefs(authStore);
+
+    const handleLogout = () => {
+      authStore.logout()
+    }
+    return{
+      user,
+      handleLogout,
+    }
+
   }
 }
 </script>
@@ -27,32 +43,31 @@ export default {
                         </div>
                         <p class="mb-0">243 Burwood Rd Hawthorn, VIC 3122</p>
                     </div>
-                    <div class="login-register d-flex align-items-center gap-3 login-hidden">
+                    <div class="login-register d-flex align-items-center gap-3 login-hidden" v-if="!user">
                         
                         <a class="mb-0" type="button" data-bs-toggle="modal" data-bs-target="#loginModal"> Login 
                         </a>
 
-                        <a class="mb-0" type="button" data-bs-toggle="modal" data-bs-target="#loginModal"> Register 
+                        <a class="mb-0" type="button" data-bs-toggle="modal" data-bs-target="#registerModal"> Register 
                         </a>
                     </div>
 
-                    <div class="dropdown ">
-                      <button class=" profile-header d-flex align-items-center gap-2 btn p-0  dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="dropdown " v-if="user">
+                      <button class=" profile-header d-flex align-items-center gap-2 btn p-0  dropdown-toggle" type="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div>
-                          <img class="profile-image"  src="../assets/homepage/45img.png">
+                          <img class="profile-image" v-if="user.profile" :src="user.profile">
+                          <img class="profile-image" v-else src="../assets/homepage/45img.png">
                         </div>
                         <div class="text-mania">
-                          <h6 class="mb-0" >John Doe</h6>
+                          <h6 class="mb-0" >{{ user.full_name }}</h6>
                           <small> Delivery Available</small>
                         </div>
                       </button>
-                      <ul class="dropdown-menu py-3">
-                        <li><a class="dropdown-item " href="#">My Profile</a></li>
-                        <li><a class="dropdown-item " href="#">My Wallet</a></li>
-                        <li><a class="dropdown-item " href="#">Order History</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger" href="#">Logout</a></li>
-                      </ul>
+                      <div class="dropdown-menu py-3" aria-labelledby="dropdownMenuLink">
+                        <router-link class="dropdown-item" to="/profile">My Profile</router-link>
+                        <hr class="dropdown-divider">
+                        <a class="dropdown-item text-danger" @click="handleLogout">Logout</a>
+                      </div>
                     </div>
 
                   </div>

@@ -90,6 +90,7 @@ class LoginSerializer(TokenObtainPairSerializer):
                 "email": user.email,
                 "profile": self._get_user_profile(user),
                 "primary_address": self._get_user_address(user),
+                "full_name": user.full_name,
             }
         }
         return data
