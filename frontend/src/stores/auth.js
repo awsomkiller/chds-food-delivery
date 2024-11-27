@@ -1,5 +1,6 @@
+// src/stores/auth.js
 import { defineStore } from 'pinia';
-import axios from '../../axios';
+import axios from '../../axios'; // Adjust the path as needed
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -14,23 +15,48 @@ export const useAuthStore = defineStore('auth', {
         const response = await axios.post('/login/', credentials);
         const { access_token, refresh_token, user } = response.data;
 
-        // Save tokens and user data in state
         this.accessToken = access_token;
         this.refreshToken = refresh_token;
         this.user = user;
 
-        // Save tokens in localStorage
         localStorage.setItem('accessToken', access_token);
         localStorage.setItem('refreshToken', refresh_token);
         localStorage.setItem('user', JSON.stringify(user));
 
-        // Set Axios Authorization Header
         axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
 
         return response.data;
       } catch (error) {
         console.error('Login failed:', error.response?.data || error.message);
         throw error;
+      }
+    },
+
+    async register(credentials) {
+      try {
+        const response = await axios.post('/register-user/', credentials);
+        await this.login({
+          email: credentials.email,
+          password: credentials.password,
+        });
+        return response.data;
+      } catch (error) {
+        console.error('Registration failed:', error.response?.data || error.message);
+
+        if (error.response && error.response.data) {
+          const errorData = error.response.data;
+          const formattedErrors = {};
+
+          for (const key in errorData) {
+            if (Object.prototype.hasOwnProperty.call(errorData, key)) {
+              formattedErrors[key] = errorData[key].join(' ');
+            }
+          }
+
+          throw formattedErrors;
+        } else {
+          throw { general: 'An unexpected error occurred. Please try again later.' };
+        }
       }
     },
 

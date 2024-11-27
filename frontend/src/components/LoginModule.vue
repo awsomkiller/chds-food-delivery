@@ -1,5 +1,5 @@
 <script>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useAuthStore } from '@/stores/auth'; 
 import { useRouter } from 'vue-router';
 import { Modal } from 'bootstrap';
@@ -114,8 +114,21 @@ export default {
       alert('Facebook login is not implemented yet.');
     };
 
+    const closeModal = () => {
+      const modalElement = document.getElementById('loginModal');
+      const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+      modalInstance.hide();
+    };
+
+    // Import Bootstrap's Modal class
+    let bootstrap;
+    onMounted(() => {
+      bootstrap = require('bootstrap/dist/js/bootstrap.bundle.min.js');
+    });
+
     return {
       identifier,
+      closeModal,
       password,
       showPassword,
       togglePasswordVisibility,
@@ -290,9 +303,9 @@ export default {
               <div class="bottom-text">
                 <p>
                   Don't have an account?
-                  <router-link to="/signup">
+                  <a data-bs-toggle="modal" data-bs-target="#registerModal" @click.prevent="closeModal">
                     <span>Sign Up Now!</span>
-                  </router-link>
+                  </a>
                 </p>
               </div>
             </form>

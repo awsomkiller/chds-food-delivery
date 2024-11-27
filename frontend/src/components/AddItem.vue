@@ -138,18 +138,6 @@ export default {
                 </div>
             </div>
 
-
-            <!-- ---- addons ---------------------- -->
-            <div class="px-3 py-2">
-                <h4 class="extra-status"> Meal Size : <span  class="text-status"> Meal Set </span> </h4>
-                <div class="meal-category rounded p-3">
-                    <input type="checkbox" class="btn-check" name="options" id="addons1">
-                    <label class="btn btn-primary" for="">Addon </label>
-                </div>
-            </div>
-        
-
-
             <!-- nutritions facts -->
             <div class="px-3 py-2 pt-4">
                 <h4 class="nutrients-facts text-center"> Nutrition Facts – Per Meal Set
