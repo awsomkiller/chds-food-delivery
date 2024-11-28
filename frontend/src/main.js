@@ -17,7 +17,7 @@ const pinia = createPinia();
 // Create the Vue app instance
 const app = createApp(App);
 
-router.afterEach((to, from) => {
+router.afterEach((to) => {
     // Update the document title
     if (to.meta.title) {
       document.title = to.meta.title;
