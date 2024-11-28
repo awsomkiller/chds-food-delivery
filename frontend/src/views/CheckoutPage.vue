@@ -97,35 +97,35 @@ export default {
       }
       payload.amount = TotalOrderPrice.value;
       payload.menu_item = JSON.stringify(cart.value);
-      showSuccess.value.click()
-    //   try {
-    //     const response = await caxios.post('/orders/create/', payload);
-    //     const { order_id, client_secret } = response.data;
+      
+      try {
+        const response = await caxios.post('/orders/create/', payload);
+        const { order_id, client_secret } = response.data;
 
-    //     // Confirm the payment
-    //     const result = await stripe.value.confirmCardPayment(client_secret, {
-    //       payment_method: {
-    //         card: cardElement.value,
-    //         billing_details: {
-    //           // Include billing details if needed
-    //         },
-    //       },
-    //     });
+        // Confirm the payment
+        const result = await stripe.value.confirmCardPayment(client_secret, {
+          payment_method: {
+            card: cardElement.value,
+            billing_details: {
+              // Include billing details if needed
+            },
+          },
+        });
 
-    //     if (result.error) {
-    //       // Show error to customer
-    //       console.error(result.error.message);
-    //       showFail.value.click();
-    //     } else {
-    //       if (result.paymentIntent.status === 'succeeded') {
-    //         // Payment succeeded
-    //        showSuccess.value.click();
-    //       }
-    //     }
-    //   } catch (error) {
-    //     console.error('Error during checkout:', error.response || error);
-    //     alert('An error occurred during checkout: ' + (error.response?.data?.detail || error.message));
-    //   }
+        if (result.error) {
+          // Show error to customer
+          console.error(result.error.message);
+          showFail.value.click();
+        } else {
+          if (result.paymentIntent.status === 'succeeded') {
+            // Payment succeeded
+           showSuccess.value.click();
+          }
+        }
+      } catch (error) {
+        console.error('Error during checkout:', error.response || error);
+        alert('An error occurred during checkout: ' + (error.response?.data?.detail || error.message));
+      }
     };
 
     // Handle delivery day selection change
