@@ -54,8 +54,8 @@
                         <p class="item-type-hd mb-0">Size: {{ item.selected_meal_portion_name }} ({{ item.selected_meal_portion_weight }}g)</p>
                         <p class="item-type-hd mb-0" v-for="addon in item.addons" :key="addon.id">Extra {{ addon.name }}</p>
                         <p class="item-price">
-                            <span>{{ item.quantity }} x ${{ (item.selected_meal_portion_price + item.selected_meal_addon_price) }}</span>
-                            <b style="display: inline-block; font-weight: 500;"> ${{ item.total_price }}</b>
+                            <span>{{ item.quantity }} x A${{ (item.selected_meal_portion_price + item.selected_meal_addon_price) }}</span>
+                            <b style="display: inline-block; font-weight: 500;"> A${{ item.total_price }}</b>
                         </p>
                     </div>
                     <div class="order-count">
@@ -75,7 +75,7 @@
         <div>
             <div class="final-subtotal">
                 <span>Subtotal </span>
-                <span> ${{ TotalOrderPrice }}</span>
+                <span> A${{ TotalOrderPrice }}</span>
             </div>
             <div class="final-subtotal fw-normal">
                 <span>You have total {{ totalQty }} items in your cart </span>

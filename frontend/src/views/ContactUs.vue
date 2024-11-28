@@ -104,8 +104,11 @@
     </div>
 
   </section>
+  <FooterComponent />
 </template>
-
+<script setup>
+  import FooterComponent from '@/components/FooterComponent.vue';
+</script>
 <style>
  /* --------Contant-us------ */
 

@@ -1282,11 +1282,13 @@
     </section>
 
     </div>
+    <FooterComponent />
 </template>
 
 <script>
   // Import Swiper Vue.js components
   import { Swiper, SwiperSlide } from 'swiper/vue';
+  import FooterComponent from '@/components/FooterComponent.vue';
 
   // Import Swiper styles
   import 'swiper/css';
@@ -1295,6 +1297,7 @@
     components: {
       Swiper,
       SwiperSlide,
+      FooterComponent,
     },
     setup() {
       return {};

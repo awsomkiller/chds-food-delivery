@@ -473,7 +473,7 @@ export default {
                             </div>
                             <div class="price-n-item-option">
                                 <button type="button" class="btn btn-danger" @click="handleDelete(item.id)">Delete</button>
-                                <p class="mb-0"> $ {{ item.total_price }} </p>
+                                <p class="mb-0"> A$ {{ item.total_price }} </p>
                             </div>
                         </li>
                     </ul>
@@ -505,11 +505,11 @@ export default {
                 <div class="biling-details-container bg-white p-3 rounded">
                     <div class="billing-detail">
                         <p class=""> Subtotal </p>
-                        <p class=""> $ {{ TotalOrderPrice }} </p>
+                        <p class=""> A$ {{ TotalOrderPrice }} </p>
                     </div>
                     <div class="billing-detail">
                         <p class=""> Tax </p>
-                        <p class=""> $ 0</p>
+                        <p class=""> A$ 0</p>
                     </div>
                     <div class="billing-detail detail-green">
                         <p class=""> Delivery </p>
@@ -517,11 +517,11 @@ export default {
                     </div>     
                     <div class="billing-detail grand-total">
                         <p class=""> Grand Total </p>
-                        <p class=""> $ {{ TotalOrderPrice }} </p>
+                        <p class=""> A$ {{ TotalOrderPrice }} </p>
                     </div>
                     <!-- <form @submit.prevent="handleCheckOutSubmit"> -->
                         <div id="card-element" ref="cardElementRef"></div>
-                        <button type="button" class="btn btn-primary w-100 mt-2" @click="handleCheckOutSubmit"> Pay $ {{ TotalOrderPrice }} </button>
+                        <button type="button" class="btn btn-primary w-100 mt-2" @click="handleCheckOutSubmit"> Pay A$ {{ TotalOrderPrice }} </button>
                     <!-- </form> -->
                 </div>
             </div>

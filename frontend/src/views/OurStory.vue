@@ -69,7 +69,11 @@
         </div>
       </div>
     </section>
+	<FooterComponent />
 </template>
+<script setup>
+import FooterComponent from '@/components/FooterComponent.vue';
+</script>
 
 <style>
 section{
