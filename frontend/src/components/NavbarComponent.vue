@@ -14,7 +14,7 @@ export default {
     const authStore = useAuthStore();
     
     // Destructure the 'user' from the store's reactive references
-    const { user } = storeToRefs(authStore);
+    const { user, delivery } = storeToRefs(authStore);
     
     // Reactive state to manage dropdown visibility
     const isDropdownOpen = ref(false);
@@ -61,6 +61,7 @@ export default {
     // Return all reactive properties and methods to the template
     return {
       user,
+      delivery,
       isDropdownOpen,
       toggleDropdown,
       handleLogout,
@@ -123,7 +124,7 @@ export default {
                         </div>
                         <div class="text-mania">
                           <h6 class="mb-0">{{ user.full_name }}</h6>
-                          <small>Delivery Available</small>
+                          <small v-if="delivery">Delivery Available</small>
                         </div>
                       </button>
                       <div

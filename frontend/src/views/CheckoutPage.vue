@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia';
 import { useCartStore } from '@/stores/cart';
 import { useWorkingDaysStore } from '@/stores/workingdays';
 import { useAddressStore } from '@/stores/address';
+import { useAuthStore } from '@/stores/auth';
 import { onMounted, ref, watch, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { stripePromise } from '@/stripe.js';
@@ -14,7 +15,9 @@ export default {
     const cartStore = useCartStore();
     const workingDaysStore = useWorkingDaysStore();
     const addressStore = useAddressStore();
+    const authStore = useAuthStore();
 
+    const billing_address = authStore.getBillingAddress();
     const { cart, totalQty, TotalOrderPrice } = storeToRefs(cartStore);
     const {
       deliverydays,
@@ -207,6 +210,7 @@ export default {
     return {
       cart,
       totalQty,
+      billing_address,
       eligibleAddress,
       pickUpAddresses,
       TotalOrderPrice,
@@ -252,32 +256,9 @@ export default {
                                 </div>
                             </div>
                         </div>
-                        <div class="billing-addshown">
+                        <div class="billing-addshown" v-if="billing_address">
                             <p> Billing-Address</p>
-                            <h6> H. No 2076, Sector 79, Distt. Mohali (Punjab)</h6>
-                        </div>
-                    </div>
-
-                     <!-- ---- addons ---------------------- -->
-                    <div class="p-3 py-2">
-                        <h4 class="extra-status"> Select Payment Method </h4>
-                        <div class="meal-addons payment-method rounded ">
-                            <input type="radio" class="btn-check" name="options" id="addons1" checked>
-                            <label class="btn btn-primary w-100" for="addons1">
-                                <p class="mb-0">
-                                    Pay by Wallet
-                                </p>
-                              
-                            </label>
-
-                            <input type="radio" class="btn-check" name="options" id="addons2">
-                            <label class="btn btn-primary w-100" for="addons2">
-                                <p class="mb-0">
-                                    Pay Online
-                                </p>
-                               
-                            </label>
-                           
+                            <h6> {{ billing_address }}</h6>
                         </div>
                     </div>
 
@@ -499,6 +480,28 @@ export default {
                 </div>
             </div>
             <div class="  col-lg-4 col-md-12 col-sm-12 col-12 p-3">
+                <!-- ---- addons ---------------------- -->
+                <div class="p-3 bg-white rounded">
+                    <h4 class="extra-status"> Select Payment Method </h4>
+                    <div class="meal-addons payment-method rounded ">
+                        <input type="radio" class="btn-check" name="options" id="addons1" checked>
+                        <label class="btn btn-primary w-100" for="addons1">
+                            <p class="mb-0">
+                                Pay by Wallet
+                            </p>
+                            
+                        </label>
+
+                        <input type="radio" class="btn-check" name="options" id="addons2">
+                        <label class="btn btn-primary w-100" for="addons2">
+                            <p class="mb-0">
+                                Pay Online
+                            </p>
+                            
+                        </label>
+                        
+                    </div>
+                </div>
                 <div class="biling-details-container bg-white p-3 rounded">
                     <div class="billing-detail">
                         <p class=""> Subtotal </p>

@@ -17,6 +17,27 @@ const pinia = createPinia();
 // Create the Vue app instance
 const app = createApp(App);
 
+router.afterEach((to, from) => {
+    // Update the document title
+    if (to.meta.title) {
+      document.title = to.meta.title;
+    } else {
+      document.title = 'Chi Hun Da Su'; 
+    }
+  
+    // Update the favicon
+    if (to.meta.favicon) {
+      let link = document.querySelector("link[rel~='icon']");
+      if (!link) {
+        // If no favicon link exists, create one
+        link = document.createElement('link');
+        link.rel = 'icon';
+        document.head.appendChild(link);
+      }
+      link.href = `${to.meta.favicon}`;
+    }
+  });
+
 // Use the Pinia store and router
 app.use(pinia);
 app.use(router);

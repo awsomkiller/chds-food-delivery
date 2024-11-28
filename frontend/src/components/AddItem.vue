@@ -4,7 +4,6 @@ import { useMenuStore } from '@/stores/menu';
 import { storeToRefs } from 'pinia';
 import { useCartStore } from '@/stores/cart';
 import { computed, onMounted } from 'vue';
-import { Modal } from 'bootstrap';
 
 export default {
     setup() {
@@ -52,13 +51,6 @@ export default {
             }
             cartStore.addToCart(selectedItem.value);
             cartStore.resetActive();
-            const modalElement = document.getElementById('exampleModal');
-            if (modalElement) {
-                const modalInstance = Modal.getInstance(modalElement);
-                if (modalInstance) {
-                    modalInstance.hide();
-                }
-            }
         };
 
         const currentPortion = computed(() => {
@@ -173,7 +165,7 @@ export default {
                         <i class="fa-solid fa-plus"></i>
                     </a>
                 </div>
-                <button type="button" class="btn btn-primary" @click="addToCart">Add to Cart</button>
+                <button type="button" class="btn btn-primary" @click="addToCart" data-bs-dismiss="modal" aria-label="Close">Add to Cart</button>
             </div>
 
           </div>

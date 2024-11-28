@@ -15,7 +15,8 @@ from apps.users.serializers import (
     WalletSerializer,
     ListWalletSerializer,
     ContactusSerializer,
-    UpdateUserinfoSerializer
+    UpdateUserinfoSerializer,
+    UserDetailsSerializer
 )
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
@@ -42,7 +43,13 @@ class RegisterAPI(APIView):
             
 class LoginApiView(TokenObtainPairView):
     serializer_class = LoginSerializer
-    permission_classes = (AllowAny,)            
+    permission_classes = (AllowAny,) 
+
+
+class UserDetails(APIView):
+    def get(self, request):
+        serializer = UserDetailsSerializer(request.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)        
     
 class ForgetApiView(APIView):
     def post(self,request):

@@ -3,6 +3,8 @@ import CartData from "@/components/CartData.vue";
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useMenuStore } from "@/stores/menu";
 import { useCartStore } from "@/stores/cart";
+import { useAuthStore } from "@/stores/auth";
+
 import { storeToRefs } from "pinia";
 
 export default {
@@ -12,6 +14,7 @@ export default {
   setup() {
     const menuStore = useMenuStore();
     const cartStore = useCartStore();
+    const authStore = useAuthStore();
     
     const {
       items,
@@ -101,6 +104,7 @@ export default {
       menuStore.resetItems();
       menuStore.loadCategories();
       menuStore.loadItems();
+      authStore.fetchUserDetails();
       window.addEventListener("scroll", handleScroll);
 
       const modalElement = document.getElementById("exampleModal");

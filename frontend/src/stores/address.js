@@ -4,7 +4,7 @@ import axios from '../../axios';
 export const useAddressStore = defineStore('address', {
   state: () => ({
     addresses: [],
-    pickUpAddresses:[],
+    pickUpAddresses: [],
     activeAddress: {
       id: null,
       postal_code: '',

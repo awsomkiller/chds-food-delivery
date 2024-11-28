@@ -11,7 +11,8 @@ from apps.users.views import (
     WalletViewSet,
     ResetPasswordAPI,
     ContactusApi,
-    UpdateUserinfoApi
+    UpdateUserinfoApi,
+    UserDetails
 )
 
 
@@ -24,6 +25,7 @@ router.register('user-wallet', WalletViewSet, basename='user_wallet')
 urlpatterns = [
     path("register-user/",RegisterAPI.as_view() , name="register_user"),
     path("login/",LoginApiView.as_view() , name="login"),
+    path("details/", UserDetails.as_view(), name="user-details"),
     path("forget-password/",ForgetApiView.as_view(), name="forget_password"),
     path("reset-password/",ResetPasswordAPI.as_view(), name="forget_password"),
     path("change-password/",ChangePasswordAPI.as_view() , name ="change_password"),

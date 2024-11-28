@@ -62,7 +62,6 @@ export default {
       return Object.keys(tempErrors).length === 0;
     };
 
-    // Handle form submission
     const handleLogin = async () => {
       if (!validate()) {
         return;
@@ -102,15 +101,10 @@ export default {
 
     // Placeholder functions for social logins
     const handleGoogleLogin = () => {
-      // Implement Google OAuth login flow
-      // This typically involves redirecting to Google's OAuth endpoint
-      // or using a library to handle OAuth within your application
       alert('Google login is not implemented yet.');
     };
 
     const handleFacebookLogin = () => {
-      // Implement Facebook OAuth login flow
-      // Similar to Google, you would redirect to Facebook's OAuth or use their SDK
       alert('Facebook login is not implemented yet.');
     };
 
@@ -171,15 +165,16 @@ export default {
               <p>Hi 👋 there! Log in and let’s make today’s meals memorable</p>
             </div>
 
-            <!-- Social Login Options -->
+            <!-- Social Login Options
             <div class="other-option-login d-flex gap-2 align-items-center">
               <button
                 type="button"
                 class="login-by-facebook facebook-btn google-btn btn d-flex gap-1 align-items-center"
                 @click="handleFacebookLogin"
-              >
+                disabled
+              > -->
                 <!-- Facebook SVG Icon -->
-                <svg
+                <!-- <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="12"
                   height="25"
@@ -197,9 +192,10 @@ export default {
                 type="button"
                 class="login-by-google google-btn btn d-flex gap-1 align-items-center"
                 @click="handleGoogleLogin"
-              >
+                disabled
+              > -->
                 <!-- Google SVG Icon -->
-                <svg
+                <!-- <svg
                   version="1.1"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 48 48"
@@ -227,7 +223,7 @@ export default {
                 </svg>
                 <p class="mb-0">Continue with Google</p>
               </button>
-            </div>
+            </div> -->
 
             <!-- Divider -->
             <div class="or-div">
@@ -287,7 +283,7 @@ export default {
 
                 <!-- Login Button -->
                 <div class="button-wrap mb-3">
-                  <button class="btn btn-primary w-100" type="submit" :disabled="loading">
+                  <button class="btn btn-primary w-100" type="submit" :disabled="loading"  data-bs-dismiss="modal" aria-label="Close">
                     <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     <span v-else>Login</span>
                   </button>

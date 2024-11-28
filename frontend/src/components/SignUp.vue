@@ -6,6 +6,7 @@
     tabindex="-1"
     aria-labelledby="registerModalLabel"
     aria-hidden="true"
+    ref="registerModal"
   >
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
       <div class="modal-content">
@@ -20,31 +21,35 @@
             </div>
 
             <!-- Social Login Options -->
+            <!-- 
             <div class="other-option-login d-flex flex-column gap-2 align-items-center">
               <button
                 type="button"
                 class="login-by-facebook facebook-btn btn d-flex gap-2 align-items-center"
                 @click="loginWithFacebook"
               >
-                <!-- Facebook SVG -->
+                Facebook SVG -->
                 <!-- (Insert your Facebook SVG code here) -->
-                <p class="mb-0">Continue with Facebook</p>
+                <!-- <p class="mb-0">Continue with Facebook</p>
               </button>
               <button
                 type="button"
                 class="login-by-google google-btn btn d-flex gap-2 align-items-center"
                 @click="loginWithGoogle"
               >
-                <!-- Google SVG -->
+                 Google SVG -->
                 <!-- (Insert your Google SVG code here) -->
-                <p class="mb-0">Continue with Google</p>
+                <!-- <p class="mb-0">Continue with Google</p>
               </button>
             </div>
+            -->
 
             <!-- OR Divider -->
+            <!-- 
             <div class="or-div my-3">
               <p>OR</p>
             </div>
+            -->
 
             <!-- Registration Form -->
             <form @submit.prevent="handleRegister">
@@ -143,9 +148,14 @@
                       placeholder="Enter Password"
                       required
                     />
-                    <div class="info-icon" @click="togglePasswordVisibility">
+                    <button
+                      type="button"
+                      class="info-icon btn btn-link"
+                      @click="togglePasswordVisibility"
+                      aria-label="Toggle Password Visibility"
+                    >
                       <i :class="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
-                    </div>
+                    </button>
                   </div>
                   <div class="error-wrap" v-if="errors.password">
                     <p>{{ errors.password }}</p>
@@ -167,9 +177,14 @@
                       placeholder="Confirm Password"
                       required
                     />
-                    <div class="info-icon" @click="toggleConfirmPasswordVisibility">
+                    <button
+                      type="button"
+                      class="info-icon btn btn-link"
+                      @click="toggleConfirmPasswordVisibility"
+                      aria-label="Toggle Confirm Password Visibility"
+                    >
                       <i :class="showConfirmPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
-                    </div>
+                    </button>
                   </div>
                   <div class="error-wrap" v-if="errors.confirm_password">
                     <p>{{ errors.confirm_password }}</p>
@@ -197,17 +212,31 @@
                 <!-- Submit Button -->
                 <div class="button-wrap mb-3">
                   <button class="btn btn-primary w-100" type="submit" :disabled="isSubmitting">
-                    <span v-if="isSubmitting" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span
+                      v-if="isSubmitting"
+                      class="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
                     Sign Up
                   </button>
                 </div>
               </div>
 
+              <!-- Hidden Close Button -->
+              <button
+                type="button"
+                ref="hiddenCloseButton"
+                class="d-none"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+
               <!-- Bottom Text -->
               <div class="bottom-text">
                 <p>
                   Already have an account?
-                  <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" @click.prevent="closeModal">Sign In Now!</a>
+                  <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" @click.prevent="switchToLogin">Sign In Now!</a>
                 </p>
               </div>
             </form>
@@ -219,15 +248,13 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive } from 'vue';
 import { useAuthStore } from '@/stores/auth';
-import { useRouter } from 'vue-router';
 
 export default {
   name: 'SignUp',
   setup() {
     const authStore = useAuthStore();
-    const router = useRouter();
 
     const form = reactive({
       full_name: '',
@@ -310,6 +337,9 @@ export default {
       return isValid;
     };
 
+    const registerModal = ref(null); // Reference to the modal element
+    const hiddenCloseButton = ref(null); // Reference to the hidden close button
+
     const handleRegister = async () => {
       if (!validateForm()) {
         return;
@@ -320,7 +350,7 @@ export default {
 
       try {
         await authStore.register(form);
-        router.push({ name: 'Ordernow' });
+        hiddenCloseButton.value.click();
       } catch (error) {
         if (typeof error === 'object') {
           for (const key in error) {
@@ -352,23 +382,16 @@ export default {
       // Implement forgot password logic
     };
 
-    // Function to close the modal
-    const closeModal = () => {
-      const modalElement = document.getElementById('registerModal');
-      const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-      modalInstance.hide();
+    // Function to switch to Login Modal
+    const switchToLogin = () => {
+      hiddenCloseButton.value.click();
     };
 
-    // Import Bootstrap's Modal class
-    let bootstrap;
-    onMounted(() => {
-      bootstrap = require('bootstrap/dist/js/bootstrap.bundle.min.js');
-    });
+
 
     return {
       form,
       errors,
-      closeModal,
       isSubmitting,
       showPassword,
       showConfirmPassword,
@@ -378,12 +401,65 @@ export default {
       loginWithFacebook,
       loginWithGoogle,
       forgotPassword,
+      switchToLogin,
+      registerModal,
+      hiddenCloseButton, // Expose the ref to the template
     };
   },
 };
 </script>
 
 <style scoped>
+/* Add your styles here */
+
+.icon-email {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  color: #6c757d;
+}
+
+.info-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  color: #dc3545;
+  cursor: pointer;
+}
+
+.form-control {
+  padding-left: 35px; /* Adjust based on icon size */
+  padding-right: 35px; /* Adjust based on icon size */
+}
+
+.button-wrap .spinner-border {
+  margin-right: 5px;
+}
+
+.btn-link {
+  padding: 0;
+}
+
+.modal-search-dish .modal-dialog {
+  max-width: 500px;
+}
+
+.bottom-text {
+  margin-top: 10px;
+}
+
+.bottom-text a {
+  color: #0d6efd;
+  text-decoration: none;
+}
+
+.bottom-text a:hover {
+  text-decoration: underline;
+}
+
+/* shubhams style */
 .error-wrap {
   color: red;
   font-size: 0.875rem;

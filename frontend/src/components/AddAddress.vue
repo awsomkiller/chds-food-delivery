@@ -132,7 +132,7 @@
                 </div>
   
                 <div class="button-wrap sign-up-wrap p-0">
-                  <button class="btn btn-primary w-100" type="submit">
+                  <button class="btn btn-primary w-100" type="submit" data-bs-dismiss="modal" aria-label="Close">
                     <i class="fa-solid fa-plus"></i>
                     {{ activeAddress.id ? 'Update Address' : 'Add Address' }}
                   </button>
@@ -149,25 +149,19 @@
   <script>
   import { ref, computed, onMounted } from 'vue';
   import { useAddressStore } from '@/stores/address';
-  import { Modal } from 'bootstrap'; // Import Bootstrap's Modal
+  import { useAuthStore } from '@/stores/auth';
   
   export default {
     name: 'AddAddress',
     setup() {
       const addressStore = useAddressStore();
+      const authStore = useAuthStore();
   
       // Reference to the modal DOM element
       const addressModalRef = ref(null);
-      let addressModalInstance = null;
   
       // Initialize the modal instance when the component is mounted
       onMounted(() => {
-        if (addressModalRef.value) {
-          addressModalInstance = new Modal(addressModalRef.value, {
-            backdrop: 'static', // Optional: prevent closing by clicking outside
-            keyboard: false,    // Optional: prevent closing with Esc key
-          });
-        }
         addressStore.fetchAddresses();
       });
   
@@ -184,36 +178,15 @@
       // Handle form submission
       const handleSubmit = async () => {
         await addressStore.saveActiveAddress();
-        addressModalInstance.hide(); // Close the modal after saving
+        authStore.fetchUserDetails();
       };
   
-      // Open the modal for adding a new address
-      const openAddAddressModal = () => {
-        addressStore.initializeActiveAddress();
-        addressModalInstance.show();
-      };
-  
-      // Open the modal for editing an existing address
-      const editAddress = (address) => {
-        addressStore.setActiveAddress(address);
-        addressModalInstance.show();
-      };
-  
-      // Delete an address
-      const removeAddress = async (id) => {
-        if (confirm('Are you sure you want to delete this address?')) {
-          await addressStore.deleteAddress(id);
-        }
-      };
-  
+
       return {
         addressModalRef,
         activeAddress,
         addresses,
         handleSubmit,
-        openAddAddressModal,
-        editAddress,
-        removeAddress,
       };
     },
   };

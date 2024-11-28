@@ -6,6 +6,7 @@ export const useAuthStore = defineStore('auth', {
     user: null,
     accessToken: null,
     refreshToken: null,
+    delivery: false,
   }),
 
   actions: {
@@ -20,16 +21,44 @@ export const useAuthStore = defineStore('auth', {
 
         localStorage.setItem('accessToken', access_token);
         localStorage.setItem('refreshToken', refresh_token);
-        localStorage.setItem('user', JSON.stringify(user));
 
         axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
-
+        await this.fetchUserDetails()
         return response.data;
       } catch (error) {
         console.error('Login failed:', error.response?.data || error.message);
         throw error;
       }
     },
+
+    async fetchUserDetails() {
+      try {
+        const response = await axios.get('/details/');
+
+        this.user = response.data;
+        localStorage.setItem('user', JSON.stringify(this.user));
+        this.deliveryEligibilityCheck()
+        return;
+      } catch (error) {
+        console.error('Login failed:', error.response?.data || error.message);
+        throw error;
+      }
+    },
+
+    deliveryEligibilityCheck(){
+      const postal_code = this.user.primary_address?.postal_code;
+      const eligible_postal_code = this.getEligiblePostalCodes();
+      this.delivery = eligible_postal_code.includes(parseInt(postal_code));
+    },
+
+    getEligiblePostalCodes() {
+      return [
+        3067, 3103, 3121, 3124, 3068, 3066, 3002,
+        3078, 3065, 3123, 3101, 3102, 3144, 3141,
+        3142, 3000, 3008, 3006, 3122
+      ];
+    },
+
 
     async handlePasswordChange(payload) {
       try {
@@ -92,6 +121,23 @@ export const useAuthStore = defineStore('auth', {
 
         axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
       }
+    },
+    getBillingAddress(){
+      return this.formatAddressSingleLine(this.user.billing_address)
+    },
+
+    formatAddressSingleLine({
+      street_address1,
+      street_address2,
+      suburbs,
+      city,
+      postal_code,
+    }) {
+      return [
+        [street_address1, street_address2].filter(Boolean).join(', '),
+        suburbs?.trim(),
+        [city, postal_code].filter(Boolean).join(', '),
+      ].filter(Boolean).join(', ');
     },
   },
 });

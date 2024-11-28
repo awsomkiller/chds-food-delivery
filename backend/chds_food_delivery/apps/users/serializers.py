@@ -173,7 +173,7 @@ class UserAddressSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ['id', 'user_image', 'date_of_birth', 'user']
+        fields = ['id', 'user_image', 'date_of_birth']
         
 class UserCardDetailsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -211,4 +211,37 @@ class UpdateUserinfoSerializer(serializers.Serializer):
     mobile_number = serializers.CharField(required=False, allow_blank=True)
     user_image = serializers.ImageField(required=False, allow_null=True)
     date_of_birth = serializers.DateField(required=False, allow_null=True)
+
+
+class UserDetailsSerializer(serializers.ModelSerializer):
+    profile = serializers.SerializerMethodField()
+    primary_address = serializers.SerializerMethodField()
+    billing_address = serializers.SerializerMethodField()
+    
+    class Meta:
+        fields = ['id', 'email', 'profile', 'primary_address', 'full_name', 'billing_address']
+        model = User
+
+    def get_primary_address(self, obj):
+        try:
+            instance = UserAddress.objects.get(user=obj, is_primary=True)
+            serializer = UserAddressSerializer(instance)
+            return serializer.data
+        except:
+            return None
+    
+    def get_billing_address(self, obj):
+        try:
+            instance = UserAddress.objects.get(user=obj, is_billing=True)
+            serializer = UserAddressSerializer(instance)
+            return serializer.data
+        except:
+            return None
+    
+    def get_profile(self, obj):
+        try:
+            instance = UserProfile.objects.get(user=obj)
+            return UserProfileSerializer(instance).data
+        except:
+            return None
 
