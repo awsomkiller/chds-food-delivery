@@ -7,7 +7,7 @@ import { useAuthStore } from '@/stores/auth';
 import { onMounted, ref, watch, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { stripePromise } from '@/stripe.js';
-import caxios from '../../axios';
+// import caxios from '../../axios';
 
 export default {
   name: 'CheckoutPage',
@@ -36,6 +36,8 @@ export default {
     const selectedOption = ref('delivery');
     const selectedDeliveryAddress = ref({});
     const selectedPickupAddress = ref({});
+    const showFail = ref(null);
+    const showSuccess = ref(null);
 
     const router = useRouter();
 
@@ -86,7 +88,7 @@ export default {
           return;
         }
         if(Object.keys(selectedPickupAddress.value).length === 0){
-            alert('Delivery Address is not selected')
+            alert('Pickup Address is not selected')
         }
         payload.schedule_date = activePickUpDay.value.date;
         payload.time_slot = activePickupTimeSlot.value.name;
@@ -95,36 +97,35 @@ export default {
       }
       payload.amount = TotalOrderPrice.value;
       payload.menu_item = JSON.stringify(cart.value);
+      showSuccess.value.click()
+    //   try {
+    //     const response = await caxios.post('/orders/create/', payload);
+    //     const { order_id, client_secret } = response.data;
 
-      try {
-        const response = await caxios.post('/orders/create/', payload);
-        const { order_id, client_secret } = response.data;
+    //     // Confirm the payment
+    //     const result = await stripe.value.confirmCardPayment(client_secret, {
+    //       payment_method: {
+    //         card: cardElement.value,
+    //         billing_details: {
+    //           // Include billing details if needed
+    //         },
+    //       },
+    //     });
 
-        // Confirm the payment
-        const result = await stripe.value.confirmCardPayment(client_secret, {
-          payment_method: {
-            card: cardElement.value,
-            billing_details: {
-              // Include billing details if needed
-            },
-          },
-        });
-
-        if (result.error) {
-          // Show error to customer
-          console.error(result.error.message);
-          alert('Payment failed: ' + result.error.message);
-        } else {
-          if (result.paymentIntent.status === 'succeeded') {
-            // Payment succeeded
-            alert('Payment successful!');
-            router.push({ name: 'OrderConfirmation', params: { orderId: order_id } });
-          }
-        }
-      } catch (error) {
-        console.error('Error during checkout:', error.response || error);
-        alert('An error occurred during checkout: ' + (error.response?.data?.detail || error.message));
-      }
+    //     if (result.error) {
+    //       // Show error to customer
+    //       console.error(result.error.message);
+    //       showFail.value.click();
+    //     } else {
+    //       if (result.paymentIntent.status === 'succeeded') {
+    //         // Payment succeeded
+    //        showSuccess.value.click();
+    //       }
+    //     }
+    //   } catch (error) {
+    //     console.error('Error during checkout:', error.response || error);
+    //     alert('An error occurred during checkout: ' + (error.response?.data?.detail || error.message));
+    //   }
     };
 
     // Handle delivery day selection change
@@ -217,6 +218,8 @@ export default {
       handleDelete,
       selectedOption,
       deliverydays,
+      showFail,
+      showSuccess,
       pickupdays,
       activeDeliveryDay,
       activePickUpDay,
@@ -438,10 +441,10 @@ export default {
                                         type="radio" 
                                         class="btn-check" 
                                         name="outlets" 
-                                        id="outlet1" 
+                                        :id="'pickup-' + address.id" 
                                         autocomplete="off" 
-                                        v-model="selectedPickupAddress" 
-                                        checked
+                                        v-model="selectedPickupAddress"
+                                        :value="address"
                                     >
                                     <label class="btn btn-primary" :for="'pickup-' + address.id">
                                         <p class="address-name mb-0">{{ address.name }} </p>
@@ -527,6 +530,20 @@ export default {
             </div>
         </div>
     </div>
+    <button
+        type="button"
+        ref="showFail"
+        class="d-none"
+        data-bs-toggle="modal" 
+        data-bs-target="#orderFailed"
+        ></button>
+    <button
+        type="button"
+        ref="showSuccess"
+        class="d-none"
+        data-bs-toggle="modal" 
+        data-bs-target="#orderSuccess"
+        ></button>
 </template>
 
 <style>

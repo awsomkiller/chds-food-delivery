@@ -3,11 +3,11 @@
 import NavbarComponent from "./components/NavbarComponent.vue";
 import LoginModule from "./components/LoginModule.vue";
 import SignUp from "./components/SignUp.vue";
-import LoginCheck from "./components/LoginCheck.vue";
 import PostalCode from "./components/PostalCode.vue";
 import AddItem from "./components/AddItem.vue";
 import MobileSidebar from "./components/MobileSidebar.vue";
 import AddAddress from "./components/AddAddress.vue";
+import OrderStatus from "./components/OrderStatus.vue";
 
 
 </script>
@@ -19,9 +19,9 @@ import AddAddress from "./components/AddAddress.vue";
   <SignUp />
   <AddItem />
   <PostalCode/>
-  <LoginCheck />
   <MobileSidebar />
   <AddAddress />
+  <OrderStatus />
 </template>
 
 <style></style>
