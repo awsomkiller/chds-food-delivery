@@ -7,7 +7,7 @@ import { useAuthStore } from '@/stores/auth';
 import { onMounted, ref, watch, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { stripePromise } from '@/stripe.js';
-// import caxios from '../../axios';
+import caxios from '../../axios';
 
 export default {
   name: 'CheckoutPage',
@@ -97,10 +97,10 @@ export default {
       }
       payload.amount = TotalOrderPrice.value;
       payload.menu_item = JSON.stringify(cart.value);
-      
+
       try {
         const response = await caxios.post('/orders/create/', payload);
-        const { order_id, client_secret } = response.data;
+        const { client_secret } = response.data;
 
         // Confirm the payment
         const result = await stripe.value.confirmCardPayment(client_secret, {
