@@ -236,7 +236,7 @@
               <div class="bottom-text">
                 <p>
                   Already have an account?
-                  <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" @click.prevent="switchToLogin">Sign In Now!</a>
+                  <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" @click.prevent="switchToLogin">Login Now!</a>
                 </p>
               </div>
             </form>

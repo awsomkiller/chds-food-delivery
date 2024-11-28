@@ -6,6 +6,7 @@
     font-family: "Inter", serif;
 }
 
+
 :root{
     --body-color: #f1f0f5;
     --divider-color: #e4e4e4;
@@ -46,6 +47,8 @@
 body{
     background-color: var(--body-color) ;
 }
+
+
 
 
 .bg-modal-body-color{
@@ -627,7 +630,7 @@ span.wrap-text {
 }
 
 .main-content-wrap h4 {
-  font-size: 40px;
+  font-size: 54px;
   line-height: 55px;
   color: #fff;
 
@@ -663,6 +666,45 @@ span.wrap-text {
   font-size: 30px;
   font-weight: 700;
   text-align: center;
+}
+
+.ourfoodSwiper .swiper-wrapper{
+  padding-bottom: 80px;
+}
+
+
+.ourfoodSwiper .swiper-button-prev, .ourfoodSwiper .swiper-button-next{
+  width: 56px;
+  height: 56px;
+  border: 1px solid var(--bs-btn-disabled-border-color);
+  background: var(--bs-btn-disabled-border-color);
+  border-radius: 30px;
+  padding: 8px;
+  bottom: 0;
+  top: auto;
+}
+
+.ourfoodSwiper .swiper-button-prev:after, .ourfoodSwiper .swiper-button-next:after{
+  font-size: 20px;
+  color: white;
+}
+
+
+.ourfoodSwiper .swiper-button-prev {
+  left: calc(50% - 65px);
+}
+
+.ourfoodSwiper .swiper-button-next{
+  right: calc(50% - 65px);
+}
+
+.ourfoodSwiper .swiper-pagination {
+  top: auto;
+  bottom: 56px !important;
+}
+
+.swiper-pagination .swiper-pagination-bullet-active {
+  background-color: var(--dark-brown-color);
 }
 
 .swiper-slide {
@@ -1132,6 +1174,7 @@ ul {
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
+  height: 100%;
 }
 
 .offer-card.style1 .offer-content h3 {
@@ -1217,7 +1260,7 @@ ul {
 }
 
 .section-padding {
-  padding: 85px 0;
+  /* padding: 85px 0; */
 }
 
 .fix {
@@ -1229,6 +1272,8 @@ ul {
 .about-wrapper.style1 .title-area {
   max-width: 530px;
   margin: 0 auto;
+  padding: 50px 10px;
+  text-align: center;
 }
 
 .title-area {
@@ -1352,7 +1397,7 @@ ul {
 .about-us-section .shape1 img,
 .about-us-section .shape4 img {
   width: 300px;
-
+  height: 100%;
 }
 
 .about-us-section .shape3 img,
@@ -1655,6 +1700,7 @@ ul {
 .testimonial-wrapper.style1 {
   position: relative;
   background: #e2dbd6;
+  padding: 50px 30px;
 }
 
 .testimonial-wrapper.style1 .shape {
@@ -1694,6 +1740,10 @@ ul {
   -o-border-radius: 50%;
   width: 80px;
   height: 80px;
+}
+
+.testimonial-wrapper .swiper-wrapper{
+  padding-bottom: 80px;
 }
 
 .testimonial-card.style1 .testimonial-header .fancy-box .item2 h6 {
@@ -1791,6 +1841,37 @@ ul {
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
   -o-border-radius: 50%;
+}
+
+.testimonial-wrapper .swiper-button-prev, .testimonial-wrapper .swiper-button-next{
+  width: 56px;
+  height: 56px;
+  border: 1px solid var(--bs-btn-disabled-border-color);
+  background: var(--bs-btn-disabled-border-color);
+  border-radius: 30px;
+  padding: 8px;
+  bottom: 0;
+  top: auto;
+}
+
+.testimonial-wrapper .swiper-button-prev:after, .testimonial-wrapper .swiper-button-next:after{
+  font-size: 20px;
+  font-weight: 700px;
+  color: white;
+}
+
+
+.testimonial-wrapper .swiper-button-prev {
+  left: calc(50% - 65px);
+}
+
+.testimonial-wrapper .swiper-button-next{
+  right: calc(50% - 65px);
+}
+
+.testimonial-wrapper .swiper-pagination{
+  top: auto;
+  bottom: 56px !important;
 }
 
 .cta-content .btn {

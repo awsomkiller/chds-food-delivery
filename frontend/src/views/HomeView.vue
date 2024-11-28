@@ -1,3 +1,37 @@
+
+<script>
+  // Import Swiper Vue.js components
+  import { Swiper, SwiperSlide } from 'swiper/vue';
+import FooterComponent from '@/components/FooterComponent.vue';
+  
+
+  // Import Swiper styles
+  import 'swiper/css';
+
+  // import required modules
+  import 'swiper/css/pagination';
+  import { Pagination } from 'swiper/modules';
+
+
+  // import required modules
+  import 'swiper/css/navigation';
+  import { Navigation } from 'swiper/modules';
+  
+  export default {
+    components: {
+      Swiper,
+      SwiperSlide,
+      FooterComponent,
+    },
+    setup() {
+      return {
+        modules: [Pagination, Navigation],
+      };
+    },
+  };
+
+</script>
+
 <template>
     <div class="main">
       <div class="main-content">
@@ -70,8 +104,6 @@
                 <div class="swiper-container ">
 
                   <swiper
-                    :slides-per-view="3"
-                    :space-between="30"
                     :loop="true"
                     :breakpoints="{
                       '640': {
@@ -102,10 +134,12 @@
                       },
                     }"
                     :modules="modules"
-                    class="mySwiper"
+                    :navigation="true"
+                    :pagination="true"
+                    class="ourfoodSwiper"
+
                     @swiper="onSwiper"
                     @slideChange="onSlideChange"
-
                   >
                     <swiper-slide>
                         <div class="single-food-items">
@@ -1067,8 +1101,6 @@
                             <div class="swiper-container-2 ">
 
                               <swiper
-                                :slides-per-view="3"
-                                :space-between="30"
                                 :loop="true"
                                 :breakpoints="{
                                   '640': {
@@ -1099,10 +1131,11 @@
                                   },
                                 }"
                                 :modules="modules"
+                                :pagination="true"
+                                :navigation="true"
                                 class="testimonialSwiper"
                                 @swiper="onSwiper"
                                 @slideChange="onSlideChange"
-
                               >
                                 <swiper-slide>
                                   <div class="testimonial-card style1">
@@ -1170,7 +1203,6 @@
                                   </div>
                                 </swiper-slide>
 
-
                                 <swiper-slide>
                                   <div class="testimonial-card style1">
                                       <div class="testimonial-header">
@@ -1216,7 +1248,6 @@
                                   </div>
                                 </swiper-slide>
 
-
                                 <swiper-slide>
                                   <div class="testimonial-card style1">
                                       <div class="testimonial-header">
@@ -1238,7 +1269,6 @@
                                       </p>
                                   </div>
                                 </swiper-slide>
-
 
                                 <swiper-slide>
                                   <div class="testimonial-card style1">
@@ -1272,10 +1302,7 @@
                           
                     
             </div>
-            <div class="btn-wrap">
-                <div class="arrow-prev" tabindex="0" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-c7b52f11cf3afd5d" fdprocessedid="teg7ne"><i class="fa-solid fa-arrow-left"></i></div>
-                <div class="arrow-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-c7b52f11cf3afd5d" fdprocessedid="qqwf7o"><i class="fa-solid fa-arrow-right"></i></div>
-            </div>
+           
         </div>
 
         
@@ -1284,24 +1311,3 @@
     </div>
     <FooterComponent />
 </template>
-
-<script>
-  // Import Swiper Vue.js components
-  import { Swiper, SwiperSlide } from 'swiper/vue';
-  import FooterComponent from '@/components/FooterComponent.vue';
-
-  // Import Swiper styles
-  import 'swiper/css';
-
-  export default {
-    components: {
-      Swiper,
-      SwiperSlide,
-      FooterComponent,
-    },
-    setup() {
-      return {};
-    },
-  };
-
-</script>
