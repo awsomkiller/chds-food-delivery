@@ -100,5 +100,8 @@ export const useCartStore = defineStore('cart', {
         this.updateTotal();
       }
     },
+    resetCart() {
+      this.$reset();
+    },
   },
 });
