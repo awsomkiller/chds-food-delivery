@@ -12,9 +12,9 @@
       <div class="modal-content">
         <div class="modal-body text-center">
           <div class="login-content">
-            <div class="logo-wrap">
+            <!-- <div class="logo-wrap">
               <img src="@/assets/CHDS logo Blk transparent.png" alt="CHDS Logo" />
-            </div>
+            </div> -->
             <div class="login-text-wrap">
               <h4>Sign Up</h4>
               <p>Hi 👋 there! Sign Up to have a memorable meal</p>

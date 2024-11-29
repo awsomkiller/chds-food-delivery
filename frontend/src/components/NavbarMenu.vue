@@ -33,11 +33,14 @@ export default {
 
     
        
-        <div class="login-register d-flex align-items-center gap-3 show-login nav-link">
+        <div class="login-register d-flex align-items-center gap-3 show-login ">
             <!-- <div class="icon-location">
                 <i class="fa-solid fa-user"></i>
             </div> -->
-            <a class="mb-0" d> Login / Register
+            <a class="mb-0 nav-link" type="button" data-bs-toggle="modal" data-bs-target="#registerModal" data-bs-dismiss="offcanvas" > Register
+            </a>
+
+            <a class="mb-0 nav-link" type="button" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="offcanvas" > Login
             </a>
         </div>
         </ul>

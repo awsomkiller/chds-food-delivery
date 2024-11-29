@@ -1105,11 +1105,11 @@ import FooterComponent from '@/components/FooterComponent.vue';
                                 :breakpoints="{
                                   '640': {
                                     slidesPerView: 1,
-                                    spaceBetween: 20,
+                                    spaceBetween: 10,
                                   },
                                   '768': {
                                     slidesPerView: 2,
-                                    spaceBetween: 30,
+                                    spaceBetween: 10,
                                   },
                                   '1024': {
                                     slidesPerView: 3,
@@ -1121,12 +1121,12 @@ import FooterComponent from '@/components/FooterComponent.vue';
                                   },
 
                                   '2000': {
-                                    slidesPerView: 4,
+                                    slidesPerView: 3,
                                     spaceBetween: 30,
                                   },
 
                                   '2500': {
-                                    slidesPerView: 5,
+                                    slidesPerView: 4,
                                     spaceBetween: 30,
                                   },
                                 }"
@@ -1143,8 +1143,8 @@ import FooterComponent from '@/components/FooterComponent.vue';
                                           <div class="fancy-box">
                                               <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
                                               <div class="item2">
-                                                  <h6>Albert Flores</h6>
-                                                  <p>Web Designer</p>
+                                                  <h6>Shengli</h6>
+                                                  <!-- <p>Web Designer</p> -->
                                                   <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
                                               </div>
                                               <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
@@ -1152,9 +1152,93 @@ import FooterComponent from '@/components/FooterComponent.vue';
                                           </div>
                                       </div>
       
-                                      <p>Penatibus magnis dis point parturient montes nascetur ridiculus mus Ut id
-                                          lorem ac enim the vestibulum blandit nec sit amet felis. Fusce quis diam
-                                          odio Cras mattis mi quis tincidunt
+                                      <p>
+                                        These meals have become my go-to daily choice for healthy eating. They taste amazing and are genuinely nutritious, which has made sticking to a good diet so much easier. I feel more energized, and it’s been great not having to worry about meal prep or clean-up!
+                                      </p>
+                                  </div>
+                                </swiper-slide>
+
+                                <swiper-slide>
+                                  <div class="testimonial-card style1">
+                                      <div class="testimonial-header">
+                                          <div class="fancy-box">
+                                              <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
+                                              <div class="item2">
+                                                  <h6>Xiao Hai</h6>
+                                                  <!-- <p>Web Designer</p> -->
+                                                  <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
+                                              </div>
+                                              <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
+                                              </div>
+                                          </div>
+                                      </div>
+      
+                                      <p>
+                                        The beef shank is incredibly tasty! Tender and flavorful—I can’t get enough of it~
+                                      </p>
+                                  </div>
+                                </swiper-slide>
+
+                                <swiper-slide>
+                                  <div class="testimonial-card style1">
+                                      <div class="testimonial-header">
+                                          <div class="fancy-box">
+                                              <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
+                                              <div class="item2">
+                                                  <h6>Zarya</h6>
+                                                  <!-- <p>Web Designer</p> -->
+                                                  <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
+                                              </div>
+                                              <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
+                                              </div>
+                                          </div>
+                                      </div>
+      
+                                      <p>
+                                        This meal plan is incredibly convenient, and it’s been life-changing! After just a month, I’ve already lost eight kilos, and it didn’t even feel like I was dieting. The meals are balanced, satisfying, and super easy to stick to—plus, everything tastes great. It’s effortless weight loss!
+                                      </p>
+                                  </div>
+                                </swiper-slide>
+
+                                <swiper-slide>
+                                  <div class="testimonial-card style1">
+                                      <div class="testimonial-header">
+                                          <div class="fancy-box">
+                                              <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
+                                              <div class="item2">
+                                                  <h6>Zuyi</h6>
+                                                  <!-- <p>Web Designer</p> -->
+                                                  <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
+                                              </div>
+                                              <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
+                                              </div>
+                                          </div>
+                                      </div>
+      
+                                      <p>
+                                        I bought it as a regular meal, and somehow, the weight just started coming off. It’s very delicious also.
+                                      </p>
+                                  </div>
+                                </swiper-slide>
+
+
+                                <swiper-slide>
+                                  <div class="testimonial-card style1">
+                                      <div class="testimonial-header">
+                                          <div class="fancy-box">
+                                              <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
+                                              <div class="item2">
+                                                  <h6>Chang</h6>
+                                                  <!-- <p>Web Designer</p> -->
+                                                  <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
+                                              </div>
+                                              <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
+                                              </div>
+                                          </div>
+                                      </div>
+      
+                                      <p>
+                                        As someone with a busy work schedule, having these healthy, ready-made meals has been a game-changer. I get to enjoy a fresh, balanced meal every day without taking time to cook or prep. It’s so convenient, saving me time and energy, and the food is very good for asian stomach.
                                       </p>
                                   </div>
                                 </swiper-slide>
@@ -1181,116 +1265,6 @@ import FooterComponent from '@/components/FooterComponent.vue';
                                   </div>
                                 </swiper-slide>
 
-                                <swiper-slide>
-                                  <div class="testimonial-card style1">
-                                      <div class="testimonial-header">
-                                          <div class="fancy-box">
-                                              <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
-                                              <div class="item2">
-                                                  <h6>Albert Flores</h6>
-                                                  <p>Web Designer</p>
-                                                  <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
-                                              </div>
-                                              <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
-                                              </div>
-                                          </div>
-                                      </div>
-      
-                                      <p>Penatibus magnis dis point parturient montes nascetur ridiculus mus Ut id
-                                          lorem ac enim the vestibulum blandit nec sit amet felis. Fusce quis diam
-                                          odio Cras mattis mi quis tincidunt
-                                      </p>
-                                  </div>
-                                </swiper-slide>
-
-                                <swiper-slide>
-                                  <div class="testimonial-card style1">
-                                      <div class="testimonial-header">
-                                          <div class="fancy-box">
-                                              <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
-                                              <div class="item2">
-                                                  <h6>Albert Flores</h6>
-                                                  <p>Web Designer</p>
-                                                  <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
-                                              </div>
-                                              <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
-                                              </div>
-                                          </div>
-                                      </div>
-      
-                                      <p>Penatibus magnis dis point parturient montes nascetur ridiculus mus Ut id
-                                          lorem ac enim the vestibulum blandit nec sit amet felis. Fusce quis diam
-                                          odio Cras mattis mi quis tincidunt
-                                      </p>
-                                  </div>
-                                </swiper-slide>
-
-
-                                <swiper-slide>
-                                  <div class="testimonial-card style1">
-                                      <div class="testimonial-header">
-                                          <div class="fancy-box">
-                                              <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
-                                              <div class="item2">
-                                                  <h6>Albert Flores</h6>
-                                                  <p>Web Designer</p>
-                                                  <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
-                                              </div>
-                                              <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
-                                              </div>
-                                          </div>
-                                      </div>
-      
-                                      <p>Penatibus magnis dis point parturient montes nascetur ridiculus mus Ut id
-                                          lorem ac enim the vestibulum blandit nec sit amet felis. Fusce quis diam
-                                          odio Cras mattis mi quis tincidunt
-                                      </p>
-                                  </div>
-                                </swiper-slide>
-
-                                <swiper-slide>
-                                  <div class="testimonial-card style1">
-                                      <div class="testimonial-header">
-                                          <div class="fancy-box">
-                                              <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
-                                              <div class="item2">
-                                                  <h6>Albert Flores</h6>
-                                                  <p>Web Designer</p>
-                                                  <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
-                                              </div>
-                                              <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
-                                              </div>
-                                          </div>
-                                      </div>
-      
-                                      <p>Penatibus magnis dis point parturient montes nascetur ridiculus mus Ut id
-                                          lorem ac enim the vestibulum blandit nec sit amet felis. Fusce quis diam
-                                          odio Cras mattis mi quis tincidunt
-                                      </p>
-                                  </div>
-                                </swiper-slide>
-
-                                <swiper-slide>
-                                  <div class="testimonial-card style1">
-                                      <div class="testimonial-header">
-                                          <div class="fancy-box">
-                                              <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
-                                              <div class="item2">
-                                                  <h6>Albert Flores</h6>
-                                                  <p>Web Designer</p>
-                                                  <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
-                                              </div>
-                                              <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
-                                              </div>
-                                          </div>
-                                      </div>
-      
-                                      <p>Penatibus magnis dis point parturient montes nascetur ridiculus mus Ut id
-                                          lorem ac enim the vestibulum blandit nec sit amet felis. Fusce quis diam
-                                          odio Cras mattis mi quis tincidunt
-                                      </p>
-                                  </div>
-                                </swiper-slide>
                               
                               </swiper>
                         

@@ -11,7 +11,7 @@
         <div class="shape4 d-none d-xxl-block">
           <img src="@/assets/homepage/footerShape1_4.png" alt="shape" />
         </div>
-        <div class="container">
+        <div class="container p-lg-3 p-md-">
           <div class="footer-top">
             <div class="row gy-4">
               <div class="col-lg-4">
@@ -202,16 +202,14 @@
             >
               <div class="single-footer-widget">
                 <div class="widget-head">
-                  <h3>Contact Us</h3>
+                  <h3>Available Timings</h3>
                 </div>
                 <ul class="list-area">
                   <li class="mb-2">
-                    Monday – Friday:
-                    <span class="text-theme-color2"> 8am – 4pm </span>
+                    Monday | Wednesday | Saturday
                   </li>
                   <li>
-                    Saturday:
-                    <span class="text-theme-color2"> 8am – 12am </span>
+                    <span class="text-theme-color2"> 8am - 12am | 4pm - 7pm </span>
                   </li>
                 </ul>
                 <form action="#" class="mt-4">
