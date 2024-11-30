@@ -1,17 +1,18 @@
-from django.core.mail import send_mail,BadHeaderError
+from django.core.mail import EmailMultiAlternatives,BadHeaderError
 import os
 
 
 
 def NotifyUserViaMail(subject,message,recipient_list):
     try:
-        send_mail(
+        email= EmailMultiAlternatives(
             subject=subject,
-            message=message,
+            body=message,
             from_email=os.getenv("EMAIL_HOST_USER"),
-            recipient_list=recipient_list,
-            fail_silently=False,
+            to=recipient_list,
+    
         )
+        email.send()
     except BadHeaderError:
         return 'Invalid header found.'
     except Exception as e:
