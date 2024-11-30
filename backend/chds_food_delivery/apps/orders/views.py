@@ -40,6 +40,7 @@ class OrderCreateView(APIView):
                 payment_intent = stripe.PaymentIntent.create(
                     amount=int(float(order.amount) * 100),
                     currency='aud',
+                    payment_method_types=['card'],
                     metadata={'order_id': order.order_id, 'user_id': order.user.id},
                 )
                 transaction.stripe_payment_intent_id = payment_intent['id']
@@ -74,7 +75,13 @@ def stripe_webhook(request):
         return HttpResponse(status=400)
 
     event_type = event['type']
-    data_object = event['data']['object']
+    data_object = event['data']['object'],
+    
+    print("WEBHOOK EVENT-", event)
+    
+    print("---------################WEBHOOK EVENT TYPE", event_type)
+    
+    print("Payment Intent data object ", data_object)
 
     if event_type in ['payment_intent.succeeded', 'payment_intent.payment_failed']:
         payment_intent = data_object

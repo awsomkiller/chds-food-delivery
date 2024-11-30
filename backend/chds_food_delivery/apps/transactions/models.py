@@ -112,7 +112,7 @@ class Wallet(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"Wallet {self.wallet_id} for {self.user.username}"
+        return f"Wallet {self.wallet_id} for {self.user.full_name}"
 
     def deposit(self, amount):
         if amount <= 0:

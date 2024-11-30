@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from decimal import Decimal
-from apps.transactions.models import Transaction,WalletCoupon, OrderCoupon
+from apps.transactions.models import Transaction,WalletCoupon, OrderCoupon,Wallet
 
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
