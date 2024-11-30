@@ -24,35 +24,75 @@ class OrderCreateView(APIView):
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
     
-    def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data, context={'request':request})
-        try:
-            if serializer.is_valid(raise_exception=True):
-                order = serializer.save()
-                transaction = Transaction.objects.create(
+    def _make_transaction(self,order,payment_method):
+        transaction = Transaction.objects.create(
                     user=order.user,
                     amount=order.amount,
                     currency='aud',
                     order_type='FOOD_ORDER',
-                    transaction_from='STRIPE',
+                    transaction_from=payment_method,
                     operation_type='DEBIT',
                 )
-                payment_intent = stripe.PaymentIntent.create(
-                    amount=int(float(order.amount) * 100),
-                    currency='aud',
-                    payment_method_types=['card'],
-                    metadata={'order_id': order.order_id, 'user_id': order.user.id},
-                )
-                transaction.stripe_payment_intent_id = payment_intent['id']
-                transaction.status = payment_intent['status']
-                transaction.save()
-                order.transaction = transaction
-                order.status = "ORDER_PLACED"
-                order.save()
-                return Response({
-                    "order_id": order.order_id,
-                    "client_secret": payment_intent['client_secret']
-                }, status=status.HTTP_201_CREATED)
+        return transaction
+    
+    def _check_wallet_balance(self,amount):
+        instance  = self.request.user.digital_wallet
+        if instance.balance < amount:
+            raise ValueError("Your Wallet has Insufficient Funds!!")
+        
+    def _make_payment_from_wallet(self,amount):
+        instance  = self.request.user.digital_wallet
+        balance  = instance.balance
+        left_balance = balance-amount
+        instance.balance =left_balance
+        instance.save()
+    
+    def _check_payment_method(self,data):
+        payment_method = data.pop("payment_type")
+        if payment_method and payment_method == "wallet":
+            return data,"wallet"
+        return data,"stripe"
+        
+    def _update_instances(self,order,transaction,transaction_status):
+        transaction.status = transaction_status
+        transaction.save()
+        order.transaction = transaction
+        order.status = "ORDER_PLACED"
+        order.save()
+    
+    def post(self, request, *args, **kwargs):
+        data , payment_method = self._check_payment_method(request.data)
+        self._check_wallet_balance(data.get("amount"))
+        serializer = self.serializer_class(data=data, context={'request':request})
+        try:
+            if serializer.is_valid(raise_exception=True):
+                order = serializer.save()
+                
+                if payment_method =="stripe":
+                    transaction = self._make_transaction(order,"STRIPE")
+                    payment_intent = stripe.PaymentIntent.create(
+                        amount=int(float(order.amount) * 100),
+                        currency='aud',
+                        payment_method_types=['card'],
+                        metadata={'order_id': order.order_id, 'user_id': order.user.id},
+                    )
+                    transaction.stripe_payment_intent_id = payment_intent['id']
+                    transaction_status = payment_intent['status']
+                    self._update_instances(order,transaction,transaction_status)
+                    return Response({
+                        "order_id": order.order_id,
+                      "client_secret": payment_intent['client_secret']
+                    }, status=status.HTTP_201_CREATED)
+                    
+                elif payment_method =="wallet":
+                    transaction = self._make_transaction(order,"WALLET")
+                    self._make_payment_from_wallet(data.get("amount"))
+                    transaction_status = "succeeded"
+                    self._update_instances(order,transaction,transaction_status)
+                    return Response({
+                        "order_id": order.order_id,
+                    }, status=status.HTTP_201_CREATED)
+                       
         except Exception as exc:
             return Response({"message": "error occurred", "error": str(exc).strip("\n")}, status=status.HTTP_400_BAD_REQUEST)
         
