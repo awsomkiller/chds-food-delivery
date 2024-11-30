@@ -14,7 +14,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse,JsonResponse
 import logging
 from rest_framework.generics import ListAPIView
-from rest_framework import json
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
