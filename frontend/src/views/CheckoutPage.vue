@@ -146,10 +146,10 @@ export default {
                 payload.time_slot = activePickupTimeSlot.value.name;
                 payload.order_type = 'PICKUP';
                 payload.pickup_location = formatAddress(selectedPickupAddress.value);
-                payload.payment_type = selectPaymentMethod.value;
             }
             payload.amount = TotalOrderPrice.value;
             payload.menu_item = JSON.stringify(cart.value);
+            payload.payment_type = selectPaymentMethod.value;
 
             if (selectPaymentMethod.value === "wallet") {
                 try{
