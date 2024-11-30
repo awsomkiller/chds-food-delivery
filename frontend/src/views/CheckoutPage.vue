@@ -192,7 +192,7 @@ export default {
                     }
                 } catch (error) {
                     console.error('Error during checkout:', error.response || error);
-                    alert('An error occurred during checkout: ' + (error.response ? .data ? .detail || error.message));
+                    alert('An error occurred during checkout: ' + (error.response?.data?.detail || error.message));
                 }
             }
 
@@ -202,7 +202,7 @@ export default {
         const handleDeliveryDayChange = (event) => {
             const dayId = event.target.value;
             workingDaysStore.setActiveDeliveryDay(dayId);
-            selectedDeliveryTimeSlotId.value = workingDaysStore.activeDeliveryTimeSlot ? .id || '';
+            selectedDeliveryTimeSlotId.value = workingDaysStore.activeDeliveryTimeSlot?.id || '';
         };
 
         // Handle delivery time slot selection change
@@ -215,7 +215,7 @@ export default {
         const handlePickupDayChange = (event) => {
             const dayId = event.target.value;
             workingDaysStore.setActivePickupDay(dayId);
-            selectedPickupTimeSlotId.value = workingDaysStore.activePickupTimeSlot ? .id || '';
+            selectedPickupTimeSlotId.value = workingDaysStore.activePickupTimeSlot?.id || '';
         };
 
         // Handle pickup time slot selection change
