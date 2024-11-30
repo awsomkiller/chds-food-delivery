@@ -57,6 +57,8 @@ class MenuItem(models.Model):
     carbs = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     category = models.ManyToManyField(MenuCategory, verbose_name=_("Categories"))
     tags = models.ManyToManyField(MenuItemTags, verbose_name=_("Tags"))
+    is_popular = models.BooleanField(default=False)
+    is_best_selling= models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Menu Dish"
@@ -131,6 +133,10 @@ class MenuPortionPriceList(models.Model):
     menu_item = models.ForeignKey(MenuItem, verbose_name=_("Menu Item"), on_delete=models.CASCADE,related_name="menu_items_prices")
     portion_item = models.ForeignKey(PortionSize, verbose_name=_("Portion Item"), on_delete=models.CASCADE,related_name="portion_size_prices")
     price = models.CharField(_("Portion Price"),max_length=50, help_text="Price in  Australian dollars")
+    calories = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
+    protein = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
+    fats = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
+    carbs = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     
     class Meta:
         verbose_name = "Price List"

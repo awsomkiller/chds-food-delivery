@@ -6,13 +6,14 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from .serializers import OrderSerializer
+from .serializers import OrderSerializer,ListOrdersSerilaizer
 from .models import Orders
 from django.db import transaction as db_transaction
 from apps.transactions.models import Transaction, Wallet
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 import logging
+from rest_framework.generics import ListAPIView
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -145,3 +146,11 @@ def stripe_webhook(request):
         logger.info(f"Unhandled event type: {event_type}")
 
     return HttpResponse(status=200)
+
+
+class ListOrders(ListAPIView):
+    serializer_class=ListOrdersSerilaizer
+    pagination_class=None
+    
+    def get_queryset(self):
+        return Orders.objects.filter(user=self.request.user).order_by("-id")[:10]

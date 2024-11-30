@@ -245,3 +245,9 @@ class UserDetailsSerializer(serializers.ModelSerializer):
         except:
             return None
 
+
+class UpdatePrimaryUserAddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAddress
+        fields = ['is_primary']
+        
