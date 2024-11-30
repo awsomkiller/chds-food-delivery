@@ -4,6 +4,7 @@ from apps.transactions.serializers import (
     TransactionSerializer ,
     WalletCouponSerializer,
     OrderCouponSerializer,
+    ListWalletSerializer
 )
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -137,3 +138,15 @@ class WalletTransactionsView(APIView):
 
 
 
+
+class WalletViewSet(ModelViewSet):
+    """
+    API endpoint for managing wallets.
+    """
+    http_method_names=['get',"options"]
+    queryset = Wallet.objects.all()
+    serializer_class = ListWalletSerializer
+
+    
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user)

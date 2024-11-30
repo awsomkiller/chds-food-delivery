@@ -36,3 +36,14 @@ class WalletRechargeSerializer(serializers.Serializer):
         if value <= 0:
             raise serializers.ValidationError("Invalid Recharge amount")
         return value
+
+class ListWalletSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wallet
+        fields = ['id',"balance","currency"]
+   
+class WalletSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wallet
+        fields = []
+        
