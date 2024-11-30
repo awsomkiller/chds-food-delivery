@@ -93,7 +93,7 @@ export default {
         payload.schedule_date = activePickUpDay.value.date;
         payload.time_slot = activePickupTimeSlot.value.name;
         payload.order_type = 'PICKUP';
-        payload.pickup_location = formatAddress(pickUpAddresses.value);
+        payload.pickup_location = formatAddress(selectedPickupAddress.value);
       }
       payload.amount = TotalOrderPrice.value;
       payload.menu_item = JSON.stringify(cart.value);
@@ -159,6 +159,7 @@ export default {
     };
 
     const formatAddress = (addressObj) => {
+        console.log(addressObj);
         const {
             name,
             street_address1,
@@ -249,9 +250,9 @@ export default {
                 <div class="store-n-diliveri bg-white p-2 rounded mb-3">
                     <div class="outlet-with-billing-add">
                         <div class="checkout-title-card">
-                            <a href="" class="back-button text-decoration-none">
+                            <router-link to="/ordernow" class="back-button text-decoration-none">
                                 <i class="fa-regular fa-circle-left"></i>
-                            </a>
+                            </router-link>
                             <div class="outlet-card p-2 ">
                                 <div class="outlet-detail">
                                     <h5> Chi Hun Da Su </h5>
@@ -514,10 +515,14 @@ export default {
                         <p class=""> Tax </p>
                         <p class=""> A$ 0</p>
                     </div>
-                    <div class="billing-detail detail-green">
-                        <p class=""> Delivery </p>
+                    <div class="billing-detail detail-green" v-if="selectedOption == 'delivery'">
+                        <p class="" > Delivery Charges</p>
                         <p class=""> Yay! Free Delivery </p>
-                    </div>     
+                    </div>
+                    <div class="billing-detail detail-green" v-else>
+                        <p class="" >Pick Up Charges</p>
+                        <p class=""> Yay! Free Delivery </p>
+                    </div>      
                     <div class="billing-detail grand-total">
                         <p class=""> Grand Total </p>
                         <p class=""> A$ {{ TotalOrderPrice }} </p>
