@@ -11,7 +11,7 @@ from .models import Orders
 from django.db import transaction as db_transaction
 from apps.transactions.models import Transaction, Wallet
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 import logging
 from rest_framework.generics import ListAPIView
 
@@ -55,6 +55,7 @@ class OrderCreateView(APIView):
                 }, status=status.HTTP_201_CREATED)
         except Exception as exc:
             return Response({"message": "error occurred", "error": str(exc).strip("\n")}, status=status.HTTP_400_BAD_REQUEST)
+        
 @csrf_exempt
 def stripe_webhook(request):
     payload = request.body
@@ -68,45 +69,53 @@ def stripe_webhook(request):
     except ValueError as e:
         # Invalid payload
         logger.error(f"Invalid payload: {e}")
-        return HttpResponse(status=400)
+        return JsonResponse({"error":str(e)},status=400)
     except stripe.error.SignatureVerificationError as e:
         # Invalid signature
         logger.error(f"Invalid signature: {e}")
-        return HttpResponse(status=400)
+        return JsonResponse({"error":str(e)},status=400)
 
     event_type = event['type']
-    data_object = event['data']['object'],
+    data_object = event['data']['object']
     
-    print("WEBHOOK EVENT-", event)
+    charge_id = data_object['id']
+    payment_intent_id = data_object['payment_intent']
+    payment_method_id = data_object['payment_method']
+    metadata = data_object['metadata']
+    order_id = metadata.get('order_id')
+    wallet_id = metadata.get('wallet_id')
+    status = data_object['status']
+    receipt_url=data_object['receipt_url']
+    payment_method_details=data_object['payment_method_details']
+      
     
-    print("---------################WEBHOOK EVENT TYPE", event_type)
     
-    print("Payment Intent data object ", data_object)
 
-    if event_type in ['payment_intent.succeeded', 'payment_intent.payment_failed']:
-        payment_intent = data_object
-        payment_status = payment_intent['status']
-        transaction_id = payment_intent['id']  # Stripe Payment Intent ID
-        order_id = payment_intent['metadata'].get('order_id')  # May be None for wallet recharge
-        wallet_id = payment_intent['metadata'].get('wallet_id')  # Assuming wallet recharge includes wallet_id
-
+    # if event_type in ['payment_intent.succeeded', 'payment_intent.payment_failed']:
+    #     payment_intent = data_object
+    #     payment_status = payment_intent['status']
+    #     transaction_id = payment_intent['id']  # Stripe Payment Intent ID
+    #     order_id = payment_intent['metadata'].get('order_id')  # May be None for wallet recharge
+    #     wallet_id = payment_intent['metadata'].get('wallet_id')  # Assuming wallet recharge includes wallet_id
+    if data_object['paid']:
         try:
             # Retrieve the Transaction based on Stripe Payment Intent ID
-            transaction = Transaction.objects.get(stripe_payment_intent_id=transaction_id)
+            transaction = Transaction.objects.get(stripe_payment_intent_id=payment_intent_id)
         except Transaction.DoesNotExist:
-            logger.warning(f"Transaction with Payment Intent ID {transaction_id} does not exist.")
+            logger.warning(f"Transaction with Payment Intent ID {payment_intent_id} does not exist.")
             return HttpResponse(status=200)  # Return 200 to Stripe to acknowledge receipt
 
-        # Start an atomic transaction to ensure data integrity
+            # Start an atomic transaction to ensure data integrity
         with db_transaction.atomic():
             # Update Transaction status and related fields
-            transaction.status = payment_status
+            transaction.status = status
             try:
-                charge = payment_intent['charges']['data'][0]
-                transaction.stripe_charge_id = charge['id']
-                transaction.payment_method = charge['payment_method_details']['type']
-                transaction.payment_method_details = charge['payment_method_details']
-                transaction.receipt_url = charge.get('receipt_url')
+                # charge = payment_intent['charges']['data'][0]
+                
+                transaction.stripe_charge_id = charge_id
+                transaction.payment_method = payment_method_details['type']
+                transaction.payment_method_details = payment_method_details
+                transaction.receipt_url = receipt_url
             except (IndexError, KeyError) as e:
                 logger.error(f"Error retrieving charge details: {e}")
 
@@ -122,9 +131,9 @@ def stripe_webhook(request):
                     order = None
 
                 if order:
-                    if event_type == 'payment_intent.succeeded':
+                    if event_type == 'charge.succeeded':
                         order.status = "PAYMENT_SUCCESS"
-                    elif event_type == 'payment_intent.payment_failed':
+                    elif event_type == 'charge.failed':
                         order.status = "PAYMENT_FAILED"
                     order.save()
                     logger.info(f"Order {order_id} status updated to {order.status}.")
@@ -137,12 +146,12 @@ def stripe_webhook(request):
                     wallet = None
 
                 if wallet:
-                    if event_type == 'payment_intent.succeeded':
+                    if event_type == 'charge.succeeded':
                         # Update Wallet Balance
                         wallet.balance += transaction.amount
                         wallet.save()
                         logger.info(f"Wallet {wallet_id} recharged by {transaction.amount}. New balance: {wallet.balance}.")
-                    elif event_type == 'payment_intent.payment_failed':
+                    elif event_type == 'charge.payment_failed':
                         # Optionally, you can notify the user or take other actions
                         logger.info(f"Wallet recharge failed for Wallet ID {wallet_id}.")
             else:
@@ -152,7 +161,7 @@ def stripe_webhook(request):
         # Handle other event types if necessary
         logger.info(f"Unhandled event type: {event_type}")
 
-    return HttpResponse(status=200)
+    return JsonResponse({"message":"success"},status=200)
 
 
 class ListOrders(ListAPIView):
