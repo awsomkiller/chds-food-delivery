@@ -19,10 +19,10 @@ export default {
         </div>
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-            <router-link class="nav-link" aria-current="page" to="/" active-class="active">Home</router-link>
+            <router-link class="nav-link" aria-current="page" to="/" active-class="active" >Home</router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link" to="/ordernow" active-class="active">Order Now</router-link>
+            <router-link class="nav-link" to="/ordernow" active-class="active" >Order Now</router-link>
         </li>   
         <li class="nav-item">
             <router-link class="nav-link" to="/ourstory" active-class="active">Our Story</router-link>

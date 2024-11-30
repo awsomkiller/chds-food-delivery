@@ -32,7 +32,7 @@
                   <div class="item1"><i class="fa-solid fa-envelope"></i></div>
                   <div class="item2">
                     <h6>send email</h6>
-                    <p>info@exmple.com</p>
+                    <p>info@chds.com.au</p>
                   </div>
                 </div>
               </div>
@@ -44,8 +44,8 @@
                     <i class="fa-solid fa-phone"></i>
                   </div>
                   <div class="item2">
-                    <h6>call emergency</h6>
-                    <p>+88 0123 654 99</p>
+                    <h6>Customer Care</h6>
+                    <p>04 6846 2068 </p>
                   </div>
                 </div>
               </div>
@@ -212,7 +212,7 @@
                     <span class="text-theme-color2"> 8am - 12am | 4pm - 7pm </span>
                   </li>
                 </ul>
-                <form action="#" class="mt-4">
+                <!-- <form action="#" class="mt-4">
                   <div class="form-control">
                     <input
                       class="email"
@@ -230,7 +230,7 @@
                       <a href="">Privacy Policy. </a></label
                     >
                   </div>
-                </form>
+                </form> -->
               </div>
             </div>
           </div>

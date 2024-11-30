@@ -75,25 +75,27 @@ export default {
 <template>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid p-0 m-0">
-              <a class="navbar-brand w-15 p-0 m-0" href="#">
-                <img src="@/assets/homepage/CHDS logo Blk on White.png" alt="">
+              <a class="navbar-brand w-15 m-0" href="/">
+                <img src="@/assets/chi-hun-da-su-logo-vertical-white.svg" alt="">
               </a>
              
               <div class="d-flex flex-column w-100 home-wrap-nav">
                   <div class="top-address">
-                    <div class="wlcm-text-wrap">
+                    <!-- <div class="wlcm-text-wrap">
                         <p class="mb-0">Welcome To Chi Hun Da Su </p>
-                    </div>
+                    </div> -->
                     <div class="loctn-wrap d-flex align-items-center gap-3">
                         <div class="icon-location">
                             <i class="fa-solid fa-location-dot"></i>
                         </div>
-                        <p class="mb-0">243 Burwood Rd Hawthorn, VIC 3122</p>
+                        <p class="mb-0">4648 Rocky Road Philadelphia</p>
                     </div>
                     <div class="login-register d-flex align-items-center gap-3 login-hidden" v-if="!user">
                         
                         <a class="mb-0" type="button" data-bs-toggle="modal" data-bs-target="#loginModal"> Login 
                         </a>
+
+                        <a> | </a>
 
                         <a class="mb-0" type="button" data-bs-toggle="modal" data-bs-target="#registerModal"> Register 
                         </a>

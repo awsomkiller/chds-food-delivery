@@ -36,7 +36,7 @@ import FooterComponent from '@/components/FooterComponent.vue';
     <div class="main">
       <div class="main-content">
             <div class="row align-items-center">
-              <div class="col-md-5">
+              <div class="col-lg-5 col-md-12 col-sm-12 col-12 orderl-lg-1 order-md-2 order-sm-2 order-2">
               <div class="main-content-wrap">
                   <h4><Span class="wrap-text">Welcome to Healthly:</Span> Your Path to Wellness
                     <span class="wrap-design">
@@ -60,7 +60,7 @@ import FooterComponent from '@/components/FooterComponent.vue';
               </div>
               <button class="btn theme-btn theme-outline-btn mt-5" type="button"> Order Now<span class="round-arrow ms-2"><i class="fa-solid fa-arrow-right-long"></i></span></button>
               </div>
-              <div class="col-md-7">
+              <div class="col-lg-7 col-md-12 col-sm-12 col-12 orderl-lg-2 order-md-1 order-sm-1 order-1">
                 <div class="main-img text-center">
                   <img src="@/assets/homepage/right-bg.png" class="image-right" alt="">
                 </div>
@@ -108,15 +108,15 @@ import FooterComponent from '@/components/FooterComponent.vue';
                     :breakpoints="{
                       '640': {
                         slidesPerView: 1,
-                        spaceBetween: 20,
+                        spaceBetween: 10,
                       },
                       '768': {
                         slidesPerView: 2,
-                        spaceBetween: 30,
+                        spaceBetween: 10,
                       },
                       '1024': {
                         slidesPerView: 3,
-                        spaceBetween: 30,
+                        spaceBetween: 20,
                       },
                       '1400': {
                         slidesPerView: 3,
@@ -141,7 +141,7 @@ import FooterComponent from '@/components/FooterComponent.vue';
                     @swiper="onSwiper"
                     @slideChange="onSlideChange"
                   >
-                    <swiper-slide>
+                    <swiper-slide >
                         <div class="single-food-items">
                         <div class="item-thumb">
                             <img src="@/assets/homepage/dish-2.png" alt="thumb">
@@ -661,10 +661,10 @@ import FooterComponent from '@/components/FooterComponent.vue';
         </div>
         <section class="about-us-section fix pb-0">
           <div class="about-wrapper style1">
-            <div class="shape1 h-100 d-none d-xxl-block"><img src="@/assets/homepage/left-side-img.png" alt="shape"></div>
+            <div class="shape1 h-100 d-none d-xxl-block"><img src="../assets/homepage/Group-5.png" alt="shape"></div>
             <div class="shape2 h-100 d-none d-xxl-block"><img src="@/assets/homepage/aboutShape1_2.png" alt="shape"></div>
             <div class="shape3 h-100 d-none d-xxl-block"><img class="cir36" src="@/assets/homepage/Cilantro_Chicken_with_Vinegar-removebg-preview (2).png" alt="shape"></div>
-            <div class="shape4 h-100 d-none d-xxl-block"><img src="@/assets/homepage/right-side-img.png" alt="shape"></div>
+            <div class="shape4 h-100 d-none d-xxl-block"><img src="../assets/homepage/Group-6.png" alt="shape"></div>
             <div class="shape5 h-100 d-none d-xxl-block"><img src="@/assets/homepage/aboutShape1_5.png" alt="shape"></div>
             <div class="shape6 h-100 d-none d-xxl-block"><img class="cir36" src="@/assets/homepage/Cilantro_Chicken_with_Vinegar-removebg-preview (2).png" alt="shape"></div>
             <div class="container">
@@ -1141,7 +1141,7 @@ import FooterComponent from '@/components/FooterComponent.vue';
                                   <div class="testimonial-card style1">
                                       <div class="testimonial-header">
                                           <div class="fancy-box">
-                                              <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
+                                              <!-- <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div> -->
                                               <div class="item2">
                                                   <h6>Shengli</h6>
                                                   <!-- <p>Web Designer</p> -->
@@ -1162,7 +1162,7 @@ import FooterComponent from '@/components/FooterComponent.vue';
                                   <div class="testimonial-card style1">
                                       <div class="testimonial-header">
                                           <div class="fancy-box">
-                                              <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
+                                              <!-- <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div> -->
                                               <div class="item2">
                                                   <h6>Xiao Hai</h6>
                                                   <!-- <p>Web Designer</p> -->
@@ -1183,7 +1183,7 @@ import FooterComponent from '@/components/FooterComponent.vue';
                                   <div class="testimonial-card style1">
                                       <div class="testimonial-header">
                                           <div class="fancy-box">
-                                              <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
+                                              <!-- <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div> -->
                                               <div class="item2">
                                                   <h6>Zarya</h6>
                                                   <!-- <p>Web Designer</p> -->
@@ -1204,7 +1204,7 @@ import FooterComponent from '@/components/FooterComponent.vue';
                                   <div class="testimonial-card style1">
                                       <div class="testimonial-header">
                                           <div class="fancy-box">
-                                              <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
+                                              <!-- <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div> -->
                                               <div class="item2">
                                                   <h6>Zuyi</h6>
                                                   <!-- <p>Web Designer</p> -->
@@ -1226,7 +1226,7 @@ import FooterComponent from '@/components/FooterComponent.vue';
                                   <div class="testimonial-card style1">
                                       <div class="testimonial-header">
                                           <div class="fancy-box">
-                                              <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
+                                              <!-- <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div> -->
                                               <div class="item2">
                                                   <h6>Chang</h6>
                                                   <!-- <p>Web Designer</p> -->
@@ -1247,7 +1247,7 @@ import FooterComponent from '@/components/FooterComponent.vue';
                                   <div class="testimonial-card style1">
                                       <div class="testimonial-header">
                                           <div class="fancy-box">
-                                              <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div>
+                                              <!-- <div class="item1"><img src="@/assets/homepage/testimonialProfile1_1.png" alt="thumb"></div> -->
                                               <div class="item2">
                                                   <h6>Albert Flores</h6>
                                                   <p>Web Designer</p>
