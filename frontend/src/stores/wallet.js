@@ -27,9 +27,8 @@ export const useWalletStore = defineStore('wallet', {
       this.error = null;
       
       try {
-        const response = await axios.get('/api/wallet/'); // Adjust the endpoint as needed
+        const response = await axios.get('/transactions/get/balance/');
         this.balance = parseFloat(response.data.balance);
-        this.currency = response.data.currency;
       } catch (err) {
         this.error = err.response?.data?.message || 'Failed to fetch wallet.';
         console.error('Error fetching wallet:', err);

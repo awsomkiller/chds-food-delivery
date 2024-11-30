@@ -4,6 +4,7 @@ import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useMenuStore } from "@/stores/menu";
 import { useCartStore } from "@/stores/cart";
 import { useAuthStore } from "@/stores/auth";
+import { useWalletStore } from "@/stores/wallet";
 
 import { storeToRefs } from "pinia";
 
@@ -15,7 +16,8 @@ export default {
     const menuStore = useMenuStore();
     const cartStore = useCartStore();
     const authStore = useAuthStore();
-    
+    const walletStore = useWalletStore();
+
     const {
       items,
       cart,
@@ -104,6 +106,7 @@ export default {
       menuStore.resetItems();
       menuStore.loadCategories();
       menuStore.loadItems();
+      walletStore.fetchWallet()
       authStore.fetchUserDetails();
       window.addEventListener("scroll", handleScroll);
 
