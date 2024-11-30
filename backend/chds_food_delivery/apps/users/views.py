@@ -149,6 +149,7 @@ class WalletViewSet(ModelViewSet):
     """
     API endpoint for managing wallets.
     """
+    http_method_names=['get',"post","options"]
     queryset = Wallet.objects.all()
     serializer_class = WalletSerializer
     permission_classes = [IsAuthenticated]

@@ -195,8 +195,7 @@ class ListWalletSerializer(serializers.ModelSerializer):
 class WalletSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wallet
-        fields = ['id', 'user', 'balance', 'expiry', 'unique_id']
-        read_only_fields = ['unique_id']
+        fields = []
         
         
 class ContactusSerializer(serializers.ModelSerializer):
