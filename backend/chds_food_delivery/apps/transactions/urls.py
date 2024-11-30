@@ -4,11 +4,11 @@ from apps.transactions.views import (
     TransactionViewSet,
     WalletRechargeView,
     WalletTransactionsView
-)
+    )
 
 router = DefaultRouter()
 router.register('make-payment',TransactionViewSet, basename="make_payment")
 urlpatterns = [
     path('wallet/recharge/', WalletRechargeView.as_view(), name='wallet-recharge'),
-    path('wallet/', WalletTransactionsView.as_view(), name="wallet-transactions")
+    path('wallet/', WalletTransactionsView.as_view(), name="wallet-transactions"),
 ]+router.urls

@@ -67,12 +67,13 @@ class LoginSerializer(TokenObtainPairSerializer):
             "postal_code":user_address.postal_code 
         } if user_address else None
     
-    def _get_user_profile(self,user):
+    def _get_user_profile(self,user):   
         profile = UserProfile.objects.filter(user=user).first()
         return {
                 "data_of_birth": profile.date_of_birth,
-                "user_image": profile.user_image,
+                "user_image": profile.user_image if profile.user_image else None,
             } if profile else None
+            
     
     
     def validate(self, attrs):
@@ -195,8 +196,7 @@ class ListWalletSerializer(serializers.ModelSerializer):
 class WalletSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wallet
-        fields = ['id', 'user', 'balance', 'expiry', 'unique_id']
-        read_only_fields = ['unique_id']
+        fields = []
         
         
 class ContactusSerializer(serializers.ModelSerializer):
@@ -245,3 +245,9 @@ class UserDetailsSerializer(serializers.ModelSerializer):
         except:
             return None
 
+
+class UpdatePrimaryUserAddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAddress
+        fields = ['is_primary']
+        

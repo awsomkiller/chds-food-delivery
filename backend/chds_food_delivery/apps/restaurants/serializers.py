@@ -38,7 +38,7 @@ class ListPortionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MenuPortionPriceList
-        fields = ["id", "portion_name", "portion_weight", "price", "addons"]
+        fields = ["id", "portion_name", "portion_weight", "price", "addons","calories","protein","carbs",'fats']
 
     def get_addons(self, obj):
         addons = obj.portion_item.addons.all()

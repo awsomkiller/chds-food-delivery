@@ -57,7 +57,7 @@ def NotifyUser(sender,instance,created,**kwargs):
         NotifyUserViaMail(
             subject=subject,
             message=message,
-            recipient_list=["codeserver127.0.0.1@gmail.com"]
+            recipient_list=[instance.user.email]
         )
         
     

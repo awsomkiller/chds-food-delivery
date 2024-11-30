@@ -18,8 +18,8 @@ class MenuCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(MenuItem)
 class MenuItemsAdmin(admin.ModelAdmin):
-    list_display=["id","name","price"]
-    fields=["name","price","description","calories","protein","fats","carbs","category", "tags"]
+    list_display=["id","name","price","is_popular","is_best_selling"]
+    fields=["name","price","description","calories","protein","fats","carbs","category", "tags","is_best_selling","is_popular"]
     search_fields = ['name','price','category__name']
     list_filter = ['category',]
     
@@ -44,8 +44,8 @@ class PortionSizeAdmin(admin.ModelAdmin):
 
 @admin.register(MenuPortionPriceList)
 class PortionSizePriceAdmin(admin.ModelAdmin):
-    list_display=["id","menu_item","portion_item","item_price"]
-    fields=["menu_item","portion_item","price"]
+    list_display=["id","menu_item","portion_item","item_price","carbs","calories","fats","protein"]
+    fields=["menu_item","portion_item","price","carbs","calories","fats","protein"]
     search_fields = ['price',"menu_item__name","portion_item__name"]
     list_filter = ["menu_item", "portion_item"]
    

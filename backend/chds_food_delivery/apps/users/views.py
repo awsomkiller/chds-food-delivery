@@ -16,7 +16,8 @@ from apps.users.serializers import (
     ListWalletSerializer,
     ContactusSerializer,
     UpdateUserinfoSerializer,
-    UserDetailsSerializer
+    UserDetailsSerializer,
+    UpdatePrimaryUserAddressSerializer
 )
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
@@ -25,6 +26,7 @@ from rest_framework.viewsets import ModelViewSet, ViewSet
 from apps.users.models import User , EmailToken ,UserAddress,UserCardDetails,UserProfile,Wallet,ContactUs
 from django.utils.crypto import get_random_string
 from apps.users.email import Sendresetpasswordlinkapi
+from rest_framework.exceptions import ValidationError
 
 class RegisterAPI(APIView):
     permission_classes = (AllowAny,)
@@ -147,6 +149,7 @@ class WalletViewSet(ModelViewSet):
     """
     API endpoint for managing wallets.
     """
+    http_method_names=['get',"post","options"]
     queryset = Wallet.objects.all()
     serializer_class = WalletSerializer
     permission_classes = [IsAuthenticated]
@@ -233,4 +236,14 @@ class UpdateUserinfoApi(APIView):
         
         
         
+class UpdatePrimaryAddressApi(generics.UpdateAPIView):
+    serializer_class = UpdatePrimaryUserAddressSerializer
+    queryset = UserAddress.objects.all()
+    
+    
+    def update(self, request,pk, *args, **kwargs):
+        user_address_instance = self.get_object()
+        if user_address_instance.user != request.user:
+            raise ValidationError("You are not authorised to Update the primary address.")
+        return super().update(request, *args, **kwargs)
     

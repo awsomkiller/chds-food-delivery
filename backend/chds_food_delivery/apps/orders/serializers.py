@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from apps.orders.models import Orders
+from apps.transactions.models import Transaction
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -20,3 +21,19 @@ class OrderSerializer(serializers.ModelSerializer):
         instance = Orders.objects.create(user=user, **validated_data)
 
         return instance
+   
+class ListTransactionSerilaizer(serializers.ModelSerializer):
+    class Meta:
+        model = Transaction
+        fields ="__all__" 
+        
+class ListOrdersSerilaizer(serializers.ModelSerializer):
+    transaction=serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Orders
+        fields ="__all__"
+        
+    def get_transaction(self,obj):
+        data = obj.transaction
+        return ListTransactionSerilaizer(data).data
