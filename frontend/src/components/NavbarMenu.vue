@@ -12,7 +12,10 @@ export default {
     const toggleSidebar = ref(null);
 
     const closeOffcanvas = () => {
-      toggleSidebar.value.click();
+        const offcanvasElement = document.getElementById('mobilemenu');
+        if(offcanvasElement.classList.contains('show')){
+            toggleSidebar.value.click();
+        }
     };
 
     return {
@@ -48,10 +51,10 @@ export default {
             <router-link class="nav-link" to="/ourstory" active-class="active"  @click="closeOffcanvas">Our Story</router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link" to="/contact-us" active-class="active">Contact Us</router-link>
+            <router-link class="nav-link" to="/contact-us" active-class="active" @click="closeOffcanvas">Contact Us</router-link>
         </li>
 
-    
+
        
         <div class="login-register d-flex align-items-center gap-3 show-login" v-if="!user">
             <!-- <div class="icon-location">
