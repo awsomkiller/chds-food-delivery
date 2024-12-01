@@ -88,6 +88,7 @@ class WalletRechargeView(APIView):
                 payment_intent = stripe.PaymentIntent.create(
                     amount=int(float(amount) * 100),
                     currency='aud',
+                    payment_method_types=["card","alipay", "wechat_pay"],
                     metadata={
                         'transaction_id': transaction.transaction_id,
                         'user_id': request.user.id,

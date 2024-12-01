@@ -65,7 +65,7 @@ class OrderCreateView(APIView):
                     payment_intent = stripe.PaymentIntent.create(
                         amount=int(float(order.amount) * 100),
                         currency='aud',
-                        payment_method_types=['card'],
+                        payment_method_types=["card","alipay", "wechat_pay"],
                         metadata={'order_id': order.order_id, 'user_id': order.user.id},
                     )
                     transaction.stripe_payment_intent_id = payment_intent['id']
