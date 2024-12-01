@@ -276,14 +276,17 @@ export default {
         isValid = false;
       }
 
-      // Phone Number Validation
-      const phonePattern = /^\d{10}$/;
-      if (!form.mobile_number) {
+      const phonePattern = /^0?\d{9}$/;
+      const sanitizedNumber = form.mobile_number ? form.mobile_number.replace(/\D/g, '') : '';
+
+      if (!sanitizedNumber) {
         errors.mobile_number = 'Phone number is required.';
         isValid = false;
-      } else if (!phonePattern.test(form.mobile_number)) {
-        errors.mobile_number = 'Please enter a 10-digit phone number.';
+      } else if (!phonePattern.test(sanitizedNumber)) {
+        errors.mobile_number = 'Please enter a 9-digit number or a 10-digit number starting with 0.';
         isValid = false;
+      } else {
+        form.mobile_number = sanitizedNumber;
       }
 
       // Password Validation
