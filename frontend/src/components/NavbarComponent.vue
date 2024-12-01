@@ -134,7 +134,7 @@ export default {
                         :class="{ show: isDropdownOpen }"
                         aria-labelledby="dropdownMenuLink"
                       > 
-                        <div class="text-mania desktophide">
+                        <div class="text-mania desktophide p-3">
                             <h6 class="mb-0">{{ user.full_name }}</h6>
                             <small v-if="delivery">Delivery Available</small>
                         </div>
@@ -235,11 +235,11 @@ if ($(this).scrollTop() > 1){
   }
 
   .desktophide{
-    display: none;
+    display: block;
   }
 
   .mobilehide{
-    display:block;
+    display:none;
   }
 
 @media screen and (min-width:991.91px) {
@@ -259,14 +259,13 @@ if ($(this).scrollTop() > 1){
 
 
 
-@media screen and (min-width:575px) {
+@media screen and (max-width:575px) {
   .mobilehide{
-    display:none;
+    display:block;
   }
   .desktophide{
-    display: block;
+    display: none;
   }   
-  
   .profile-header{
     margin-right: 50px;
   }

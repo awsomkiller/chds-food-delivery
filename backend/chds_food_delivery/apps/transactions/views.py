@@ -74,6 +74,7 @@ class WalletRechargeView(APIView):
         try:
             if serializer.is_valid(raise_exception=True):
                 amount = serializer.validated_data['amount']
+                wallet, created = Wallet.objects.get_or_create(user=request.user)
 
                 transaction = Transaction.objects.create(
                     user=request.user,
@@ -87,9 +88,11 @@ class WalletRechargeView(APIView):
                 payment_intent = stripe.PaymentIntent.create(
                     amount=int(float(amount) * 100),
                     currency='aud',
+                    payment_method_types=["card","alipay", "wechat_pay"],
                     metadata={
                         'transaction_id': transaction.transaction_id,
                         'user_id': request.user.id,
+                        "wallet_id":wallet.wallet_id,
                     },
                 )
 
@@ -98,10 +101,10 @@ class WalletRechargeView(APIView):
                 print(payment_intent)
                 transaction.save()
 
-                if payment_intent['status'] == 'succeeded':
-                    wallet, created = Wallet.objects.get_or_create(user=request.user)
-                    wallet.balance += amount
-                    wallet.save()
+                # if payment_intent['status'] == 'succeeded':
+                #     wallet, created = Wallet.objects.get_or_create(user=request.user)
+                #     wallet.balance += amount
+                #     wallet.save()
 
                 return Response({
                     "transaction_id": transaction.transaction_id,
