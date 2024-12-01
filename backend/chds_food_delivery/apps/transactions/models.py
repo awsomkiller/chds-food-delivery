@@ -127,3 +127,4 @@ class Wallet(models.Model):
             raise ValueError("Insufficient balance.")
         self.balance -= amount
         self.save()
+   

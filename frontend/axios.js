@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
 
 const caxios = axios.create({
-  baseURL: 'https://api.chds.com.au/api',
+  baseURL: 'http://localhost:8000/api',
   timeout: 5000,
 });
 
