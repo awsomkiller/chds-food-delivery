@@ -124,7 +124,7 @@ export default {
                             alt="Default Profile Image"
                           />
                         </div>
-                        <div class="text-mania">
+                        <div class="text-mania mobilehide">
                           <h6 class="mb-0">{{ user.full_name }}</h6>
                           <small v-if="delivery">Delivery Available</small>
                         </div>
@@ -133,7 +133,11 @@ export default {
                         class="dropdown-menu py-3"
                         :class="{ show: isDropdownOpen }"
                         aria-labelledby="dropdownMenuLink"
-                      >
+                      > 
+                        <div class="text-mania desktophide">
+                            <h6 class="mb-0">{{ user.full_name }}</h6>
+                            <small v-if="delivery">Delivery Available</small>
+                        </div>
                         <router-link class="dropdown-item" to="/profile">My Profile</router-link>
                         <hr class="dropdown-divider" />
                         <a class="dropdown-item text-danger" @click="handleLogout">Logout</a>
@@ -191,6 +195,7 @@ if ($(this).scrollTop() > 1){
 
 <style>
 
+
 .desktop-menu{
     display: none
   }
@@ -229,7 +234,13 @@ if ($(this).scrollTop() > 1){
     color: white;
   }
 
+  .desktophide{
+    display: none;
+  }
 
+  .mobilehide{
+    display:block;
+  }
 
 @media screen and (min-width:991.91px) {
   .desktop-menu{
@@ -245,4 +256,20 @@ if ($(this).scrollTop() > 1){
   display: block;
   opacity: 1;
 }
+
+
+
+@media screen and (min-width:575px) {
+  .mobilehide{
+    display:none;
+  }
+  .desktophide{
+    display: block;
+  }   
+  
+  .profile-header{
+    margin-right: 50px;
+  }
+}
+
 </style>

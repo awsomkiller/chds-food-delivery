@@ -58,7 +58,8 @@ import FooterComponent from '@/components/FooterComponent.vue';
                     Nourish yourself with fresh, wholesome, and balanced dishes.
                     Savor the benefits of healthy food that supports your well-being.</p>
               </div>
-              <button class="btn theme-btn theme-outline-btn mt-5" type="button"> Order Now<span class="round-arrow ms-2"><i class="fa-solid fa-arrow-right-long"></i></span></button>
+              <!-- <button class="btn theme-btn theme-outline-btn mt-5" > Order Now<span class="round-arrow ms-2"><i class="fa-solid fa-arrow-right-long"></i></span></button> -->
+              <router-link  type="button" class="btn theme-btn theme-outline-btn mt-5" to="/ordernow" active-class="active"  @click="closeOffcanvas" >Order Now<span class="round-arrow ms-2"><i class="fa-solid fa-arrow-right-long"></i></span></router-link>
               </div>
               <div class="col-lg-7 col-md-12 col-sm-12 col-12 orderl-lg-2 order-md-1 order-sm-1 order-1">
                 <div class="main-img text-center">
@@ -606,7 +607,7 @@ import FooterComponent from '@/components/FooterComponent.vue';
           </div>
           <div class="offer-section fix bg-color2">
             <div class="offer-wrapper">
-                <div class="container">
+                <!-- <div class="container">
                     <div class="row gy-4">
                         <div class="col-lg-6 col-xl-4">
                             <div class="offer-card style1" data-wow-delay="0.2s" style=" visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
@@ -657,7 +658,7 @@ import FooterComponent from '@/components/FooterComponent.vue';
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 
                 <div class="container container-card " >
                   <div class="row" >
@@ -816,7 +817,8 @@ import FooterComponent from '@/components/FooterComponent.vue';
                               </h2>
                               <div class="text" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: fadeInUp;">Discover the joy of healthy eating with delicious, sustainable meals crafted for long-term vitality and happiness.</div>
                               <div class="btn-wrapper mt-4 w-40" data-wow-delay="0.9s" style="visibility: visible; animation-delay: 0.9s; animation-name: fadeInUp;">
-                                  <a class="theme-btn btn w-50" href="menu.html">ORDER NOW <i class="fa-solid fa-arrow-right-long"></i></a>
+                                  
+                                  <router-link class=" theme-btn btn mx-auto " to="/ordernow" active-class="active"  @click="closeOffcanvas" >ORDER NOW <i class="fa-solid fa-arrow-right-long"></i></router-link>
                               </div>
                           </div>
                       </div>
@@ -939,7 +941,9 @@ import FooterComponent from '@/components/FooterComponent.vue';
                    
                   </div>
                   <div class="btn-wrapper w-30 text-center mt-5" data-wow-delay="0.9s" style="visibility: visible; animation-delay: 0.9s; animation-name: fadeInUp;">
-                    <a class="theme-btn btn w-50" href="menu.html">ORDER NOW <i class="fa-solid fa-arrow-right-long"></i></a>
+              
+                    <router-link class=" theme-btn btn mx-auto " to="/ordernow" active-class="active"  @click="closeOffcanvas" >ORDER NOW <i class="fa-solid fa-arrow-right-long"></i></router-link>
+
                 </div>
               </div>
           </div>
@@ -965,8 +969,9 @@ import FooterComponent from '@/components/FooterComponent.vue';
                                 <h6 class="wow fadeInUp" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">WELCOME Chi Hun Da Su</h6>
                                 <h3 class="wow fadeInUp" data-wow-delay="0.7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInUp;">Be a member with CHDS,</h3>
                                 <p class="wow fadeInUp" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: fadeInUp;"> open exclusive deals and meal plan.</p>
-                                <button class="btn theme-btn" type="button"> Order Now<span class="round-arrow ms-2"><i class="fa-solid fa-arrow-right-long"></i></span></button>
-             
+                                <!-- <button class="btn theme-btn" type="button"> Order Now<span class="round-arrow ms-2"><i class="fa-solid fa-arrow-right-long"></i></span></button> -->
+                                <router-link type="button" class="theme-btn btn " to="/ordernow" active-class="active"  @click="closeOffcanvas" >ORDER NOW <i class="fa-solid fa-arrow-right-long"></i></router-link>
+
                             </div>
                         </div>
                         <div class="col-xl-5 order-1 order-xl-2">
@@ -1020,23 +1025,24 @@ import FooterComponent from '@/components/FooterComponent.vue';
                     </h2>
                 </div>
                 <div class="row ">
-                          <div class="col-lg-6 col-md-6 col-sm-12 col-sm-12 p-3">
+                          <div class="col-lg-6 col-md-12 col-sm-12 col-12 p-3">
                               <div class="single-menu-items p-3">
                                   <div class="details">
                                       <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
                                       <div class="menu-content">
                                           <a href="menu.html">
-                                              <h3 class="active">Cilantro Chicken with Vinegar</h3>
+                                              <h3 class="active">Chicken-Stuffed Bean Curd Rolls</h3>
                                           </a>
-                                          <p>It's a testament to our.</p>
+                                          <h6>A$19.00 – A$31.00</h6>
+                                          <!-- <p>Minced chicken wrapped in soft bean curd sheets, steamed with ginger and seasonings. Tender, juicy, and packed with flavor, this is a healthy, light meal option.</p> -->
                                       </div>
                                   </div>
 
-                                  <h6>$15.99</h6>
+                                  
                               </div>
                           </div>
 
-                          <div class="col-lg-6 col-md-6 col-sm-12 col-sm-12 p-3">
+                          <div class="col-lg-6 col-md-12 col-sm-12 col-12 p-3">
                               <div class="single-menu-items p-3">
                                   <div class="details">
                                       <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
@@ -1044,77 +1050,82 @@ import FooterComponent from '@/components/FooterComponent.vue';
                                           <a href="menu.html">
                                               <h3 class="active">Cilantro Chicken with Vinegar</h3>
                                           </a>
-                                          <p>It's a testament to our.</p>
+                                          <h6>A$19.00 – A$31.00</h6>
+                                          <!-- <p>Chicken breast mixed with cilantro, vinegar, chili, soy sauce, and oyster sauce. This tangy, refreshing dish is high in protein, perfect for fitness diets and light daily meals.</p> -->
                                       </div>
                                   </div>
 
-                                  <h6>$15.99</h6>
+                                  
                               </div>
                           </div>
 
-                          <div class="col-lg-6 col-md-6 col-sm-12 col-sm-12 p-3">
+                          <div class="col-lg-6 col-md-12 col-sm-12 col-12 p-3">
                               <div class="single-menu-items p-3">
                                   <div class="details">
                                       <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
                                       <div class="menu-content">
                                           <a href="menu.html">
-                                              <h3 class="active">Cilantro Chicken with Vinegar</h3>
+                                              <h3 class="active">Honey Teriyaki Chicken Breast</h3>
                                           </a>
-                                          <p>It's a testament to our.</p>
+                                          <h6>A$19.00 – A$31.00</h6>
+                                          <!-- <p>Pan-seared chicken breast with a honey-soy glaze, crispy outside, tender inside, a perfect healthy and flavorful option.</p> -->
                                       </div>
                                   </div>
 
-                                  <h6>$15.99</h6>
+                                  
                               </div>
                           </div>
 
-                          <div class="col-lg-6 col-md-6 col-sm-12 col-sm-12 p-3">
+                          <div class="col-lg-6 col-md-12 col-sm-12 col-12 p-3">
                               <div class="single-menu-items p-3">
                                   <div class="details">
                                       <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
                                       <div class="menu-content">
                                           <a href="menu.html">
-                                              <h3 class="active">Cilantro Chicken with Vinegar</h3>
+                                              <h3 class="active">Korean Spicy Chicken Breast</h3>
                                           </a>
-                                          <p>It's a testament to our.</p>
+                                          <h6>A$19.00 – A$31.00</h6>
+                                          <!-- <p>Pan-seared chicken breast with Korean spicy sauce, blending sweetness and heat for a tender and flavorful dish.</p> -->
                                       </div>
                                   </div>
 
-                                  <h6>$15.99</h6>
-                              </div>
-                          </div>
-
-
-                          <div class="col-lg-6 col-md-6 col-sm-12 col-sm-12 p-3">
-                              <div class="single-menu-items p-3">
-                                  <div class="details">
-                                      <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
-                                      <div class="menu-content">
-                                          <a href="menu.html">
-                                              <h3 class="active">Cilantro Chicken with Vinegar</h3>
-                                          </a>
-                                          <p>It's a testament to our.</p>
-                                      </div>
-                                  </div>
-
-                                  <h6>$15.99</h6>
+                                  
                               </div>
                           </div>
 
 
-                          <div class="col-lg-6 col-md-6 col-sm-12 col-sm-12 p-3">
+                          <div class="col-lg-6 col-md-12 col-sm-12 col-12 p-3">
                               <div class="single-menu-items p-3">
                                   <div class="details">
                                       <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
                                       <div class="menu-content">
                                           <a href="menu.html">
-                                              <h3 class="active">Cilantro Chicken with Vinegar</h3>
+                                              <h3 class="active">Wine-Marinated Chicken Gizzards</h3>
                                           </a>
-                                          <p>It's a testament to our.</p>
+                                          <h6>A$19.00 – A$31.00</h6>
+                                          <!-- <p>Crisp and tender chicken gizzards marinated in wine sauce, full of flavor. Perfect as a snack or appetizer.</p> -->
                                       </div>
                                   </div>
 
-                                  <h6>$15.99</h6>
+                                 
+                              </div>
+                          </div>
+
+
+                          <div class="col-lg-6 col-md-12 col-sm-12 col-12 p-3">
+                              <div class="single-menu-items p-3">
+                                  <div class="details">
+                                      <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
+                                      <div class="menu-content">
+                                          <a href="menu.html">
+                                              <h3 class="active">Pickled Veg Chicken Stir-fry</h3>
+                                          </a>
+                                          <h6>A$17.00 – A$31.00</h6>
+                                          <!-- <p>It's a testament to our.</p> -->
+                                      </div>
+                                  </div>
+
+                                  
                               </div>
                           </div>
 

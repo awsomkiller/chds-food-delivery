@@ -947,6 +947,11 @@ span.wrap-text {
   color: white ;
 }
 
+.btn-green-card:hover{
+  background-color: #111 ;
+  color: white ;
+}
+
 .offer-detail-price::after{
   content: "";
   height: 30px;
@@ -2434,6 +2439,45 @@ ul {
   .popular-dishes-section{
     padding: 30px 10px;
   }
+
+  .offer-detail-with-logo .Offer-card-detail h4{
+    font-size: 24px;
+  }
+  .offer-brown-card .offer-detail-with-logo .Offer-card-detail h4{
+    font-size: 24px;
+  }
+
+  .btn-green-card i{
+    display: none;
+  }
+
+  .offer-section.fix.bg-color2{
+    padding: 30px 0;
+  }
+  .offer-detail-with-logo .logo-container img{
+    max-width: 60px;
+  }
+
+
+  .offer-detail-with-logo .logo-container p{
+    font-size: 10px;
+  }
+  .offer-detail-price .small-text{
+    font-size: 10px;
+    text-align: center;
+  }
+
+  .offer-brown-card .offer-detail-price .small-text{
+    font-size: 10px;
+    text-align: center;
+  }
+
+  .offer-detail-price .cashback-text{
+    font-size: 14px;
+  }
+  .offer-brown-card  .offer-detail-price .cashback-text{
+    font-size: 14px;
+  }
 }
 
 .scroll .navbar .container-fluid{
@@ -2515,9 +2559,9 @@ ul {
 }
 
 .single-menu-items h6 {
-  color: #000;
-  text-align: right;
-  font-size: 18px;
+  color: var(--bs-btn-border-color);
+  /* text-align: right; */
+  font-size: 16px;
   font-style: normal;
   font-weight: 600;
   line-height: 28px;

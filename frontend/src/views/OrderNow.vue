@@ -507,22 +507,22 @@ export default {
 .cart-section {
     position: sticky;
     position: -webkit-sticky;
-    top: 72px;
+    top: 122px;
     z-index: 1;
     background: #fff;
     padding: 10px 10px;
     border-radius: 10px 10px 0px 0px;
-    height: calc(100vh - 88px);
+    height: calc(100vh - 128px);
 }
 
 .categories-section {
     position: sticky;
     position: -webkit-sticky;
-    top: 72px;
+    top: 122px;
     z-index: 1;
     background: #fff;
     border-radius: 10px 10px 0px 0px;
-    height: calc(100vh - 88px);
+    height: calc(100vh - 128px);
     /* border-bottom: 1px solid var(--card-heading-color); */
 }
 
@@ -880,6 +880,30 @@ export default {
 
     .cart-desktop {
         display: none;
+    }
+}
+
+
+@media screen and (max-width:600px) {
+    .mobile-cart {
+        display: block;
+        position: fixed;
+        bottom: 30px;
+        z-index: 99;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .mobile-cart button {
+        width: calc(100vw - 2rem);
+        padding: 1rem;
+    }
+
+    .cart-desktop {
+        display: none;
+    }
+    .food-item-detail h5{
+        font-size: 20px;
     }
 }
 </style>

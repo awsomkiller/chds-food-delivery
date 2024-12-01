@@ -49,164 +49,122 @@
             </div>
 
           <div class="row">
-            <div
-              class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 p-3"
-              data-wow-delay=".2s"
-              style="
-                visibility: visible;
-                animation-delay: 0.2s;
-                animation-name: fadeInUp;
-              ">
-                    <div class="single-footer-widget">
-                        <div class="widget-head mb-2">
-                            <a href="index.html">
-                                <img src="@/assets/homepage/CHDS logo White transparent.png" class="logo-white" alt="logo-img" />
-                            </a>
-                        </div>
-                        <div class="footer-content">
-
-                            <div class="social-icon d-flex align-items-center">
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-twitter"></i></a>
-                                <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
-                                <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                <div
+                class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 p-3"
+                data-wow-delay=".2s"
+                style="
+                    visibility: visible;
+                    animation-delay: 0.2s;
+                    animation-name: fadeInUp;
+                ">
+                        <div class="single-footer-widget">
+                            <div class="widget-head mb-2">
+                                <a href="index.html">
+                                    <img src="@/assets/homepage/CHDS logo White transparent.png" class="logo-white" alt="logo-img" />
+                                </a>
                             </div>
+                            <div class="footer-content">
 
-                        </div>
-                    </div>
-                </div>
-
-            <div
-              class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 p-3"
-              data-wow-delay=".2s"
-              style="
-                visibility: visible;
-                animation-delay: 0.2s;
-                animation-name: fadeInUp;
-              ">
-                    <div class="single-footer-widget">
-
-                        <div class="footer-content">
-                            <figure class="wpb_wrapper vc_figure">
-                                <div class="vc_single_image-wrapper   vc_box_border_grey">
-                                    <img width="200" height="200" src="@/assets/CHDS-Wechat.webp">
+                                <div class="social-icon d-flex align-items-center">
+                                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#"><i class="fab fa-twitter"></i></a>
+                                    <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
                                 </div>
-                            </figure>
+
+                            </div>
                         </div>
-                    </div>
+                </div>
+
+                <div
+                class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 p-3"
+                data-wow-delay=".2s"
+                style="
+                    visibility: visible;
+                    animation-delay: 0.2s;
+                    animation-name: fadeInUp;
+                ">
+                        <div class="single-footer-widget">
+
+                            <div class="footer-content">
+                                <figure class="wpb_wrapper vc_figure">
+                                    <div class="vc_single_image-wrapper   vc_box_border_grey">
+                                        <img width="200" height="200" src="@/assets/CHDS-Wechat.webp">
+                                    </div>
+                                </figure>
+                            </div>
+                        </div>
                 </div>
 
 
-            <div
-              class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 p-3"
-              data-wow-delay=".4s"
-              style="
-                visibility: visible;
-                animation-delay: 0.4s;
-                animation-name: fadeInUp;
-              ">
-                    <div class="single-footer-widget">
-                        <div class="widget-head">
-                            <h3>Quick Links</h3>
+                <div
+                class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 p-3"
+                data-wow-delay=".4s"
+                style="
+                    visibility: visible;
+                    animation-delay: 0.4s;
+                    animation-name: fadeInUp;
+                ">
+                        <div class="single-footer-widget">
+                            <div class="widget-head">
+                                <h3>Quick Links</h3>
+                            </div>
+                            <ul class="list-area">
+                                <li>
+                                    <router-link to="/">
+                                        <i class="fa-solid fa-angles-right"></i>
+                                        Home
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <router-link to="/ordernow">
+                                        <i class="fa-solid fa-angles-right"></i>
+                                        Order Now
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <router-link to="/ourstory">
+                                        <i class="fa-solid fa-angles-right"></i>
+                                        Our Story
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <router-link to="/contact-us">
+                                        <i class="fa-solid fa-angles-right"></i>
+                                        Contact Us
+                                    </router-link>
+                                </li>
+                            </ul>
                         </div>
-                        <ul class="list-area">
-                            <li>
-                                <router-link to="/">
-                                    <i class="fa-solid fa-angles-right"></i>
-                                    Home
-                                </router-link>
-                            </li>
-                            <li>
-                                <router-link to="/ordernow">
-                                    <i class="fa-solid fa-angles-right"></i>
-                                    Order Now
-                                </router-link>
-                            </li>
-                            <li>
-                                <router-link to="/ourstory">
-                                    <i class="fa-solid fa-angles-right"></i>
-                                    Our Story
-                                </router-link>
-                            </li>
-                            <li>
-                                <router-link to="/contact-us">
-                                    <i class="fa-solid fa-angles-right"></i>
-                                    Contact Us
-                                </router-link>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
-                <ul class="list-area">
-                  <li>
-                    <a href="menu.html">
-                      <i class="fa-solid fa-angles-right"></i>
-                      Burger King
-                    </a>
-                  </li>
-                  <li>
-                    <a href="menu.html">
-                      <i class="fa-solid fa-angles-right"></i>
-                      Pizza king
-                    </a>
-                  </li>
-                  <li>
-                    <a href="menu.html">
-                      <i class="fa-solid fa-angles-right"></i>
-                      Fresh Food
-                    </a>
-                  </li>
-                  <li>
-                    <a href="menu.html">
-                      <i class="fa-solid fa-angles-right"></i>
-                      Vegetable
-                    </a>
-                  </li>
-                  <li>
-                    <a href="menu.html">
-                      <i class="fa-solid fa-angles-right"></i>
-                      Desserts
-                    </a>
-                  </li>
-                </ul>
+
+                <div
+                    class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 p-3"
+                    data-wow-delay=".4s"
+                    style="
+                        visibility: visible;
+                        animation-delay: 0.4s;
+                        animation-name: fadeInUp;
+                    ">
+                        <div class="single-footer-widget">
+                            <div class="widget-head">
+                                <h3>Available Timings</h3>
+                            </div>
+                            <ul class="list-area">
+                                <li class="mb-2">
+                                    Monday | Wednesday | Saturday
+                                </li>
+                                <li>
+                                    <span class="text-theme-color2"> 8am - 12am | 4pm - 7pm </span>
+                                </li>
+                            </ul>
+                            
+                        </div>
+                    </div>
+                
+                
               </div>
-            </div> -->
-            <div
-              class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 p-3"
-              data-wow-delay=".4s"
-              style="
-                visibility: visible;
-                animation-delay: 0.4s;
-                animation-name: fadeInUp;
-              ">
-                    <div class="single-footer-widget">
-                        <div class="widget-head">
-                            <h3>Available Timings</h3>
-                        </div>
-                        <ul class="list-area">
-                            <li class="mb-2">
-                                Monday | Wednesday | Saturday
-                            </li>
-                            <li>
-                                <span class="text-theme-color2"> 8am - 12am | 4pm - 7pm </span>
-                            </li>
-                        </ul>
-                        <!-- <form action="#" class="mt-4">
-                            <div class="form-control">
-                                <input class="email" type="email" placeholder="Your email address" />
-                                <button type="submit" class="submit-btn">
-                                    <i class="fa-solid fa-arrow-right-long"></i>
-                                </button>
-                            </div>
-                            <div class="form-control style2 mt-3">
-                                <input id="checkbox" name="checkbox" type="checkbox" />
-                                <label for="checkbox">I agree to the
-                                    <a href="">Privacy Policy. </a></label>
-                            </div>
-                        </form> -->
-                    </div>
-                </div>
-            </div>
+           
         </div>
     </div>
     <div class="footer-bottom">
