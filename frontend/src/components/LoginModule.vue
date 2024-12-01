@@ -1,8 +1,7 @@
 <script>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth'; 
 import { useRouter } from 'vue-router';
-import { Modal } from 'bootstrap';
 
 export default {
   name: 'LoginModule',
@@ -81,14 +80,7 @@ export default {
         await authStore.login(credentials);
 
         router.push({ name: 'Ordernow' });
-
-        const modalElement = document.getElementById('loginModal');
-        if (modalElement) {
-            const modalInstance = Modal.getInstance(modalElement);
-            if (modalInstance) {
-                modalInstance.hide();
-            }
-        }
+        closeModalRef.value.click();
       } catch (error) {
         loginError.value = error;
       } finally {
@@ -105,21 +97,8 @@ export default {
       alert('Facebook login is not implemented yet.');
     };
 
-    const closeModal = () => {
-      const modalElement = document.getElementById('loginModal');
-      const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-      modalInstance.hide();
-    };
-
-    // Import Bootstrap's Modal class
-    let bootstrap;
-    onMounted(() => {
-      bootstrap = require('bootstrap/dist/js/bootstrap.bundle.min.js');
-    });
-
     return {
       identifier,
-      closeModal,
       password,
       showPassword,
       togglePasswordVisibility,
@@ -297,19 +276,18 @@ export default {
               <div class="bottom-text">
                 <p>
                   Don't have an account?
-                  <a data-bs-toggle="modal" data-bs-target="#registerModal" @click.prevent="closeModal">
+                  <a data-bs-toggle="modal" data-bs-target="#registerModal">
                     <span>Sign Up Now!</span>
                   </a>
                 </p>
               </div>
             </form>
+            <button type="button" ref="closeModalRef" class="d-none" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
         </div>
-
       </div>
     </div>
   </div>
-  <button type="button" ref="closeModal" class="d-none" data-bs-dismiss="modal" aria-label="Close"></button>
 </template>
 
 
