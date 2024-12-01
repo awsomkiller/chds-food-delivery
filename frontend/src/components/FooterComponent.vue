@@ -54,7 +54,7 @@
 
           <div class="row">
             <div
-              class="col-xl-3 col-lg-4 col-md-6"
+              class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 p-3"
               data-wow-delay=".2s"
               style="
                 visibility: visible;
@@ -82,7 +82,7 @@
             </div>
 
             <div
-              class="col-xl-3 col-lg-4 col-md-6"
+              class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 p-3"
               data-wow-delay=".2s"
               style="
                 visibility: visible;
@@ -104,7 +104,7 @@
 
 
             <div
-              class="col-xl-3 col-lg-4 col-md-6 ps-xl-5"
+              class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 p-3"
               data-wow-delay=".4s"
               style="
                 visibility: visible;
@@ -192,7 +192,7 @@
               </div>
             </div> -->
             <div
-              class="col-xl-3 col-lg-4 col-md-6 ps-xl-5"
+              class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 p-3"
               data-wow-delay=".4s"
               style="
                 visibility: visible;

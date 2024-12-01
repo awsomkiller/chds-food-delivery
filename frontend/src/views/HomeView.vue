@@ -216,6 +216,7 @@ import FooterComponent from '@/components/FooterComponent.vue';
                         </div>
                       </div>
                     </swiper-slide>
+ 
                     <swiper-slide>
                         <div class="single-food-items">
                         <div class="item-thumb">
@@ -657,6 +658,114 @@ import FooterComponent from '@/components/FooterComponent.vue';
                         </div>
                     </div>
                 </div>
+                
+                <div class="container container-card " >
+                  <div class="row" >
+
+
+                    <div class="col-xxl-4 col-xxl-4 col-lg-6 col-md-12 col-sm-12 col-12 p-3" >
+                      <div class="Offer-green-card">
+                          <div class="offer-detail-with-logo">
+                              <div class="logo-container"> 
+                                  <img src="../assets/homepage/chi-hun-da-su-logo-vertical-green.svg">
+                              </div>
+
+                              <div class="Offer-card-detail" >
+                                <p> ON THIS WEEK</p>
+                                <h4> Cashback Offer</h4>
+
+                                <button type="button" class="btn btn-green-card">Order Now  &nbsp; <i class="fas fa-arrow-right"></i></button>
+                              </div>
+                          </div>
+
+                          <div class="offer-detail-price">
+                              <p class="small-text"> Limited Time Offer</p>
+                              <h5> 50 <span> A$</span></h5>
+                              <p class="cashback-text"> Cashback</p>
+                          </div>
+
+                      </div>
+                    </div>
+
+                    <div class=" col-xxl-4 col-xxl-4 col-lg-6 col-md-12 col-sm-12 col-12 p-3" >
+                      <div class="Offer-green-card">
+                          <div class="offer-detail-with-logo">
+                              <div class="logo-container"> 
+                                  <img src="../assets/homepage/dish-img-wrap.png">
+                                  <p class=""> SPICY FRIED CHICKEN </p>
+                              </div>
+
+                              <div class="Offer-card-detail" >
+                                <p> ON THIS WEEK</p>
+                                <h4> Cashback Offer</h4>
+
+                                <button type="button" class="btn btn-green-card">Order Now &nbsp; <i class="fas fa-arrow-right"></i></button>
+                              </div>
+                          </div>
+
+                          <div class="offer-detail-price">
+                              <p class="small-text"> Limited Time Offer</p>
+                              <h5> 50 <span> A$</span></h5>
+                              <p class="cashback-text"> Cashback</p>
+                          </div>
+
+                      </div>
+                    </div>
+
+                    <div class=" col-xxl-4 col-xxl-4 col-lg-6 col-md-12 col-sm-12 col-12 p-3" >
+                      <div class="offer-brown-card">
+                          <div class="offer-detail-with-logo">
+                              <div class="logo-container"> 
+                                  <img src="../assets/homepage/chi-hun-da-su-logo-vertical-brown.svg">
+                      
+                              </div>
+
+                              <div class="Offer-card-detail" >
+                                <p> ON THIS WEEK</p>
+                                <h4> Cashback Offer</h4>
+
+                                <button type="button" class="btn btn-green-card">Order Now &nbsp; <i class="fas fa-arrow-right"></i></button>
+                              </div>
+                          </div>
+
+                          <div class="offer-detail-price">
+                              <p class="small-text"> Limited Time Offer</p>
+                              <h5> 50 <span> A$</span></h5>
+                              <p class="cashback-text"> Cashback</p>
+                          </div>
+
+                      </div>
+                    </div>
+
+                    <div class=" col-xxl-4 col-xxl-4 col-lg-6 col-md-12 col-sm-12 col-12 p-3" >
+                      <div class="offer-brown-card">
+                          <div class="offer-detail-with-logo">
+                              <div class="logo-container"> 
+                                  <img src="../assets/homepage/dish-img-wrap.png">
+                                  <p class=""> SPICY FRIED CHICKEN </p>
+                              </div>
+
+                              <div class="Offer-card-detail" >
+                                <p> ON THIS WEEK</p>
+                                <h4> Cashback Offer</h4>
+
+                                <button type="button" class="btn btn-green-card">Order Now &nbsp; <i class="fas fa-arrow-right"></i></button>
+                              </div>
+                          </div>
+
+                          <div class="offer-detail-price">
+                              <p class="small-text"> Limited Time Offer</p>
+                              <h5> 50 <span> A$</span></h5>
+                              <p class="cashback-text"> Cashback</p>
+                          </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+                
             </div>
         </div>
         <section class="about-us-section fix pb-0">
@@ -910,11 +1019,9 @@ import FooterComponent from '@/components/FooterComponent.vue';
                       Chi Hun Da Su Foods Menu
                     </h2>
                 </div>
-                <div class="tab-content" id="pills-tabContent">
-                  <div class="tab-pane fade show active" id="pills-FastFood" role="tabpanel" aria-labelledby="pills-FastFood-tab" tabindex="0">
-                      <div class="row gx-60">
-                          <div class="col-lg-6">
-                              <div class="single-menu-items">
+                <div class="row ">
+                          <div class="col-lg-6 col-md-6 col-sm-12 col-sm-12 p-3">
+                              <div class="single-menu-items p-3">
                                   <div class="details">
                                       <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
                                       <div class="menu-content">
@@ -927,37 +1034,10 @@ import FooterComponent from '@/components/FooterComponent.vue';
 
                                   <h6>$15.99</h6>
                               </div>
-                              <div class="single-menu-items">
-                                <div class="details">
-                                    <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
-                                    <div class="menu-content">
-                                        <a href="menu.html">
-                                            <h3 class="">Cilantro Chicken with Vinegar</h3>
-                                        </a>
-                                        <p>It's a testament to our.</p>
-                                    </div>
-                                </div>
-
-                                <h6>$15.99</h6>
-                            </div>
-                            <div class="single-menu-items">
-                              <div class="details">
-                                <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
-                                  <div class="menu-content">
-                                      <a href="menu.html">
-                                        <h3 class="">Cilantro Chicken with Vinegar</h3>
-                                      </a>
-                                      <p>It's a testament to our.</p>
-                                  </div>
-                              </div>
-
-                              <h6>$65.99</h6>
-                            </div>
-                         
                           </div>
 
-                          <div class="col-lg-6">
-                              <div class="single-menu-items">
+                          <div class="col-lg-6 col-md-6 col-sm-12 col-sm-12 p-3">
+                              <div class="single-menu-items p-3">
                                   <div class="details">
                                       <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
                                       <div class="menu-content">
@@ -970,37 +1050,10 @@ import FooterComponent from '@/components/FooterComponent.vue';
 
                                   <h6>$15.99</h6>
                               </div>
-                              <div class="single-menu-items">
-                                <div class="details">
-                                    <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
-                                    <div class="menu-content">
-                                        <a href="menu.html">
-                                            <h3 class="">Cilantro Chicken with Vinegar</h3>
-                                        </a>
-                                        <p>It's a testament to our.</p>
-                                    </div>
-                                </div>
-
-                                <h6>$15.99</h6>
-                            </div>
-                            <div class="single-menu-items">
-                              <div class="details">
-                                <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
-                                  <div class="menu-content">
-                                      <a href="menu.html">
-                                        <h3 class="">Cilantro Chicken with Vinegar</h3>
-                                      </a>
-                                      <p>It's a testament to our.</p>
-                                  </div>
-                              </div>
-
-                              <h6>$65.99</h6>
-                            </div>
-                         
                           </div>
 
-                          <div class="col-lg-6">
-                              <div class="single-menu-items">
+                          <div class="col-lg-6 col-md-6 col-sm-12 col-sm-12 p-3">
+                              <div class="single-menu-items p-3">
                                   <div class="details">
                                       <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
                                       <div class="menu-content">
@@ -1013,39 +1066,59 @@ import FooterComponent from '@/components/FooterComponent.vue';
 
                                   <h6>$15.99</h6>
                               </div>
-                              <div class="single-menu-items">
-                                <div class="details">
-                                    <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
-                                    <div class="menu-content">
-                                        <a href="menu.html">
-                                            <h3 class="">Cilantro Chicken with Vinegar</h3>
-                                        </a>
-                                        <p>It's a testament to our.</p>
-                                    </div>
-                                </div>
-
-                                <h6>$15.99</h6>
-                            </div>
-                            <div class="single-menu-items">
-                              <div class="details">
-                                <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
-                                  <div class="menu-content">
-                                      <a href="menu.html">
-                                        <h3 class="">Cilantro Chicken with Vinegar</h3>
-                                      </a>
-                                      <p>It's a testament to our.</p>
-                                  </div>
-                              </div>
-
-                              <h6>$65.99</h6>
-                            </div>
-                         
                           </div>
-                            
+
+                          <div class="col-lg-6 col-md-6 col-sm-12 col-sm-12 p-3">
+                              <div class="single-menu-items p-3">
+                                  <div class="details">
+                                      <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
+                                      <div class="menu-content">
+                                          <a href="menu.html">
+                                              <h3 class="active">Cilantro Chicken with Vinegar</h3>
+                                          </a>
+                                          <p>It's a testament to our.</p>
+                                      </div>
+                                  </div>
+
+                                  <h6>$15.99</h6>
+                              </div>
+                          </div>
+
+
+                          <div class="col-lg-6 col-md-6 col-sm-12 col-sm-12 p-3">
+                              <div class="single-menu-items p-3">
+                                  <div class="details">
+                                      <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
+                                      <div class="menu-content">
+                                          <a href="menu.html">
+                                              <h3 class="active">Cilantro Chicken with Vinegar</h3>
+                                          </a>
+                                          <p>It's a testament to our.</p>
+                                      </div>
+                                  </div>
+
+                                  <h6>$15.99</h6>
+                              </div>
+                          </div>
+
+
+                          <div class="col-lg-6 col-md-6 col-sm-12 col-sm-12 p-3">
+                              <div class="single-menu-items p-3">
+                                  <div class="details">
+                                      <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
+                                      <div class="menu-content">
+                                          <a href="menu.html">
+                                              <h3 class="active">Cilantro Chicken with Vinegar</h3>
+                                          </a>
+                                          <p>It's a testament to our.</p>
+                                      </div>
+                                  </div>
+
+                                  <h6>$15.99</h6>
+                              </div>
+                          </div>
+
                       </div>
-                  </div>
-                 
-              </div>
             </div>
         </div>
         </div>
