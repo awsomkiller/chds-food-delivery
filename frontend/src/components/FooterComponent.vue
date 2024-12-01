@@ -48,8 +48,11 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-xl-3 col-lg-4 col-md-6" data-wow-delay=".2s" style="
+          <div class="row">
+            <div
+              class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 p-3"
+              data-wow-delay=".2s"
+              style="
                 visibility: visible;
                 animation-delay: 0.2s;
                 animation-name: fadeInUp;
@@ -73,7 +76,10 @@
                     </div>
                 </div>
 
-                <div class="col-xl-3 col-lg-4 col-md-6" data-wow-delay=".2s" style="
+            <div
+              class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 p-3"
+              data-wow-delay=".2s"
+              style="
                 visibility: visible;
                 animation-delay: 0.2s;
                 animation-name: fadeInUp;
@@ -90,7 +96,11 @@
                     </div>
                 </div>
 
-                <div class="col-xl-3 col-lg-4 col-md-6 ps-xl-5" data-wow-delay=".4s" style="
+
+            <div
+              class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 p-3"
+              data-wow-delay=".4s"
+              style="
                 visibility: visible;
                 animation-delay: 0.4s;
                 animation-name: fadeInUp;
@@ -127,7 +137,44 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-xl-3 col-lg-4 col-md-6 ps-xl-5" data-wow-delay=".4s" style="
+                <ul class="list-area">
+                  <li>
+                    <a href="menu.html">
+                      <i class="fa-solid fa-angles-right"></i>
+                      Burger King
+                    </a>
+                  </li>
+                  <li>
+                    <a href="menu.html">
+                      <i class="fa-solid fa-angles-right"></i>
+                      Pizza king
+                    </a>
+                  </li>
+                  <li>
+                    <a href="menu.html">
+                      <i class="fa-solid fa-angles-right"></i>
+                      Fresh Food
+                    </a>
+                  </li>
+                  <li>
+                    <a href="menu.html">
+                      <i class="fa-solid fa-angles-right"></i>
+                      Vegetable
+                    </a>
+                  </li>
+                  <li>
+                    <a href="menu.html">
+                      <i class="fa-solid fa-angles-right"></i>
+                      Desserts
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div> -->
+            <div
+              class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 p-3"
+              data-wow-delay=".4s"
+              style="
                 visibility: visible;
                 animation-delay: 0.4s;
                 animation-name: fadeInUp;
