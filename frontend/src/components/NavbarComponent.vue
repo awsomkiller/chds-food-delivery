@@ -266,7 +266,6 @@ if ($(this).scrollTop() > 1){
   .desktophide{
     display: none;
   }   
-  
   .profile-header{
     margin-right: 50px;
   }
