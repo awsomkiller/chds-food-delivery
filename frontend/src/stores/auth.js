@@ -26,8 +26,24 @@ export const useAuthStore = defineStore('auth', {
         await this.fetchUserDetails()
         return response.data;
       } catch (error) {
-        console.error('Login failed:', error.response?.data || error.message);
-        throw error;
+        let errorMessage = 'An unexpected error occurred. Please try again.';
+    
+        if (error.response && error.response.data) {
+          const errors = error.response.data;
+    
+          const formattedErrors = Object.values(errors)
+            .flat()
+            .join(' ');
+    
+          if (formattedErrors) {
+            errorMessage = formattedErrors;
+          }
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+    
+        console.error('Login failed:', errorMessage);
+        throw new Error(errorMessage);
       }
     },
 

@@ -41,17 +41,17 @@ export default {
       const tempErrors = {};
 
       if (!identifier.value.trim()) {
-        tempErrors.identifier = 'Email address or phone number is required.';
+        tempErrors.identifier = 'Email address is required.';
       } else {
         // Simple regex for email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const phoneRegex = /^\+?\d{10,15}$/;
+        // const phoneRegex = /^0?\d{9}$/;
 
         if (
-          !emailRegex.test(identifier.value.trim()) &&
-          !phoneRegex.test(identifier.value.trim())
+          !emailRegex.test(identifier.value.trim())
+          // !phoneRegex.test(identifier.value.trim())
         ) {
-          tempErrors.identifier = 'Please enter a valid email address or phone number.';
+          tempErrors.identifier = 'Please enter a valid email address ';
         }
       }
 
@@ -90,12 +90,7 @@ export default {
             }
         }
       } catch (error) {
-        console.log(error)
-        if (error.response && error.response.data && error.response.data.message) {
-          loginError.value = error.response.data.message;
-        } else {
-          loginError.value = 'An unexpected error occurred. Please try again.';
-        }
+        loginError.value = error;
       } finally {
         loading.value = false;
       }
@@ -286,7 +281,7 @@ export default {
 
                 <!-- Login Button -->
                 <div class="button-wrap mb-3">
-                  <button class="btn btn-primary w-100" type="submit" :disabled="loading"  data-bs-dismiss="modal" aria-label="Close">
+                  <button class="btn btn-primary w-100" type="submit" :disabled="loading">
                     <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     <span v-else>Login</span>
                   </button>
