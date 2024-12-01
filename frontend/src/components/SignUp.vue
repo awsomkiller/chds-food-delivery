@@ -1,3 +1,4 @@
+<!-- Vue registration component -->
 <template>
   <!-- Registration Modal -->
   <div
@@ -12,44 +13,10 @@
       <div class="modal-content">
         <div class="modal-body text-center">
           <div class="login-content">
-            <!-- <div class="logo-wrap">
-              <img src="@/assets/CHDS logo Blk transparent.png" alt="CHDS Logo" />
-            </div> -->
             <div class="login-text-wrap">
               <h4>Sign Up</h4>
               <p>Hi 👋 there! Sign Up to have a memorable meal</p>
             </div>
-
-            <!-- Social Login Options -->
-            <!-- 
-            <div class="other-option-login d-flex flex-column gap-2 align-items-center">
-              <button
-                type="button"
-                class="login-by-facebook facebook-btn btn d-flex gap-2 align-items-center"
-                @click="loginWithFacebook"
-              >
-                Facebook SVG -->
-                <!-- (Insert your Facebook SVG code here) -->
-                <!-- <p class="mb-0">Continue with Facebook</p>
-              </button>
-              <button
-                type="button"
-                class="login-by-google google-btn btn d-flex gap-2 align-items-center"
-                @click="loginWithGoogle"
-              >
-                 Google SVG -->
-                <!-- (Insert your Google SVG code here) -->
-                <!-- <p class="mb-0">Continue with Google</p>
-              </button>
-            </div>
-            -->
-
-            <!-- OR Divider -->
-            <!-- 
-            <div class="or-div my-3">
-              <p>OR</p>
-            </div>
-            -->
 
             <!-- Registration Form -->
             <form @submit.prevent="handleRegister">
@@ -337,8 +304,7 @@ export default {
       return isValid;
     };
 
-    const registerModal = ref(null); // Reference to the modal element
-    const hiddenCloseButton = ref(null); // Reference to the hidden close button
+    const hiddenCloseButton = ref(null);
 
     const handleRegister = async () => {
       if (!validateForm()) {
@@ -351,22 +317,21 @@ export default {
       try {
         await authStore.register(form);
         hiddenCloseButton.value.click();
-      } catch (error) {
-        if (typeof error === 'object') {
-          for (const key in error) {
-            if (Object.prototype.hasOwnProperty.call(error, key)) {
-              if (Object.prototype.hasOwnProperty.call(errors, key)) {
-                errors[key] = error[key];
-              } else {
-                errors.general += `${error[key]} `;
-              }
+      } catch (apiErrors) {
+        if (apiErrors) {
+          Object.entries(apiErrors).forEach(([key, message]) => {
+            if (key in errors) {
+              errors[key] = message;
+            } else {
+              errors.general += message;
             }
-          }
+          });
         } else {
           errors.general = 'An unexpected error occurred. Please try again later.';
         }
       } finally {
         isSubmitting.value = false;
+        console.log
       }
     };
 
@@ -387,8 +352,6 @@ export default {
       hiddenCloseButton.value.click();
     };
 
-
-
     return {
       form,
       errors,
@@ -402,12 +365,12 @@ export default {
       loginWithGoogle,
       forgotPassword,
       switchToLogin,
-      registerModal,
-      hiddenCloseButton, // Expose the ref to the template
+      hiddenCloseButton,
     };
   },
 };
 </script>
+
 
 <style scoped>
 /* Add your styles here */

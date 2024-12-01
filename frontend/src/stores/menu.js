@@ -14,6 +14,8 @@ export const useMenuStore = defineStore('menu', {
     categoriesLoading: false,
     categoriesError: null,
     selectedCategory: "",
+    best_sellings:[],
+    popular:[],
   }),
   getters: {
     isAllItemsLoaded: (state) => !state.nextPageUrl,
@@ -33,6 +35,7 @@ export const useMenuStore = defineStore('menu', {
         const data = response.data;
 
         this.items.push(...data.results);
+        this.filterItems();
         this.nextPageUrl = data.next;
       } catch (error) {
         this.error = error;
@@ -67,6 +70,10 @@ export const useMenuStore = defineStore('menu', {
     },
     updateSelectedItem(item) {
       this.selectedItem = item;
+    },
+    filterItems(){
+      this.best_sellings = this.items.filter((item)=>item.is_best_selling === true);
+      this.popular = this.items.filter((item)=>item.is_popular === true);
     },
     resetItems() {
       this.items = [];

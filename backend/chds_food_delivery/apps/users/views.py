@@ -33,14 +33,15 @@ class RegisterAPI(APIView):
     serializer_class = RegisterApiSerializer
     
     def post(self, request, *args,**kwargs):
+        serializer = self.serializer_class(data=request.data)
         try:
-            serializer = self.serializer_class(data=request.data)
-            if  serializer.is_valid(raise_exception=True):
-                serializer.save()
-                return Response({"message":"User Created Successfully"},status=status.HTTP_201_CREATED)
-            return Response({"error": serializer.errors},status=status.HTTP_400_BAD_REQUEST,)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response({"message": "User Created Successfully"}, status=status.HTTP_201_CREATED)
+        except ValidationError as ve:
+            return Response({"errors": ve.detail}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response({"error": str(e)},status=status.HTTP_400_BAD_REQUEST,)
+            return Response({"errors": {"general": "An unexpected error occurred."}}, status=status.HTTP_400_BAD_REQUEST)
             
             
 class LoginApiView(TokenObtainPairView):

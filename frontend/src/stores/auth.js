@@ -68,7 +68,6 @@ export const useAuthStore = defineStore('auth', {
         throw error;
       }
     },
-
     async register(credentials) {
       try {
         const response = await axios.post('/register-user/', credentials);
@@ -80,15 +79,17 @@ export const useAuthStore = defineStore('auth', {
       } catch (error) {
         console.error('Registration failed:', error.response?.data || error.message);
 
-        if (error.response && error.response.data) {
-          const errorData = error.response.data;
+        if (error.response && error.response.data && error.response.data.errors) {
+          const apiErrors = error.response.data.errors;
           const formattedErrors = {};
 
-          for (const key in errorData) {
-            if (Object.prototype.hasOwnProperty.call(errorData, key)) {
-              formattedErrors[key] = errorData[key].join(' ');
+          Object.entries(apiErrors).forEach(([key, messages]) => {
+            if (key in formattedErrors) {
+              formattedErrors[key] += ` ${messages.join(' ')}`;
+            } else {
+              formattedErrors[key] = messages.join(' ');
             }
-          }
+          });
 
           throw formattedErrors;
         } else {
