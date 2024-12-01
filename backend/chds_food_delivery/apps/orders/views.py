@@ -35,17 +35,10 @@ class OrderCreateView(APIView):
                 )
         return transaction
     
-    def _check_wallet_balance(self,amount):
-        instance  = self.request.user.digital_wallet
-        if instance.balance < amount:
-            raise ValueError("Your Wallet has Insufficient Funds!!")
-        
+ 
     def _make_payment_from_wallet(self,amount):
         instance  = self.request.user.digital_wallet
-        balance  = instance.balance
-        left_balance = balance-amount
-        instance.balance =left_balance
-        instance.save()
+        instance.withdraw(amount)
     
     def _check_payment_method(self,data):
         payment_method = data.pop("payment_type")
@@ -62,7 +55,6 @@ class OrderCreateView(APIView):
     
     def post(self, request, *args, **kwargs):
         data , payment_method = self._check_payment_method(request.data)
-        self._check_wallet_balance(data.get("amount"))
         serializer = self.serializer_class(data=data, context={'request':request})
         try:
             if serializer.is_valid(raise_exception=True):
@@ -118,85 +110,73 @@ def stripe_webhook(request):
     event_type = event['type']
     data_object = event['data']['object']
     
-    charge_id = data_object['id']
-    payment_intent_id = data_object['payment_intent']
-    payment_method_id = data_object['payment_method']
-    metadata = data_object['metadata']
-    order_id = metadata.get('order_id')
-    wallet_id = metadata.get('wallet_id')
-    status = data_object['status']
-    receipt_url=data_object['receipt_url']
-    payment_method_details=data_object['payment_method_details']
+    if event_type =="charge.succeeded":
+        charge_id = data_object['id']
+        payment_intent_id = data_object['payment_intent']
+        payment_method_id = data_object['payment_method']
+        metadata = data_object['metadata']
+        order_id = metadata.get('order_id')
+        wallet_id = metadata.get('wallet_id')
+        status = data_object['status']
+        receipt_url=data_object['receipt_url']
+        payment_method_details=data_object['payment_method_details']
       
-    
-    
-
-    # if event_type in ['payment_intent.succeeded', 'payment_intent.payment_failed']:
-    #     payment_intent = data_object
-    #     payment_status = payment_intent['status']
-    #     transaction_id = payment_intent['id']  # Stripe Payment Intent ID
-    #     order_id = payment_intent['metadata'].get('order_id')  # May be None for wallet recharge
-    #     wallet_id = payment_intent['metadata'].get('wallet_id')  # Assuming wallet recharge includes wallet_id
-    if data_object['paid']:
-        try:
-            # Retrieve the Transaction based on Stripe Payment Intent ID
-            transaction = Transaction.objects.get(stripe_payment_intent_id=payment_intent_id)
-        except Transaction.DoesNotExist:
-            logger.warning(f"Transaction with Payment Intent ID {payment_intent_id} does not exist.")
-            return HttpResponse(status=200)  # Return 200 to Stripe to acknowledge receipt
-
-            # Start an atomic transaction to ensure data integrity
-        with db_transaction.atomic():
-            # Update Transaction status and related fields
-            transaction.status = status
+        if data_object['paid']:
             try:
-                # charge = payment_intent['charges']['data'][0]
-                
-                transaction.stripe_charge_id = charge_id
-                transaction.payment_method = payment_method_details['type']
-                transaction.payment_method_details = payment_method_details
-                transaction.receipt_url = receipt_url
-            except (IndexError, KeyError) as e:
-                logger.error(f"Error retrieving charge details: {e}")
-
-            transaction.save()
-
-            # Determine the type of transaction and process accordingly
-            if transaction.order_type == 'FOOD_ORDER':
-                # Handle E-commerce Order
+                # Retrieve the Transaction based on Stripe Payment Intent ID
+                transaction = Transaction.objects.get(stripe_payment_intent_id=payment_intent_id)
+            except Transaction.DoesNotExist:
+                logger.warning(f"Transaction with Payment Intent ID {payment_intent_id} does not exist.")
+                return HttpResponse(status=200)  # Return 200 to Stripe to acknowledge receipt
+            
+                # Start an atomic transaction to ensure data integrity
+            with db_transaction.atomic():
+                # Update Transaction status and related fields
+                transaction.status = status
                 try:
-                    order = Orders.objects.get(order_id=order_id)
-                except Orders.DoesNotExist:
-                    logger.warning(f"Order with ID {order_id} does not exist.")
-                    order = None
+                    transaction.stripe_charge_id = charge_id
+                    transaction.payment_method = payment_method_details['type']
+                    transaction.payment_method_details = payment_method_details
+                    transaction.receipt_url = receipt_url
+                except (IndexError, KeyError) as e:
+                    logger.error(f"Error retrieving charge details: {e}")
 
-                if order:
-                    if event_type == 'charge.succeeded':
-                        order.status = "PAYMENT_SUCCESS"
-                    elif event_type == 'charge.failed':
-                        order.status = "PAYMENT_FAILED"
-                    order.save()
-                    logger.info(f"Order {order_id} status updated to {order.status}.")
-            elif transaction.order_type == 'WALLET_RECHARGE':
-                # Handle Wallet Recharge
-                try:
-                    wallet = Wallet.objects.get(wallet_id=wallet_id)
-                except Wallet.DoesNotExist:
-                    logger.warning(f"Wallet with ID {wallet_id} does not exist.")
-                    wallet = None
+                transaction.save()
 
-                if wallet:
-                    if event_type == 'charge.succeeded':
-                        # Update Wallet Balance
-                        wallet.balance += transaction.amount
-                        wallet.save()
-                        logger.info(f"Wallet {wallet_id} recharged by {transaction.amount}. New balance: {wallet.balance}.")
-                    elif event_type == 'charge.payment_failed':
-                        # Optionally, you can notify the user or take other actions
-                        logger.info(f"Wallet recharge failed for Wallet ID {wallet_id}.")
-            else:
-                logger.warning(f"Unknown order_type {transaction.order_type} for Transaction ID {transaction.id}.")
+                # Determine the type of transaction and process accordingly
+                if transaction.order_type == 'FOOD_ORDER':
+                    # Handle E-commerce Order
+                    try:
+                        order = Orders.objects.get(order_id=order_id)
+                    except Orders.DoesNotExist:
+                        logger.warning(f"Order with ID {order_id} does not exist.")
+                        order = None
 
+                    if order:
+                        if event_type == 'charge.succeeded':
+                            order.status = "PAYMENT_SUCCESS"
+                        elif event_type == 'charge.failed':
+                            order.status = "PAYMENT_FAILED"
+                        order.save()
+                        logger.info(f"Order {order_id} status updated to {order.status}.")
+                        
+                elif transaction.order_type == 'WALLET_RECHARGE':
+                    # Handle Wallet Recharge
+                    try:
+                        wallet = Wallet.objects.get(wallet_id=wallet_id)
+                    except Wallet.DoesNotExist:
+                        logger.warning(f"Wallet with ID {wallet_id} does not exist.")
+                        wallet = None
+
+                    if wallet:
+                        wallet.deposit(transaction.amount)
+                        logger.info(f"Wallet {wallet_id} recharged by {transaction.amount}. New balance: {wallet.balance}.")    
+                else:
+                    logger.warning(f"Unknown order_type {transaction.order_type} for Transaction ID {transaction.id}.")
+                    
+    elif event_type == 'charge.payment_failed':
+        # Optionally, you can notify the user or take other actions
+        logger.info(f"Payment Failed with Event payload: {data_object}.")
     else:
         # Handle other event types if necessary
         logger.info(f"Unhandled event type: {event_type}")
