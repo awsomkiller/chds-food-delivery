@@ -88,7 +88,6 @@
                       v-model="form.mobile_number"
                       class="form-control"
                       placeholder="Enter Phone Number"
-                      pattern="[0-9]{10}"
                       required
                     />
                     <div class="info-icon" v-if="errors.mobile_number">
