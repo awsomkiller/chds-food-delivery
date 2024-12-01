@@ -10,6 +10,8 @@ export default {
     const authStore = useAuthStore();
     const router = useRouter();
 
+    const closeModalRef = ref(null);
+
     // Form fields
     const identifier = ref('');
     const password = ref('');
@@ -133,6 +135,7 @@ export default {
       loginError,
       loading,
       clearIdentifierError,
+      closeModalRef,
     };
   },
 };
@@ -311,6 +314,7 @@ export default {
       </div>
     </div>
   </div>
+  <button type="button" ref="closeModal" class="d-none" data-bs-dismiss="modal" aria-label="Close"></button>
 </template>
 
 

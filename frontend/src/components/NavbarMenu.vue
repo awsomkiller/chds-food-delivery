@@ -1,12 +1,35 @@
 <script>
-
+import { useAuthStore } from '@/stores/auth';
+import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
 
 export default {
-    name: 'NavbarMenu',
-}
+  name: 'NavbarMenu',
+  setup() {
+    const authStore = useAuthStore();
+    const { user } = storeToRefs(authStore);
+
+    const toggleSidebar = ref(null);
+
+    const closeOffcanvas = () => {
+        const offcanvasElement = document.getElementById('mobilemenu');
+        if(offcanvasElement.classList.contains('show')){
+            toggleSidebar.value.click();
+        }
+    };
+
+    return {
+      user,
+      closeOffcanvas,
+      toggleSidebar,
+    };
+  },
+};
 </script>
 
+
 <template>
+    <button type="button" ref="toggleSidebar" class="d-none" data-bs-toggle="offcanvas" data-bs-target="#mobilemenu"></button>
     <div class="navbar-collapse" id="navbarSupportedContent">
         <div class="d-flex idendity-logo hidden-collapse align-items-start justify-content-between">
             <a class="navbar-brand w-15 p-0 m-0" href="#">
@@ -19,21 +42,21 @@ export default {
         </div>
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-            <router-link class="nav-link" aria-current="page" to="/" active-class="active" >Home</router-link>
+            <router-link class="nav-link" to="/" active-class="active"  @click="closeOffcanvas" >Home</router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link" to="/ordernow" active-class="active" >Order Now</router-link>
+            <router-link class="nav-link" to="/ordernow" active-class="active"  @click="closeOffcanvas" >Order Now</router-link>
         </li>   
         <li class="nav-item">
-            <router-link class="nav-link" to="/ourstory" active-class="active">Our Story</router-link>
+            <router-link class="nav-link" to="/ourstory" active-class="active"  @click="closeOffcanvas">Our Story</router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link" to="/contact-us" active-class="active">Contact Us</router-link>
+            <router-link class="nav-link" to="/contact-us" active-class="active" @click="closeOffcanvas">Contact Us</router-link>
         </li>
 
-    
+
        
-        <div class="login-register d-flex align-items-center gap-3 show-login ">
+        <div class="login-register d-flex align-items-center gap-3 show-login" v-if="!user">
             <!-- <div class="icon-location">
                 <i class="fa-solid fa-user"></i>
             </div> -->
