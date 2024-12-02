@@ -169,9 +169,9 @@ export default {
                             <div class="circle-shape"><img class="cir36" src="@/assets/homepage/circle.svg" alt="shape"></div>
                         </div>
                         <div class="item-content">
-                            <a href="menu.html">
+                            <router-link to="/ordernow">
                                 <h3>{{item.name}}</h3>
-                            </a>
+                            </router-link>
                             <div class="text kcal-wrap-content d-flex align-items-center justify-content-center gap-2">
                               <span class="d-flex align-items-center gap-2">
                                 <svg width="62" height="62" viewBox="0 0 62 62" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -926,9 +926,9 @@ export default {
                         <div class="dishes-thumb">
                             <img :src="getItemImage(item)" alt="thmb">
                         </div>
-                        <a href="menu.html">
+                        <router-link to="/ordernow">
                             <h3>{{ item.name }}</h3>
-                        </a>
+                        </router-link>
                         <p>Order today</p>
                         <h6>{{item.price}}</h6>
                         <!-- <div class="social-profile">
@@ -1079,9 +1079,9 @@ export default {
                                   <div class="details">
                                       <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
                                       <div class="menu-content">
-                                          <a href="menu.html">
+                                          <router-link to="/ordernow">
                                               <h3 class="active">Chicken-Stuffed Bean Curd Rolls</h3>
-                                          </a>
+                                          </router-link>
                                           <h6>A$19.00 – A$31.00</h6>
                                           <!-- <p>Minced chicken wrapped in soft bean curd sheets, steamed with ginger and seasonings. Tender, juicy, and packed with flavor, this is a healthy, light meal option.</p> -->
                                       </div>
@@ -1096,9 +1096,9 @@ export default {
                                   <div class="details">
                                       <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
                                       <div class="menu-content">
-                                          <a href="menu.html">
+                                          <router-link to="/ordernow">
                                               <h3 class="active">Cilantro Chicken with Vinegar</h3>
-                                          </a>
+                                          </router-link>
                                           <h6>A$19.00 – A$31.00</h6>
                                           <!-- <p>Chicken breast mixed with cilantro, vinegar, chili, soy sauce, and oyster sauce. This tangy, refreshing dish is high in protein, perfect for fitness diets and light daily meals.</p> -->
                                       </div>
@@ -1113,9 +1113,9 @@ export default {
                                   <div class="details">
                                       <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
                                       <div class="menu-content">
-                                          <a href="menu.html">
+                                          <router-link to="/ordernow">
                                               <h3 class="active">Honey Teriyaki Chicken Breast</h3>
-                                          </a>
+                                          </router-link>
                                           <h6>A$19.00 – A$31.00</h6>
                                           <!-- <p>Pan-seared chicken breast with a honey-soy glaze, crispy outside, tender inside, a perfect healthy and flavorful option.</p> -->
                                       </div>
@@ -1130,9 +1130,9 @@ export default {
                                   <div class="details">
                                       <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
                                       <div class="menu-content">
-                                          <a href="menu.html">
+                                        <router-link to="/ordernow">
                                               <h3 class="active">Korean Spicy Chicken Breast</h3>
-                                          </a>
+                                        </router-link>
                                           <h6>A$19.00 – A$31.00</h6>
                                           <!-- <p>Pan-seared chicken breast with Korean spicy sauce, blending sweetness and heat for a tender and flavorful dish.</p> -->
                                       </div>
@@ -1148,9 +1148,9 @@ export default {
                                   <div class="details">
                                       <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
                                       <div class="menu-content">
-                                          <a href="menu.html">
+                                        <router-link to="/ordernow">
                                               <h3 class="active">Wine-Marinated Chicken Gizzards</h3>
-                                          </a>
+                                        </router-link>
                                           <h6>A$19.00 – A$31.00</h6>
                                           <!-- <p>Crisp and tender chicken gizzards marinated in wine sauce, full of flavor. Perfect as a snack or appetizer.</p> -->
                                       </div>
@@ -1166,9 +1166,9 @@ export default {
                                   <div class="details">
                                       <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
                                       <div class="menu-content">
-                                          <a href="menu.html">
+                                        <router-link to="/ordernow">
                                               <h3 class="active">Pickled Veg Chicken Stir-fry</h3>
-                                          </a>
+                                        </router-link>
                                           <h6>A$17.00 – A$31.00</h6>
                                           <!-- <p>It's a testament to our.</p> -->
                                       </div>
