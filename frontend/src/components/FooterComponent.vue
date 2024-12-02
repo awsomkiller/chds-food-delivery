@@ -155,7 +155,7 @@
                                     Monday | Wednesday | Saturday
                                 </li>
                                 <li>
-                                    <span class="text-theme-color2"> 8am - 12am | 4pm - 7pm </span>
+                                    <span class="text-theme-color2"> 2:30pm - 8pm </span>
                                 </li>
                             </ul>
                             
