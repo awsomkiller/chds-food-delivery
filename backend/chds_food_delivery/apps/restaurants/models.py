@@ -11,6 +11,7 @@ class PickupLocation(models.Model):
     city = models.CharField(_("City"),max_length=100,)
     state = models.CharField(_("State"),max_length=100)
     postal_code = models.CharField(_("Postal Code"),max_length=20,null=True,blank=True)
+    price = models.DecimalField(_("Pickup charges"),decimal_places=2,max_digits=5,help_text='Price in  Australian dollars',null=True)
    
     def __str__(self):
         return f"{self.name} ({self.code}) "
@@ -169,3 +170,17 @@ class WorkingDays(models.Model):
         verbose_name = "Kitchen Open Day"
         verbose_name_plural = "Kitchen Open Days"
 
+
+class DeliveryPoint(models.Model):
+    name  = models.CharField(_("Delivery location name"), max_length=100,null=True, blank=True)
+    price = models.DecimalField(_("Delivery Charges"),decimal_places=2,max_digits=5, help_text="Price in  Australian dollars")
+    postal_code = models.CharField(_("Postal Code"),max_length=20,null=True,blank=True)
+    
+    
+    class Meta:
+        verbose_name = "Delivery Point"
+        verbose_name_plural = "Delivery Points"
+    
+    def __str__(self):
+        return f"{self.name} - {self.price}"
+    

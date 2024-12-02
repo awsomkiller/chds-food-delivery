@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-from rest_framework.generics import ListAPIView,CreateAPIView,ListCreateAPIView
+from rest_framework.generics import ListAPIView,ListCreateAPIView
 from apps.restaurants.serializers import (
     RestaurantApiSerializer ,
     MenuCategorySerializer,
@@ -8,15 +8,16 @@ from apps.restaurants.serializers import (
     CreateMenuItemSerializer,
     CreateMenuImagesSerializer,
     ListAddonSerialzier,
-    WorkingDaysSerializer
+    WorkingDaysSerializer,
+    DeliveryPointSerializer
 )
-from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuImage,Addons, WorkingDays
+from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuImage,Addons, WorkingDays,DeliveryPoint
 from rest_framework.permissions import AllowAny
 
 
@@ -90,4 +91,6 @@ class WorkingDaysAPI(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-    
+class DeliveryPointApi(ReadOnlyModelViewSet):
+    serializer_class=DeliveryPointSerializer
+    queryset=DeliveryPoint.objects.all()

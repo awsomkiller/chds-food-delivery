@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.restaurants.models import PickupLocation, MenuCategory, MenuImage, MenuItem, MenuPortionPriceList, Addons, MenuItemTags, WorkingDays, TimeSlots
+from apps.restaurants.models import PickupLocation, MenuCategory, MenuImage, MenuItem, MenuPortionPriceList, Addons, MenuItemTags, WorkingDays, TimeSlots,DeliveryPoint
 
 
 class RestaurantApiSerializer(serializers.ModelSerializer):
@@ -95,4 +95,10 @@ class WorkingDaysSerializer(serializers.ModelSerializer):
     time_slot = TimeslotsSerializer(many=True)
     class Meta:
         model = WorkingDays
+        fields = "__all__"
+        
+        
+class DeliveryPointSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DeliveryPoint
         fields = "__all__"

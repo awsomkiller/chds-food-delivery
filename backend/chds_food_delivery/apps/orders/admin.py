@@ -6,7 +6,7 @@ from apps.transactions.models import Transaction
 
 @admin.register(Orders)
 class OrdersAdmin(admin.ModelAdmin):
-    list_display = ('id','order_id', 'user', 'status', 'amount', 'order_time')
+    list_display = ('id','order_id', 'user', 'status', 'amount', 'order_time',"shipping_charges","total_price")
     search_fields = ('order_id', 'user__username', 'status')
 
 @admin.register(Transaction)

@@ -10,8 +10,9 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Orders
-        fields = ["pickup_location", "schedule_date", "time_slot", "order_type", "delivery_location", "amount", "menu_item"]
-    
+        fields = ["pickup_location", "schedule_date", "time_slot", "order_type", "delivery_location", "amount", "menu_item","shipping_charges","total_price"]
+        
+        
     def create(self, validated_data):
         # Get the user from context
         request = self.context.get('request')

@@ -31,6 +31,8 @@ class Orders(models.Model):
     amount = models.CharField(_("Amount"), max_length=50, help_text="In Australian Dollars")
     transaction = models.ForeignKey(Transaction,on_delete=models.CASCADE, null=True, blank=True)
     menu_item = models.JSONField(_("Menu Items"), help_text="Selected Menu items Json object")
+    shipping_charges = models.CharField(_("Shipping Charges"), max_length=50, help_text="In Australian Dollars",null=True)
+    total_price = models.CharField(_("Total Order price"), max_length=50, help_text="In Australian Dollars", null=True)
     
     def __str__(self)-> str:
         return f"{self.user}"

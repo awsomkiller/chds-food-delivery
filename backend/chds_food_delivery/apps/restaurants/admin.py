@@ -1,11 +1,10 @@
 from django.contrib import admin
-from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuImage,PortionSize,MenuPortionPriceList,Addons ,TimeSlots,WorkingDays, MenuItemTags
-
+from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuImage,PortionSize,MenuPortionPriceList,Addons ,TimeSlots,WorkingDays, MenuItemTags,DeliveryPoint
 
 @admin.register(PickupLocation)
 class PickupLocationAdmin(admin.ModelAdmin):
-    list_display=["id","street_address1","street_address2","city","postal_code"]
-    fields = ["name","street_address1","street_address2","city","state","postal_code"]
+    list_display=["id","street_address1","street_address2","city","postal_code","price"]
+    fields = ["name","street_address1","street_address2","city","state","postal_code","price"]
     search_fields = ['city', 'postal_code', 'name']
  
 
@@ -79,4 +78,8 @@ class TagsAdmin(admin.ModelAdmin):
     list_display= ["id", "name"]
     fields = ["name"]
     
-
+@admin.register(DeliveryPoint)
+class DeliveryPointAdmin(admin.ModelAdmin):
+    list_display = ['id',"name","price","postal_code"]
+    fields = ["name","price","postal_code"]
+    search_fields = ['postal_code',"name"]
