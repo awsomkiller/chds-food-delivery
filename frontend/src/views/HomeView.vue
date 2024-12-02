@@ -22,6 +22,7 @@ import {
 } from 'swiper/modules';
 import { useMenuStore } from '@/stores/menu';
 import { storeToRefs } from 'pinia';
+import { onMounted } from 'vue';
 
 export default {
     components: {
@@ -32,9 +33,21 @@ export default {
     setup() {
       const menuStore = useMenuStore();
       const {best_sellings, popular} = storeToRefs(menuStore);
+
+      const getItemImage = (item) => {
+        if (!item || !item.item_images) return "";
+        const mainImage = item.item_images.find((img) => img.is_main);
+        const path = mainImage ? mainImage.image : "";
+        return "https://api.chds.com.au" + path;
+        };
+
+        onMounted(()=>{
+            menuStore.loadItems();
+        })
         return {
             modules: [Pagination, Navigation],
             best_sellings,
+            getItemImage,
             popular,
         };
     },
@@ -149,15 +162,15 @@ export default {
                     @swiper="onSwiper"
                     @slideChange="onSlideChange"
                   >
-                    <swiper-slide >
+                    <swiper-slide v-for="item in popular" :key="item.id" >
                         <div class="single-food-items">
                         <div class="item-thumb">
-                            <img src="@/assets/homepage/dish-2.png" alt="thumb">
+                            <img :src="getItemImage(item)" t="thumb" class="rounded-circle" width="165">
                             <div class="circle-shape"><img class="cir36" src="@/assets/homepage/circle.svg" alt="shape"></div>
                         </div>
                         <div class="item-content">
                             <a href="menu.html">
-                                <h3>Chicken-Stuffed Bean Curd Rolls</h3>
+                                <h3>{{item.name}}</h3>
                             </a>
                             <div class="text kcal-wrap-content d-flex align-items-center justify-content-center gap-2">
                               <span class="d-flex align-items-center gap-2">
@@ -183,16 +196,16 @@ export default {
                                   </radialGradient>
                                   </defs>
                                   </svg>
-                                  <span>Calories</span>
+                                  <span>{{ item.calories }}</span>
                               </span>
                               <span class="d-flex align-items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 64 64" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path d="m58.95 15.675-3.169 5.593-22.342-1.02 2.86-5.956c5.31.323 17.464 1.064 22.651 1.383zM44.7 29.914l-3.169 5.604-22.342-1.032 2.861-5.944zM30.451 44.164l-3.169 5.604L4.95 48.736l2.85-5.955zM58.748 13.527l-7.614-.458c-.022.02-1.436-2.956-1.446-2.956l4.743-3.658zM44.52 27.776l-7.71-.468-3.042-4.913 7.668.351zM30.28 42.026l-7.699-.468-3.062-4.923 7.678.35c.02-.019 3.072 5.042 3.083 5.041zM14.712 54.096 9.48 57.605l-4.211-6.72 7.688.35c.021-.02 1.744 2.862 1.755 2.86z" fill="#000000" opacity="1" data-original="#000000" class=""></path></g></svg>
-                                  <span>Protein</span>
+                                  <span>{{ item.protein }}</span>
                               </span>
                               <span class="d-flex align-items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path fill-rule="evenodd" d="M385.231 137.188h28.236a7 7 0 1 0 0-14h-26.909c3.914-37.4 9.885-63.971 18.344-81.553C411.506 27.91 418.966 16 429.46 16s17.955 11.91 24.558 25.635c4.772 9.918 8.752 22.7 12.018 38.67h-28.458a7 7 0 1 0 0 14h31.007c3.194 19.725 5.534 43.494 7.124 71.767h-38.131a7 7 0 0 0 0 14h38.841q.7 15.3 1.137 32.227a78.007 78.007 0 0 0-48.464 42.138 78.014 78.014 0 0 0-47.734-41.916c.745-28.57 2.013-53.581 3.873-75.332zM97.707 421.3H227.2a146.133 146.133 0 0 0-17.248 44.7H97.707a11.609 11.609 0 0 1-11.587-11.587v-21.526A11.608 11.608 0 0 1 97.707 421.3zM492.5 322.636V223.5a63.646 63.646 0 0 0-56.4 63.015v87.114a148 148 0 0 1 12.444 9.335 63.675 63.675 0 0 0 43.959-60.33zm-126.806 0a62.781 62.781 0 0 0 6.153 27.152 146.486 146.486 0 0 1 50.25 15.545v-78.816a63.646 63.646 0 0 0-56.4-63.015v99.134zm-56.668 33.158a147.749 147.749 0 0 0-72.444 51.506H97.707a25.516 25.516 0 0 0-18.568 8 150.906 150.906 0 0 1-59.347-110.73 8.973 8.973 0 0 1 8.983-9.561h283.693a8.973 8.973 0 0 1 8.983 9.561 150.234 150.234 0 0 1-12.43 51.222zm-67.54-125.569c9.063-3.6 16.8-3.73 21.007.479s4.083 11.944.479 21.007c20.927-2.452 27.78 9.417 15.193 26.315a35.971 35.971 0 0 1 10.439 2.985H52.643a35.976 35.976 0 0 1 10.441-2.985c-12.587-16.9-5.736-28.768 15.193-26.315-3.6-9.062-3.73-16.8.479-21.008s11.944-4.082 21.007-.478c-1.134-9.686.744-17.192 5.9-20.168s12.6-.852 20.416 4.975c1.411-9.65 5.169-16.414 10.918-17.954s12.386 2.437 18.432 10.089c3.861-8.956 9.242-14.516 15.194-14.516s11.332 5.56 15.193 14.516c6.047-7.651 12.683-11.63 18.432-10.089s9.508 8.3 10.918 17.954c7.822-5.826 15.261-7.951 20.416-4.975s7.034 10.481 5.9 20.168zm27.678-158.833a31.526 31.526 0 0 0 40.218 18.239A2.98 2.98 0 0 0 
                                   311.3 86.3a31.458 31.458 0 0 0-32.731-26.051 172.187 172.187 0 0 0-26.22-9.387 31.382 31.382 0 0 0 15.99-22.512 2.978 2.978 0 0 0-1.948-3.313A31.516 31.516 0 0 0 225.562 45.9a170.863 170.863 0 0 0-51.6 2.517 31.733 31.733 0 0 0 4.43-30.182 2.979 2.979 0 0 0-3.344-1.895 31.45 31.45 0 0 0-24.881 38.683 170.643 170.643 0 0 0-53.952 31.256 31.45 31.45 0 0 0-12.584-29.633 2.978 2.978 0 0 0-3.835.24 31.518 31.518 0 0 0-.1 45.616 172.7 172.7 0 0 0-30.4 48.406 31.452 31.452 0 0 0-24.636-20.793 2.98 2.98 0 0 0-3.313 1.948A31.519 31.519 0 0 0 41.864 172.8a170.728 170.728 0 0 0-5.369 32.536 6.988 6.988 0 1 0 13.945.93 157.18 157.18 0 0 1 4.947-29.966 31.475 31.475 0 0 0 37.624-25.646 2.98 2.98 0 0 0-1.949-3.313 31.382 31.382 0 0 0-25.833 2.076 158.449 158.449 0 0 1 24.928-37.689 31.518 31.518 0 0 0 45.159-5.864 2.979 2.979 0 0 0-.24-3.836 31.388 31.388 0 0 0-24.058-9.828 156.864 156.864 0 0 1 42.933-23.684A31.52 31.52 0 0 0 194.779 87.7a2.979 2.979 0 0 0 1.9-3.344 31.4 31.4 0 0 0-17.319-22.741 157.061 157.061 0 0 1 42.691-2A31.473 31.473 0 0 0 247.807 96.7a2.98 2.98 0 0 0 3.313-1.948 31.636 31.636 0 0 0-5.883-31.283 157.966 157.966 0 0 1 23.927 7.921zm91.991 291.523v84.854a7 7 0 0 1-14 0v-84.854a132.9 132.9 0 0 0-30.995 5.31v79.544a7 7 0 0 1-14 0v-74.508a133.312 133.312 0 0 0-31 18.467v56.041a7 7 0 1 1-14 0v-43.16a132.757 132.757 0 0 0-35.937 81.749 8.969 8.969 0 0 0 8.985 9.642H478.1a8.968 8.968 0 0 0 8.979-9.642 132.771 132.771 0 0 0-35.937-81.749v43.16a7 7 0 1 1-14 0v-56.041a133.208 133.208 0 0 0-31-18.467v74.508a7 7 0 0 1-14 0v-79.544a132.9 132.9 0 0 0-30.987-5.31z" fill="#000000" opacity="1" data-original="#000000" class=""></path></g></svg>
-                                  <span>carbs</span>
+                                  <span>{{ item.carbs }}</span>
                               </span>
                               <span class="d-flex align-items-center gap-2">
                                 <svg width="62" height="62" viewBox="0 0 62 62" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -217,15 +230,15 @@ export default {
                                   </radialGradient>
                                   </defs>
                                   </svg>
-                                 <span>Fats</span>
+                                 <span>{{ item.fats }}</span>
                               </span>
                             </div>
-                            <h6>$20.99</h6>
+                            <h6>{{ item.price }}</h6>
                         </div>
                       </div>
                     </swiper-slide>
  
-                    <swiper-slide>
+                    <!-- <swiper-slide>
                         <div class="single-food-items">
                         <div class="item-thumb">
                             <img src="@/assets/homepage/dish-2.png" alt="thumb">
@@ -467,9 +480,10 @@ export default {
                                     <h6>$20.99</h6>
                                 </div>
                             </div>
-                        </swiper-slide>
+                        </swiper-slide> 
+                        -->
 
-                        <swiper-slide>
+                        <!-- <swiper-slide>
                             <div class="single-food-items">
                                 <div class="item-thumb">
                                     <img src="@/assets/homepage/dish-2.png" alt="thumb">
@@ -635,7 +649,7 @@ export default {
                                     <h6>$20.99</h6>
                                 </div>
                             </div>
-                        </swiper-slide>
+                        </swiper-slide> -->
                     </swiper>
 
                 </div>
@@ -643,8 +657,8 @@ export default {
               </div>
             </div>
           </div>
-          <div class="offer-section fix bg-color2">
-            <div class="offer-wrapper">
+          <!-- <div class="offer-section fix bg-color2">
+            <div class="offer-wrapper"> -->
                 <!-- <div class="container">
                     <div class="row gy-4">
                         <div class="col-lg-6 col-xl-4">
@@ -698,11 +712,11 @@ export default {
                     </div>
                 </div> -->
                 
-                <div class="container container-card " >
-                  <div class="row" >
+                 <!-- <div class="container container-card " >
+                  <div class="row" > -->
 
 
-                    <div class="col-xxl-4 col-xxl-4 col-lg-6 col-md-12 col-sm-12 col-12 p-3" >
+                  <!--  <div class="col-xxl-4 col-xxl-4 col-lg-6 col-md-12 col-sm-12 col-12 p-3" >
                       <div class="Offer-green-card">
                           <div class="offer-detail-with-logo">
                               <div class="logo-container"> 
@@ -774,9 +788,9 @@ export default {
                           </div>
 
                       </div>
-                    </div>
+                    </div> -->
 
-                    <div class=" col-xxl-4 col-xxl-4 col-lg-6 col-md-12 col-sm-12 col-12 p-3" >
+                    <!-- <div class=" col-xxl-4 col-xxl-4 col-lg-6 col-md-12 col-sm-12 col-12 p-3" >
                       <div class="offer-brown-card">
                           <div class="offer-detail-with-logo">
                               <div class="logo-container"> 
@@ -806,7 +820,7 @@ export default {
                 </div>
                 
             </div>
-        </div>
+        </div> -->
         <section class="about-us-section fix pb-0">
           <div class="about-wrapper style1">
             <div class="shape1 h-100 d-none d-xxl-block"><img src="../assets/homepage/Group-5.png" alt="shape"></div>
@@ -908,15 +922,15 @@ export default {
                     </h2>
                 </div>
                 <div class="dishes-card-wrap style1">
-                    <div class="dishes-card style1" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
+                    <div class="dishes-card style1" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;" v-for="item in best_sellings" :key="item.id">
                         <div class="dishes-thumb">
-                            <img src="@/assets/homepage/dish-img-wrap.png" alt="thmb">
+                            <img :src="getItemImage(item)" alt="thmb">
                         </div>
                         <a href="menu.html">
-                            <h3>Chicken Fried Rice</h3>
+                            <h3>{{ item.name }}</h3>
                         </a>
-                        <p>The registration fee</p>
-                        <h6>$100.99</h6>
+                        <p>Order today</p>
+                        <h6>{{item.price}}</h6>
                         <!-- <div class="social-profile">
                               <span class="plus-btn"> <a href="#"> <i class="fa-regular fa-heart"></i></a></span>
                               <ul>
@@ -925,7 +939,7 @@ export default {
                               </ul>
                           </div> -->
                     </div>
-                    <div class="dishes-card style1" data-wow-delay="0.4s" style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInUp;">
+                    <!-- <div class="dishes-card style1" data-wow-delay="0.4s" style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInUp;"> -->
                         <!-- <div class="social-profile">
                               <span class="plus-btn"> <a href="#"> <i class="fa-regular fa-heart"></i></a></span>
                               <ul>
@@ -933,7 +947,7 @@ export default {
                                   <li><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-light fa-eye"></i></a></li>
                               </ul>
                           </div> -->
-                        <div class="dishes-thumb">
+                        <!-- <div class="dishes-thumb">
                             <img src="@/assets/homepage/dish-img-wrap.png" alt="thmb">
                         </div>
                         <a href="menu.html">
@@ -942,7 +956,7 @@ export default {
                         <p>The registration fee</p>
                         <h6>$15.99</h6>
                     </div>
-                    <div class="dishes-card style1" data-wow-delay="0.6s" style="visibility: visible; animation-delay: 0.6s; animation-name: fadeInUp;">
+                    <div class="dishes-card style1" data-wow-delay="0.6s" style="visibility: visible; animation-delay: 0.6s; animation-name: fadeInUp;"> -->
                         <!-- <div class="social-profile">
                               <span class="plus-btn"> <a href="#"> <i class="fa-regular fa-heart"></i></a></span>
                               <ul>
@@ -950,7 +964,7 @@ export default {
                                   <li><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-light fa-eye"></i></a></li>
                               </ul>
                           </div> -->
-                        <div class="dishes-thumb">
+                        <!-- <div class="dishes-thumb">
                             <img src="@/assets/homepage/dish-img-wrap.png" alt="thmb">
                         </div>
                         <a href="menu.html">
@@ -959,7 +973,7 @@ export default {
                         <p>The registration fee</p>
                         <h6>$26.99</h6>
                     </div>
-                    <div class="dishes-card style1" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: fadeInUp;">
+                    <div class="dishes-card style1" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: fadeInUp;"> -->
                         <!-- <div class="social-profile">
                               <span class="plus-btn"> <a href="#"> <i class="fa-regular fa-heart"></i></a></span>
                               <ul>
@@ -967,7 +981,7 @@ export default {
                                   <li><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-light fa-eye"></i></a></li>
                               </ul>
                           </div> -->
-                          <div class="dishes-thumb">
+                          <!-- <div class="dishes-thumb">
                               <img src="@/assets/homepage/dish-img-wrap.png" alt="thmb">
                           </div>
                           <a href="menu.html">
@@ -975,7 +989,7 @@ export default {
                           </a>
                           <p>The registration fee</p>
                           <h6>$39.00</h6>
-                      </div>
+                      </div> -->
                    
                   </div>
                   <div class="btn-wrapper w-30 text-center mt-5" data-wow-delay="0.9s" style="visibility: visible; animation-delay: 0.9s; animation-name: fadeInUp;">
@@ -1250,7 +1264,13 @@ export default {
                                             <div class="item2">
                                                 <h6>Shengli</h6>
                                                 <!-- <p>Web Designer</p> -->
-                                                <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
+                                                <div class="star-rating">
+                                                    <i class="fa fa-star px-1" data-value="1"></i>
+                                                    <i class="fa fa-star px-1" data-value="2"></i>
+                                                    <i class="fa fa-star px-1" data-value="3"></i>
+                                                    <i class="fa fa-star px-1" data-value="4"></i>
+                                                    <i class="fa fa-star px-1" data-value="5"></i>
+                                                </div>
                                             </div>
                                             <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
                                             </div>
@@ -1271,7 +1291,13 @@ export default {
                                             <div class="item2">
                                                 <h6>Xiao Hai</h6>
                                                 <!-- <p>Web Designer</p> -->
-                                                <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
+                                                <div class="star-rating">
+                                                    <i class="fa fa-star px-1" data-value="1"></i>
+                                                    <i class="fa fa-star px-1" data-value="2"></i>
+                                                    <i class="fa fa-star px-1" data-value="3"></i>
+                                                    <i class="fa fa-star px-1" data-value="4"></i>
+                                                    <i class="fa fa-star px-1" data-value="5"></i>
+                                                </div>
                                             </div>
                                             <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
                                             </div>
@@ -1292,7 +1318,13 @@ export default {
                                             <div class="item2">
                                                 <h6>Zarya</h6>
                                                 <!-- <p>Web Designer</p> -->
-                                                <div class="icon"><img src="@/assets/homepage/star.svg" alt="icon"></div>
+                                                <div class="star-rating">
+                                                    <i class="fa fa-star px-1" data-value="1"></i>
+                                                    <i class="fa fa-star px-1" data-value="2"></i>
+                                                    <i class="fa fa-star px-1" data-value="3"></i>
+                                                    <i class="fa fa-star px-1" data-value="4"></i>
+                                                    <i class="fa fa-star px-1" data-value="5"></i>
+                                                </div>
                                             </div>
                                             <div class="quote"><img class="width-quote" src="@/assets/homepage/quote.svg" alt="icon">
                                             </div>
@@ -1383,3 +1415,13 @@ export default {
 </div>
 <FooterComponent />
 </template>
+
+<style scoped>
+   .star-rating .fa-star {
+      font-size: 1rem;
+      color: #ffa41b;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+</style>

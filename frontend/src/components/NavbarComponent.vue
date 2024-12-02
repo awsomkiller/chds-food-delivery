@@ -138,7 +138,7 @@ export default {
                             <h6 class="mb-0">{{ user.full_name }}</h6>
                             <small v-if="delivery">Delivery Available</small>
                         </div>
-                        <router-link class="dropdown-item" to="/profile">My Profile</router-link>
+                        <a class="dropdown-item" to="/profile" disabled>My Profile</a>
                         <hr class="dropdown-divider" />
                         <a class="dropdown-item text-danger" @click="handleLogout">Logout</a>
                       </div>
@@ -235,11 +235,11 @@ if ($(this).scrollTop() > 1){
   }
 
   .desktophide{
-    display: block;
+    display: none;
   }
 
   .mobilehide{
-    display:none;
+    display:block;
   }
 
 @media screen and (min-width:991.91px) {
@@ -261,10 +261,10 @@ if ($(this).scrollTop() > 1){
 
 @media screen and (max-width:575px) {
   .mobilehide{
-    display:block;
+    display:none;
   }
   .desktophide{
-    display: none;
+    display: block;
   }   
   .profile-header{
     margin-right: 50px;
