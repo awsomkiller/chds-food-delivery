@@ -8,8 +8,8 @@ from apps.restaurants.serializers import (
     CreateMenuItemSerializer,
     CreateMenuImagesSerializer,
     ListAddonSerialzier,
-    WorkingDaysSerializer,
-    DeliveryPointSerializer
+    DeliveryPointSerializer,
+    TimeslotsSerializer
 )
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
@@ -17,7 +17,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuImage,Addons, WorkingDays,DeliveryPoint
+from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuImage,Addons, TimeSlots,DeliveryPoint
 from rest_framework.permissions import AllowAny
 
 
@@ -80,13 +80,13 @@ class MenuAddonApi(ListAPIView):
     queryset = Addons.objects.all()
 
 
-class WorkingDaysAPI(APIView):
+class TimeSlotsView(APIView):
 
-    serializer_class = WorkingDaysSerializer
+    serializer_class = TimeslotsSerializer
     permission_classes = [AllowAny]
     
     def get(self, request):
-        instances = WorkingDays.objects.filter(is_active=True)
+        instances = TimeSlots.objects.all()
         serializer = self.serializer_class(instances, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

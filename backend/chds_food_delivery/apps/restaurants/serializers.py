@@ -91,11 +91,6 @@ class TimeslotsSerializer(serializers.ModelSerializer):
         model = TimeSlots
         fields = "__all__"
 
-class WorkingDaysSerializer(serializers.ModelSerializer):
-    time_slot = TimeslotsSerializer(many=True)
-    class Meta:
-        model = WorkingDays
-        fields = "__all__"
         
         
 class DeliveryPointSerializer(serializers.ModelSerializer):

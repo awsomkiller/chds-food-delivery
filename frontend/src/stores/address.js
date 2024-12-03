@@ -14,7 +14,8 @@ export const useAddressStore = defineStore('address', {
       suburbs: '',
       city: '',
     },
-    eligibleAddress: [], // New state property
+    eligibleAddress: [],
+    eligibityError:'',
   }),
 
   getters: {
@@ -80,6 +81,7 @@ export const useAddressStore = defineStore('address', {
     },
 
     async addAddress(addressData) {
+      this.eligibityError = "";
       try {
         const response = await axios.post('/user-address/', addressData);
         this.addresses.push(response.data);
@@ -121,5 +123,15 @@ export const useAddressStore = defineStore('address', {
         await this.addAddress(this.activeAddress);
       }
     },
+    checkDeliveryEligibility(postal_code){
+      const eligible_postal_codes = this.getEligiblePostalCodes();
+      if(eligible_postal_codes.includes(parseInt(postal_code))){
+        this.eligibityError = "Delivery available";
+      }
+      else{
+        this.eligibityError = "Delivery not available";
+      }
+      return;
+    }
   },
 });

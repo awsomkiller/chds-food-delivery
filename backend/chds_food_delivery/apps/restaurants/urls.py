@@ -5,7 +5,7 @@ from apps.restaurants.views import (
     MenuCategoryApi,
     MenuItemApi,
     MenuImagesApi,
-    WorkingDaysAPI,
+    TimeSlotsView,
     DeliveryPointApi
 )
 
@@ -21,6 +21,6 @@ router.register("delivery-point",DeliveryPointApi , basename="delivery_point")
 urlpatterns = [
     path("images/",MenuImagesApi.as_view(),name="create-menu_images"),
     path("category/",MenuCategoryApi.as_view(),name="menu_category"),
-    path("working-days/", WorkingDaysAPI.as_view(), name="list-working-days-api")
+    path("timeslots/", TimeSlotsView.as_view(), name="list-timeslots")
  
 ]+router.urls+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

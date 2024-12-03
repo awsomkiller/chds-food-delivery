@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import axios from '../../axios'; // Adjust the path as needed
+import axios from '../../axios';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -7,6 +7,15 @@ export const useAuthStore = defineStore('auth', {
     accessToken: null,
     refreshToken: null,
     delivery: false,
+    profileImage: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
+    fullName: '',
+    email: '',
+    phoneNumber: '',
+    street1: '',
+    street2: '',
+    suburb: '',
+    pincode: '',
+    city: '',
   }),
 
   actions: {
@@ -53,7 +62,8 @@ export const useAuthStore = defineStore('auth', {
 
         this.user = response.data;
         localStorage.setItem('user', JSON.stringify(this.user));
-        this.deliveryEligibilityCheck()
+        this.deliveryEligibilityCheck();
+        this.initializeProfile();
         return;
       } catch (error) {
         console.error('Login failed:', error.response?.data || error.message);
@@ -156,5 +166,57 @@ export const useAuthStore = defineStore('auth', {
         [city, postal_code].filter(Boolean).join(', '),
       ].filter(Boolean).join(', ');
     },
+    setProfileImage(imageUrl) {
+      this.profileImage = imageUrl;
+    },
+    setFirstName(name) {
+      this.firstName = name;
+    },
+    setLastName(name) {
+      this.lastName = name;
+    },
+    setEmail(email) {
+      this.email = email;
+    },
+    setPhoneNumber(phone) {
+      this.phoneNumber = phone;
+    },
+    setStreet1(street) {
+      this.street1 = street;
+    },
+    setStreet2(street) {
+      this.street2 = street;
+    },
+    setSuburb(suburb) {
+      this.suburb = suburb;
+    },
+    setPincode(pincode) {
+      this.pincode = pincode;
+    },
+    setState(state) {
+      this.state = state;
+    },
+    saveProfile() {
+      // try {
+        const payload = { profile_image: this.profileImage, full_name:this.full_name };
+        console.log(payload);
+      //   const response = await axios.post('/details/', payload);
+      //   await this.fetchUserDetails();
+      //   console.log('Profile saved successfully:', response.data);
+      // } catch (error) {
+      //   console.error('Error saving profile:', error);
+      // }
+    },
+    initializeProfile(){
+      this.fullName = this.user.full_name
+      this.email = this.user.email
+      this.phoneNumber = this.user.mobile_number
+      this.street1 = this.user.billing_address.street_address1
+      this.street2 = this.user.billing_address.street_address2
+      this.suburbs = this.user.billing_address.suburbs
+      this.pincode = this.user.billing_address.pincode
+      this.city = this.user.billing_address.city
+      this.profileImage = this.user.profileImage
+    }
   },
 });

@@ -6,7 +6,6 @@
       tabindex="-1"
       aria-labelledby="addressModalLabel"
       aria-hidden="true"
-      ref="addressModalRef"
     >
       <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
         <div class="modal-content">
@@ -31,7 +30,7 @@
                     <!-- Pincode -->
                     <div class="col-md-12">
                       <div class="mb-2">
-                        <label for="postal_code" class="form-label">Pincode</label>
+                        <label for="postal_code" class="form-label">Postal Code</label>
                         <div class="position-relative">
                           <input
                             v-model="activeAddress.postal_code"
@@ -39,8 +38,12 @@
                             class="form-control"
                             id="postal_code"
                             placeholder="Enter Postal Code"
+                            @blur="handlePostalCodeChange"
                             required
                           />
+                          <span class="text-info" v-if="eligibityError">
+                            {{ eligibityError }}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -132,7 +135,7 @@
                 </div>
   
                 <div class="button-wrap sign-up-wrap p-0">
-                  <button class="btn btn-primary w-100" type="submit" data-bs-dismiss="modal" aria-label="Close">
+                  <button class="btn btn-primary w-100" type="submit">
                     <i class="fa-solid fa-plus"></i>
                     {{ activeAddress.id ? 'Update Address' : 'Add Address' }}
                   </button>
@@ -140,7 +143,7 @@
               </form>
             </div>
           </div>
-  
+          <button class="d-none" data-bs-dismiss="modal" aria-label="Close" ref="closeButton"></button>  
         </div>
       </div>
     </div>
@@ -150,6 +153,7 @@
   import { ref, computed, onMounted } from 'vue';
   import { useAddressStore } from '@/stores/address';
   import { useAuthStore } from '@/stores/auth';
+import { storeToRefs } from 'pinia';
   
   export default {
     name: 'AddAddress',
@@ -157,10 +161,10 @@
       const addressStore = useAddressStore();
       const authStore = useAuthStore();
   
-      // Reference to the modal DOM element
-      const addressModalRef = ref(null);
-  
-      // Initialize the modal instance when the component is mounted
+      const closeButton = ref(null);
+
+      const { eligibityError } = storeToRefs(addressStore);
+
       onMounted(() => {
         addressStore.fetchAddresses();
       });
@@ -179,14 +183,21 @@
       const handleSubmit = async () => {
         await addressStore.saveActiveAddress();
         authStore.fetchUserDetails();
+        closeButton.value.click()
       };
-  
+      
+      const handlePostalCodeChange = (event) => {
+        const code = event.target.value;
+        addressStore.checkDeliveryEligibility(code);
+      }
 
       return {
-        addressModalRef,
         activeAddress,
         addresses,
         handleSubmit,
+        closeButton,
+        eligibityError,
+        handlePostalCodeChange,
       };
     },
   };

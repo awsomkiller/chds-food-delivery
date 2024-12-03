@@ -1,35 +1,21 @@
 <script>
-import {
-    storeToRefs
-} from 'pinia';
-import {
-    useCartStore
-} from '@/stores/cart';
-import {
-    useWorkingDaysStore
-} from '@/stores/workingdays';
-import {
-    useAddressStore
-} from '@/stores/address';
-import {
-    useAuthStore
-} from '@/stores/auth';
-import {
-    useWalletStore
-} from '@/stores/wallet';
+import { storeToRefs } from 'pinia';
+import { useCartStore } from '@/stores/cart';
+import { useWorkingDaysStore } from '@/stores/workingdays';
+import { useAddressStore } from '@/stores/address';
+import { useAuthStore } from '@/stores/auth';
+import { useWalletStore } from '@/stores/wallet';
 import {
     onMounted,
     ref,
     watch,
     nextTick
 } from 'vue';
-import {
-    useRouter
-} from 'vue-router';
-import {
-    stripePromise
-} from '@/stripe.js';
+import { useRouter } from 'vue-router';
+import { stripePromise } from '@/stripe.js';
 import caxios from '../../axios';
+import flatpickr from "flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
 
 export default {
     name: 'CheckoutPage',
@@ -47,12 +33,11 @@ export default {
             TotalOrderPrice
         } = storeToRefs(cartStore);
         const {
-            deliverydays,
-            pickupdays,
-            activeDeliveryDay,
-            activePickUpDay,
-            activePickupTimeSlot,
-            activeDeliveryTimeSlot,
+            delivery_time_slots,
+            pickup_time_slots,
+            schedule_date,
+            schedule_time,
+            offDays,
         } = storeToRefs(workingDaysStore);
         const {
             eligibleAddress,
@@ -62,16 +47,12 @@ export default {
             balance
         } = storeToRefs(walletStore)
 
-        const selectedDeliveryDayId = ref('');
-        const selectedDeliveryTimeSlotId = ref('');
-        const selectedPickupDayId = ref('');
-        const selectedPickupTimeSlotId = ref('');
         const selectedOption = ref('delivery');
         const selectedDeliveryAddress = ref({});
         const selectedPickupAddress = ref({});
         const showFail = ref(null);
         const showSuccess = ref(null);
-
+        const scheduleDate = ref('');
         const router = useRouter();
 
         if (totalQty.value <= 0) {
@@ -94,7 +75,6 @@ export default {
             cardElement.value = elements.value.create('card', {
                 style: {
                     base: {
-                        // Add your custom styling here
                         fontSize: '16px',
                         color: '#32325d',
                     },
@@ -116,40 +96,33 @@ export default {
 
         const handleCheckOutSubmit = async () => {
             const payload = {};
-            if (selectedOption.value == 'delivery') {
-                if (
-                    Object.keys(activeDeliveryDay.value).length === 0 ||
-                    Object.keys(activeDeliveryTimeSlot.value).length === 0
-                ) {
-                    alert('Delivery Date/Time Not Selected');
-                    return;
-                }
-                if (Object.keys(selectedDeliveryAddress.value).length === 0) {
-                    alert('Delivery Address is not selected')
-                }
-                payload.schedule_date = activeDeliveryDay.value.date;
-                payload.time_slot = activeDeliveryTimeSlot.value.name;
-                payload.order_type = 'DELIVERY';
-                payload.delivery_location = formatAddress(selectedDeliveryAddress.value)
-            } else {
-                if (
-                    Object.keys(activePickUpDay.value).length === 0 ||
-                    Object.keys(activePickupTimeSlot.value).length === 0
-                ) {
-                    alert('Pickup Date/Time Not Selected');
-                    return;
-                }
-                if (Object.keys(selectedPickupAddress.value).length === 0) {
-                    alert('Pickup Address is not selected')
-                }
-                payload.schedule_date = activePickUpDay.value.date;
-                payload.time_slot = activePickupTimeSlot.value.name;
-                payload.order_type = 'PICKUP';
-                payload.pickup_location = formatAddress(selectedPickupAddress.value);
+            if(!schedule_date.value){
+                alert('Select Schedule date');
+                return;
             }
-            payload.amount = TotalOrderPrice.value;
+            if (selectedOption.value == 'delivery') {
+               
+                if (Object.keys(selectedDeliveryAddress.value).length === 0) {
+                    alert('Delivery Address is not selected');
+                    return;
+                }
+                payload.order_type = 'DELIVERY';
+                payload.delivery_location = selectedDeliveryAddress.value.id;
+                payload.pickup_location=""
+            } else {
+                if (Object.keys(selectedPickupAddress.value).length === 0) {
+                    alert('Pickup Address not selected');
+                    return;
+                }
+                 
+                payload.order_type = 'PICKUP';
+                payload.delivery_location = "";
+                payload.pickup_location = selectedPickupAddress.value.id;
+            }
             payload.menu_item = JSON.stringify(cart.value);
             payload.payment_type = selectPaymentMethod.value;
+            payload.schedule_date = schedule_date.value;
+            payload.time_slot = schedule_time.value;
 
             if (selectPaymentMethod.value === "wallet") {
                 try{
@@ -175,8 +148,13 @@ export default {
                         payment_method: {
                             card: cardElement.value,
                             billing_details: {
-                                // Include billing details if needed
-                            },
+                                address: {
+                                    line1: '123 Main Street', //TODO: dynamic address
+                                    city: 'Anytown',
+                                    country: 'US',
+                                    postal_code: '12345'
+                                },
+                            }
                         },
                     });
 
@@ -198,71 +176,85 @@ export default {
 
         };
 
-        // Handle delivery day selection change
-        const handleDeliveryDayChange = (event) => {
-            const dayId = event.target.value;
-            workingDaysStore.setActiveDeliveryDay(dayId);
-            selectedDeliveryTimeSlotId.value = workingDaysStore.activeDeliveryTimeSlot?.id || '';
-        };
-
-        // Handle delivery time slot selection change
-        const handleDeliveryTimeSlotChange = (event) => {
-            const timeSlotId = event.target.value;
-            workingDaysStore.setActiveDeliveryTimeSlot(timeSlotId);
-        };
-
-        // Handle pickup day selection change
-        const handlePickupDayChange = (event) => {
-            const dayId = event.target.value;
-            workingDaysStore.setActivePickupDay(dayId);
-            selectedPickupTimeSlotId.value = workingDaysStore.activePickupTimeSlot?.id || '';
-        };
-
         // Handle pickup time slot selection change
-        const handlePickupTimeSlotChange = (event) => {
+        const handleTimeSlotChange = (event) => {
             const timeSlotId = event.target.value;
-            workingDaysStore.setActivePickupTimeSlot(timeSlotId);
+            workingDaysStore.setScheduleTime(timeSlotId);
         };
 
         const handleDelete = (id) => {
             cartStore.removeFromCart(id);
         };
 
-        const formatAddress = (addressObj) => {
+        
+        const getCurrentDateInGMT11 = () => {
+            // Get the current date/time in GMT+11
+            const currentDate = new Date();
+            const gmt11Offset = 11 * 60; // Offset in minutes for GMT+11
+            const gmt11Date = new Date(currentDate.getTime() + gmt11Offset * 60000 - currentDate.getTimezoneOffset() * 60000);
+            return gmt11Date;
+        };
+        const calculateMinSelectableDate = () => {
+            const currentDate = getCurrentDateInGMT11();
+            const currentDay = currentDate.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+            const currentHour = currentDate.getHours();
+            const functionalDays = [1, 3, 5]; // Monday, Wednesday, Friday
+            const nonFunctionalDays = [0, 2, 4, 6]; // Sunday, Tuesday, Thursday, Saturday
+            let minDate = new Date(currentDate);
 
-            const {
-                name,
-                street_address1,
-                street_address2,
-                suburbs,
-                city,
-                postal_code
-            } = addressObj;
-            const addressParts = [];
-            if (name) {
-                addressParts.push(name);
-            }
-            let street = street_address1 || "";
-            if (street_address2) {
-                street += `, ${street_address2}`;
-            }
-            if (street) {
-                addressParts.push(street);
-            }
-            if (suburbs) {
-                addressParts.push(suburbs);
-            }
-            let cityLine = city || "";
-            if (postal_code) {
-                cityLine += postal_code ? `, ${postal_code}` : "";
-            }
-            if (cityLine) {
-                addressParts.push(cityLine);
-            }
-            const formattedAddress = addressParts.join("\n");
+            if (nonFunctionalDays.includes(currentDay)) {
+                // If the current day is non-functional, minimum date is 2 days in advance
+                minDate.setDate(currentDate.getDate() + 2);
 
-            return formattedAddress;
+                // Move to the next functional day
+                while (!functionalDays.includes(minDate.getDay())) {
+                    minDate.setDate(minDate.getDate() + 1);
+                }
+                } else if (functionalDays.includes(currentDay)) {
+                // If the current day is functional
+                if (currentHour < 20) {
+                    // Before 8 PM, move to the next functional day
+                    minDate.setDate(currentDate.getDate() + 1);
+                } else {
+                    // After 8 PM, move to the next-to-next functional day
+                    minDate.setDate(currentDate.getDate() + 2);
+                }
+
+                // Ensure we land on a functional day
+                while (!functionalDays.includes(minDate.getDay())) {
+                    minDate.setDate(minDate.getDate() + 1);
+                }
+            }
+
+            // Reset time to the start of the day
+            minDate.setHours(0, 0, 0, 0);
+            return minDate;
         }
+
+        const initializeFlatpickr = async () => {
+            await nextTick();
+
+            const datePickers = document.querySelectorAll(".datepicker");
+            datePickers.forEach(picker => {
+                flatpickr(picker, {
+                    dateFormat: "Y-m-d",
+                    minDate: calculateMinSelectableDate(),
+                    enable: [
+                        function (date) {
+                            const functionalDays = [1, 3, 5];
+                            const isoDate = date.toISOString().split("T")[0];
+                            return functionalDays.includes(date.getDay()) && !offDays.value.includes(isoDate);
+                        }
+                    ],
+                    onChange: (selectedDates, dateStr) => {
+                        console.log(selectedDates)
+                        console.log(dateStr);
+                        workingDaysStore.setScheduleDate(dateStr);
+                    }
+                });
+            });
+        };
+
 
         watch(
             totalQty,
@@ -282,16 +274,21 @@ export default {
                 }
             }
         )
+        watch(selectedOption, async () => {
+            await initializeFlatpickr();
+            scheduleDate.value = null;
+        });
 
         onMounted(async () => {
             await nextTick();
-            workingDaysStore.fetchWorkingDays();
+            workingDaysStore.fetchTimeSlots();
 
             if (TotalOrderPrice.value > balance.value || !balance.value) {
                 selectPaymentMethod.value = "stripe";
             } else {
                 selectPaymentMethod.value = "wallet";
             }
+            initializeFlatpickr()
         });
 
         return {
@@ -304,26 +301,17 @@ export default {
             TotalOrderPrice,
             handleDelete,
             selectedOption,
-            deliverydays,
             showFail,
             balance,
             showSuccess,
-            pickupdays,
-            activeDeliveryDay,
-            activePickUpDay,
             selectPaymentMethod,
-            selectedDeliveryDayId,
-            selectedDeliveryTimeSlotId,
-            selectedPickupDayId,
-            selectedPickupTimeSlotId,
             selectedDeliveryAddress,
             selectedPickupAddress,
             handleCheckOutSubmit,
-            handleDeliveryDayChange,
-            handleDeliveryTimeSlotChange,
-            handlePickupDayChange,
-            handlePickupTimeSlotChange,
             cardElementRef,
+            handleTimeSlotChange,
+            delivery_time_slots,
+            pickup_time_slots,
         };
     },
 };
@@ -372,30 +360,25 @@ export default {
                         <!-- <button type="button" class="btn-inactive-order">In Car</button> -->
                     </div>
                     <div class="selected-address-container mt-3 p-2" v-if="selectedOption == 'delivery'">
-                        <div class="alert alert-danger" role="alert" v-if="!deliverydays.length">
-                            Kitchen is not taking any delivery orders right now, Try Pick Up !
+                        <div class="alert alert-danger" role="alert" v-if="!delivery_time_slots.length">
+                            Kitchen is not taking any delivery orders !!
                         </div>
                         <div class="schedule-order mb-3" v-else>
                             <h6>Select Delivery Date and Time</h6>
                             <div class="row">
                                 <!-- Select Delivery Day -->
-                                <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2">
-                                    <label for="deliveryDay" class="form-label">Select Day</label>
-                                    <select id="deliveryDay" class="form-select" v-model="selectedDeliveryDayId" @change="handleDeliveryDayChange">
-                                        <option disabled value="">Select Day</option>
-                                        <option v-for="day in deliverydays" :key="day.id" :value="day.id">
-                                            {{ day.date }}
-                                        </option>
-                                    </select>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2"> 
+                                    <label for="delivery-datepicker" class="form-label" >Choose a date</label>
+                                    <input type="text" id="delivery-datepicker" class="form-control datepicker" @load="initializeFlatpickr" />
                                 </div>
-
+                                
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2">
                                     <label for="deliveryTimeSlot" class="form-label">Choose Time Slot</label>
-                                    <select id="deliveryTimeSlot" class="form-select" v-model="selectedDeliveryTimeSlotId" :disabled="!activeDeliveryDay" @change="handleDeliveryTimeSlotChange">
+                                    <select id="deliveryTimeSlot" class="form-select" v-model="schedule_date" @change="handleTimeSlotChange">
                                         <option disabled value="">
-                                            {{ activeDeliveryDay && activeDeliveryDay.time_slot && activeDeliveryDay.time_slot.length ? 'Choose Time Slot' : 'No Time Slots Available' }}
+                                            {{  delivery_time_slots.length ? 'Choose Time Slot' : 'No Time Slots Available' }}
                                         </option>
-                                        <option v-for="slot in activeDeliveryDay.time_slot" :key="slot.id" :value="slot.id">
+                                        <option v-for="slot in delivery_time_slots" :key="slot.id" :value="slot.name">
                                             {{ slot.name }}
                                         </option>
                                     </select>
@@ -426,31 +409,26 @@ export default {
                     </div>
 
                     <div class="pickup-details-container mt-3 p-2" v-else>
-                        <div class="alert alert-danger" role="alert" v-if="!pickupdays.length">
-                            Kitchen is closed for new orders.
+                        <div class="alert alert-danger" role="alert" v-if="!pickup_time_slots.length">
+                            Kitchen is closed for Pickup order.
                         </div>
                         <div class="schedule-order mb-3" v-else>
                             <h6>Select Pickup Date and Time</h6>
                             <div class="row">
                                 <!-- Select Pickup Day -->
-                                <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2">
-                                    <label for="pickupDay" class="form-label">Select Day</label>
-                                    <select id="pickupDay" class="form-select" v-model="selectedPickupDayId" @change="handlePickupDayChange">
-                                        <option disabled value="">Select Day</option>
-                                        <option v-for="day in pickupdays" :key="day.id" :value="day.id">
-                                            {{ day.date }}
-                                        </option>
-                                    </select>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2"> 
+                                    <label for="pickup-datepicker" class="form-label" @click="initializeFlatpickr">Choose a date</label>
+                                    <input type="text" id="pickup-datepicker" class="form-control datepicker" />
                                 </div>
 
                                 <!-- Select Pickup Time Slot -->
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2">
                                     <label for="pickupTimeSlot" class="form-label">Choose Time Slot</label>
-                                    <select id="pickupTimeSlot" class="form-select" v-model="selectedPickupTimeSlotId" :disabled="!activePickUpDay.time_slot || !activePickUpDay.time_slot.length" @change="handlePickupTimeSlotChange">
+                                    <select id="pickupTimeSlot" class="form-select" v-model="schedule_date"  @change="handleTimeSlotChange">
                                         <option disabled value="">
-                                            {{ activePickUpDay && activePickUpDay.time_slot && activePickUpDay.time_slot.length ? 'Choose Time Slot' : 'No Time Slots Available' }}
+                                            {{  pickup_time_slots.length ? 'Choose Time Slot' : 'No Time Slots Available' }}
                                         </option>
-                                        <option v-for="slot in activePickUpDay.time_slot" :key="slot.id" :value="slot.id">
+                                        <option v-for="slot in pickup_time_slots" :key="slot.id" :value="slot.name">
                                             {{ slot.name }}
                                         </option>
                                     </select>
