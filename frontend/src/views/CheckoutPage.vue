@@ -282,8 +282,6 @@ export default {
         }
 
         const initializeFlatpickr = async () => {
-            await nextTick();
-
             const datePickers = document.querySelectorAll(".datepicker");
             datePickers.forEach(picker => {
                 flatpickr(picker, {
@@ -329,7 +327,7 @@ export default {
             (newValue, oldValue) => {
                 console.log("Moving from", oldValue)
                 if (newValue === "stripe") {
-                    createAndMountCardElement();
+                    initializeStripe();
                 } else {
                     unmountCardElement();
                 }
@@ -342,16 +340,16 @@ export default {
         });
 
         onMounted(async () => {
+            await initializeFlatpickr();
             await nextTick();
             workingDaysStore.fetchTimeSlots();
 
             if (TotalOrderPrice.value > balance.value || !balance.value) {
                 selectPaymentMethod.value = "stripe";
+                await initializeStripe();
             } else {
                 selectPaymentMethod.value = "wallet";
             }
-            await initializeFlatpickr();
-            await initializeStripe();
         });
 
         return {
@@ -646,7 +644,7 @@ export default {
         </div>
 
         <!-- Wallet Payment Option -->
-        <button type="button" class="btn btn-primary w-100 mt-2" v-if="selectPaymentMethod === 'wallet'" @click="handleCheckOutSubmit" :disabled="TotalOrderPrice >= balance">Continue to Payment</button>
+        <button type="button" class="btn btn-primary w-100 mt-2" v-else-if="selectPaymentMethod === 'wallet'" @click="handleCheckOutSubmit" :disabled="TotalOrderPrice >= balance">Continue to Payment</button>
 
         <!-- WeChat Payment Option -->
         <button type="button" class="btn btn-primary w-100 mt-2" v-else @click="handleCheckOutSubmit">Continue to Payment</button>
