@@ -55,19 +55,23 @@ body{
 
 
 
+.main-content {
+  justify-content: center;
+}
+
 
 .bg-modal-body-color{
     background-color: var(--body-color) ;
 }
 
 .navbar, .main{
-  max-width: 2000px;
+  max-width: 200000px;
   margin: auto;
 }
 
 
 section{
-  max-width: 2000px;
+  max-width: 200000px;
   margin: auto;
 }
 
@@ -566,11 +570,9 @@ max-width: 2500px;
   background-color: transparent;
   /* color: white; */
   border-color: white;
-  color: white;
 }
 .desktop-menu .form-select.search:focus-visible{
   border-color: white;
-  color: white;
 }
 
 .follow-us i {
@@ -2620,4 +2622,6 @@ ul {
   .offer-content {
       text-align: center;
   }
+
+  
 }
