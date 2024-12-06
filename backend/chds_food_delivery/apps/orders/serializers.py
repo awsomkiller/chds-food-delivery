@@ -4,13 +4,14 @@ from apps.transactions.models import Transaction
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    delivery_location = serializers.CharField(required=False)
-    pickup_location = serializers.CharField(required=False)
+    delivery_location = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    pickup_location = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    notes = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     menu_item = serializers.JSONField()
 
     class Meta:
         model = Orders
-        fields = ["pickup_location", "schedule_date", "time_slot", "order_type", "delivery_location", "amount", "menu_item","shipping_charges","total_price"]
+        fields = ["pickup_location", "schedule_date", "time_slot", "order_type", "delivery_location", "amount", "menu_item","shipping_charges","total_price", "notes"]
         
         
     def create(self, validated_data):

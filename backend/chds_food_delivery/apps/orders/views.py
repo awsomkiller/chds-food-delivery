@@ -14,7 +14,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse,JsonResponse
 import logging
 from apps.restaurants.models import DeliveryPoint,PickupLocation
+from apps.users.models import UserAddress
 from rest_framework.generics import ListAPIView
+from .utilities import process_menu_item_cost, get_shipping_charge
+import json
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -27,13 +30,13 @@ class OrderCreateView(APIView):
     
     def _make_transaction(self,order,payment_method):
         transaction = Transaction.objects.create(
-                    user=order.user,
-                    amount=order.amount,
-                    currency='aud',
-                    order_type='FOOD_ORDER',
-                    transaction_from=payment_method,
-                    operation_type='DEBIT',
-                )
+            user=order.user,
+            amount=order.amount,
+            currency='aud',
+            order_type='FOOD_ORDER',
+            transaction_from=payment_method,
+            operation_type='DEBIT',
+        )
         return transaction
     
  
@@ -42,11 +45,8 @@ class OrderCreateView(APIView):
         instance.withdraw(amount)
     
     def _check_payment_method(self,data):
-        copy_data = data.copy()
-        payment_method = copy_data.pop("payment_type")
-        if payment_method and payment_method == "wallet":
-            return copy_data,"wallet"
-        return copy_data,"stripe"
+        payment_method = data.pop("payment_type")
+        return data, payment_method
         
     def _update_instances(self,order,transaction,transaction_status):
         transaction.status = transaction_status
@@ -55,52 +55,54 @@ class OrderCreateView(APIView):
         order.status = "ORDER_PLACED"
         order.save()
         
-    def calculate_charges(self,amount):
-        if not amount > 0:
-            raise "Amount must be Valid Positive Integer"
-        return (amount*10)/100
-        
-        
-    def add_charges(self,data):
-        if data['order_type'] == "PICKUP":
-            pickup_location  = data.get("pickup_location")
-            pickup_instance = PickupLocation.objects.get(id=pickup_location)
-            if not pickup_instance:
-                raise "Pickup location Not Found"
-            shipping_charges = pickup_instance.price
-            total_product_price = shipping_charges + data['amount']
-            tax_charges = self.calculate_charges(total_product_price)
-           
-        elif data['order_type'] == "DELIVERY":
-            delivery_location = data.get("delivery_location")
-            delivery_instance = DeliveryPoint.objects.get(id=delivery_location)  
-            if not delivery_instance:
-                raise "Delivery location Not Found"
-            shipping_charges = delivery_instance.price 
-            total_product_price =shipping_charges + data['amount']
-            tax_charges = self.calculate_charges(total_product_price)
-        else:
-            raise "Unknown Order Type"
-        
-        data['shipping_charges'] = str(shipping_charges)
-        data['total_price'] =  str(total_product_price + tax_charges)
+    def calculate_total_charges(self, data):
+        shipment = data.get('shipping_charges', 0)
+        subtotal = data.get('amount', 0)
+        total = float(shipment) + float(subtotal)
+        total_price = total + (total * 10 / 100)
+        data['total_price'] = total_price
+        print("done 1")
         return data
+        
+    def calculate_subtotal(self, data):
+        subtotal = 0
+        menu_item = json.loads(data.get('menu_item'))
+        for item in menu_item:
+            subtotal += process_menu_item_cost(item)
+        data['amount'] = subtotal
+        return data
+
+    def calculate_shipment_charge(self, data):
+        shipping_charge = get_shipping_charge(data)
+        data['shipping_charges'] = str(shipping_charge)
+        return data      
         
     
     def post(self, request, *args, **kwargs):
         try:
             data , payment_method = self._check_payment_method(request.data)
-            data = self.add_charges(data)
+            data = self.calculate_subtotal(data)
+            data = self.calculate_shipment_charge(data)
+            data = self.calculate_total_charges(data)
             serializer = self.serializer_class(data=data, context={'request':request})
             if serializer.is_valid(raise_exception=True):
                 order = serializer.save()
                 
-                if payment_method =="stripe":
+                if payment_method =="wallet":
+                    transaction = self._make_transaction(order,"WALLET")
+                    self._make_payment_from_wallet(int(float(order.total_price)))
+                    transaction_status = "succeeded"
+                    self._update_instances(order,transaction,transaction_status)
+                    return Response({
+                        "order_id": order.order_id,
+                    }, status=status.HTTP_201_CREATED)
+            
+                else:
                     transaction = self._make_transaction(order,"STRIPE")
                     payment_intent = stripe.PaymentIntent.create(
                         amount=int(float(order.total_price) * 100),
                         currency='aud',
-                        payment_method_types=["card","alipay", "wechat_pay"],
+                        payment_method_types=["card", "alipay", "wechat_pay"],
                         metadata={'order_id': order.order_id, 'user_id': order.user.id},
                     )
                     transaction.stripe_payment_intent_id = payment_intent['id']
@@ -110,18 +112,10 @@ class OrderCreateView(APIView):
                         "order_id": order.order_id,
                       "client_secret": payment_intent['client_secret']
                     }, status=status.HTTP_201_CREATED)
-                    
-                elif payment_method =="wallet":
-                    transaction = self._make_transaction(order,"WALLET")
-                    self._make_payment_from_wallet(int(float(order.total_price)))
-                    transaction_status = "succeeded"
-                    self._update_instances(order,transaction,transaction_status)
-                    return Response({
-                        "order_id": order.order_id,
-                    }, status=status.HTTP_201_CREATED)
                        
         except Exception as exc:
-            return Response({"message": "error occurred", "error": str(exc).strip("\n")}, status=status.HTTP_400_BAD_REQUEST)
+            print(exc)
+            return Response({"message": "error occurred", "error": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
         
 @csrf_exempt
 def stripe_webhook(request):

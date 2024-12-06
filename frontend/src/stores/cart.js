@@ -8,6 +8,7 @@ export const useCartStore = defineStore('cart', {
     active: {
       id: 1,
       meal_name: '',
+      meal_id:null,
       selected_meal_portion_id: null,
       selected_meal_portion_name: '',
       selected_meal_portion_weight: 0,
@@ -21,6 +22,7 @@ export const useCartStore = defineStore('cart', {
   actions: {
     addToCart(item) {
       this.active.meal_name = item.name;
+      this.active.meal_id = item.id;
       const newItem = { ...this.active };
       this.cart.push(newItem);
       this.updateTotal();

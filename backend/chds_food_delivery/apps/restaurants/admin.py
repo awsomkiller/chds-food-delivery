@@ -18,7 +18,7 @@ class MenuCategoryAdmin(admin.ModelAdmin):
 @admin.register(MenuItem)
 class MenuItemsAdmin(admin.ModelAdmin):
     list_display=["id","name","price","is_popular","is_best_selling"]
-    fields=["name","price","description","calories","protein","fats","carbs","category", "tags","is_best_selling","is_popular"]
+    fields=["name","price","description","calories","protein","fats","carbs","category", "tags","is_best_selling","is_popular", "trans_code"]
     search_fields = ['name','price','category__name']
     list_filter = ['category',]
     

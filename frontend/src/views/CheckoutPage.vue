@@ -27,6 +27,8 @@ export default {
         const walletStore = useWalletStore();
 
         const billing_address = authStore.getBillingAddress();
+        const { user } = storeToRefs(authStore);
+        const { billing_object } = user;
         const {
             cart,
             totalQty,
@@ -69,9 +71,26 @@ export default {
         const cardErrors = ref(null);
         const cardComplete = ref(false);
 
+        // Restaurant notes
+        const notesTextField = ref('');
+        const displayTextField = ref(false);
+
         const initializeStripe = async () => {
-            stripe.value = await stripePromise;
-            elements.value = stripe.value.elements();
+            try {
+                stripe.value = await stripePromise;
+                elements.value = stripe.value.elements();
+
+                if (selectPaymentMethod.value === 'stripe') {
+                    createAndMountCardElement();
+                }
+            } catch (error) {
+                console.error('Error initializing Stripe:', error);
+            }
+        };
+
+        const createAndMountCardElement = () => {
+            if (cardElement.value) return;
+
             cardElement.value = elements.value.create('card', {
                 style: {
                     base: {
@@ -91,30 +110,37 @@ export default {
                 cardErrors.value = event.error ? event.error.message : '';
                 cardComplete.value = event.complete;
             });
+        };
 
+        const unmountCardElement = () => {
+            if (cardElement.value) {
+                cardElement.value.unmount();
+                cardElement.value = null;
+                cardErrors.value = null;
+                cardComplete.value = false;
+            }
         };
 
         const handleCheckOutSubmit = async () => {
             const payload = {};
-            if(!schedule_date.value){
+            if (!schedule_date.value) {
                 alert('Select Schedule date');
                 return;
             }
             if (selectedOption.value == 'delivery') {
-               
                 if (Object.keys(selectedDeliveryAddress.value).length === 0) {
                     alert('Delivery Address is not selected');
                     return;
                 }
                 payload.order_type = 'DELIVERY';
                 payload.delivery_location = selectedDeliveryAddress.value.id;
-                payload.pickup_location=""
+                payload.pickup_location = "";
             } else {
                 if (Object.keys(selectedPickupAddress.value).length === 0) {
                     alert('Pickup Address not selected');
                     return;
                 }
-                 
+
                 payload.order_type = 'PICKUP';
                 payload.delivery_location = "";
                 payload.pickup_location = selectedPickupAddress.value.id;
@@ -123,57 +149,82 @@ export default {
             payload.payment_type = selectPaymentMethod.value;
             payload.schedule_date = schedule_date.value;
             payload.time_slot = schedule_time.value;
+            payload.notes = notesTextField.value;
 
             if (selectPaymentMethod.value === "wallet") {
-                try{
+                try {
                     const response = await caxios.post('/orders/create/', payload);
-                    if(response.status === 201){
+                    if (response.status === 201) {
                         showSuccess.value.click();
-                    }else{
+                    } else {
                         showFail.value.click();
                     }
-                }catch(error){
-                    console.log(error)
+                } catch (error) {
+                    console.log(error);
+                    showFail.value.click();
                 }
-
             } else {
                 try {
                     const response = await caxios.post('/orders/create/', payload);
+                    const { client_secret } = response.data;
 
-                    const {
-                        client_secret
-                    } = response.data;
+                    let result;
 
-                    const result = await stripe.value.confirmCardPayment(client_secret, {
-                        payment_method: {
-                            card: cardElement.value,
-                            billing_details: {
-                                address: {
-                                    line1: '123 Main Street', //TODO: dynamic address
-                                    city: 'Anytown',
-                                    country: 'US',
-                                    postal_code: '12345'
+                    if (selectPaymentMethod.value === 'stripe') {
+                        // Handle Card Payment
+                        result = await stripe.value.confirmCardPayment(client_secret, {
+                            payment_method: {
+                                card: cardElement.value,
+                                billing_details: {
+                                    address: {
+                                        line1: `${billing_object.street_address1},${billing_object.street_address2}, ${billing_object.suburbs}`,
+                                        city: billing_object.city,
+                                        country: 'Australia',
+                                        postal_code: billing_object.postal_code
+                                    },
+                                }
+                            },
+                        });
+                    } else if (selectPaymentMethod.value === 'alipay') {
+                        // Handle Alipay Payment
+                        result = await stripe.value.confirmPayment({
+                            clientSecret: client_secret,
+                            payment_method: 'alipay',
+                            confirmParams: {
+                                return_url: 'https://chds.com.au/order/success/',
+                            },
+                        });
+                    } else if (selectPaymentMethod.value === 'wechat') {
+                        // Handle WeChat Pay Payment
+                        result = await stripe.value.confirmPayment({
+                            clientSecret: client_secret,
+                            payment_method_options: {
+                                wechat_pay: {
+                                    client: 'web',
                                 },
-                            }
-                        },
-                    });
+                            },
+                            confirmParams: {
+                                return_url: 'https://chds.com.au/order/success/',
+                            },
+                        });
+                    }
 
                     if (result.error) {
                         // Show error to customer
                         console.error(result.error.message);
                         showFail.value.click();
                     } else {
-                        if (result.paymentIntent.status === 'succeeded') {
+                        if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
                             // Payment succeeded
                             showSuccess.value.click();
                         }
+                        // For redirect-based payment methods, the user will be redirected automatically
                     }
                 } catch (error) {
                     console.error('Error during checkout:', error.response || error);
                     alert('An error occurred during checkout: ' + (error.response?.data?.detail || error.message));
                 }
             }
-
         };
 
         // Handle pickup time slot selection change
@@ -186,7 +237,6 @@ export default {
             cartStore.removeFromCart(id);
         };
 
-        
         const getCurrentDateInGMT11 = () => {
             // Get the current date/time in GMT+11
             const currentDate = new Date();
@@ -210,7 +260,7 @@ export default {
                 while (!functionalDays.includes(minDate.getDay())) {
                     minDate.setDate(minDate.getDate() + 1);
                 }
-                } else if (functionalDays.includes(currentDay)) {
+            } else if (functionalDays.includes(currentDay)) {
                 // If the current day is functional
                 if (currentHour < 20) {
                     // Before 8 PM, move to the next functional day
@@ -255,6 +305,13 @@ export default {
             });
         };
 
+        const handleClear = () => {
+            notesTextField.value = "";
+        }
+
+        const toggleNoteVisibility = () => {
+            displayTextField.value = !displayTextField.value;
+        }
 
         watch(
             totalQty,
@@ -266,14 +323,19 @@ export default {
                 }
             }
         );
+
         watch(
             selectPaymentMethod,
             (newValue, oldValue) => {
-                if (newValue === "stripe" && newValue !== oldValue) {
-                    initializeStripe()
+                console.log("Moving from", oldValue)
+                if (newValue === "stripe") {
+                    createAndMountCardElement();
+                } else {
+                    unmountCardElement();
                 }
             }
-        )
+        );
+
         watch(selectedOption, async () => {
             await initializeFlatpickr();
             scheduleDate.value = null;
@@ -288,7 +350,8 @@ export default {
             } else {
                 selectPaymentMethod.value = "wallet";
             }
-            initializeFlatpickr()
+            await initializeFlatpickr();
+            await initializeStripe();
         });
 
         return {
@@ -312,10 +375,15 @@ export default {
             handleTimeSlotChange,
             delivery_time_slots,
             pickup_time_slots,
+            displayTextField,
+            notesTextField,
+            handleClear,
+            toggleNoteVisibility,
         };
     },
 };
 </script>
+
 
 <template>
 <div class="container">
@@ -344,7 +412,7 @@ export default {
                     <div class="order-type-container">
                         <div class="delivery-option rounded w-100">
                             <!-- Delivery Option -->
-                            <input type="radio" class="btn-check" name="optionsdelivery" id="deliverychosen" autocomplete="off" value="delivery" v-model="selectedOption" checked>
+                            <input type="radio" class="btn-check" name="optionsdelivery" id="deliverychosen" autocomplete="off" value="delivery" v-model="selectedOption">
                             <label class="btn btn-primary" for="deliverychosen">
                                 <span> Delivery </span>
                             </label>
@@ -355,9 +423,6 @@ export default {
                                 Pick Up
                             </label>
                         </div>
-
-                        <!-- Uncomment and customize as needed -->
-                        <!-- <button type="button" class="btn-inactive-order">In Car</button> -->
                     </div>
                     <div class="selected-address-container mt-3 p-2" v-if="selectedOption == 'delivery'">
                         <div class="alert alert-danger" role="alert" v-if="!delivery_time_slots.length">
@@ -474,61 +539,120 @@ export default {
                         </div>
                     </li>
                 </ul>
+                <div id="app-note">
+                    <!-- Button with pencil icon to toggle visibility -->
+                    <button @click="toggleNoteVisibility" v-if="!notesTextField && !displayTextField" class="btn btn-secondary">
+                    <i class="fa fa-pencil"></i> Add a note for the restaurant
+                    </button>
+
+                    <p v-if="notesTextField && !displayTextField">{{ notesTextField }} <span @click="toggleNoteVisibility"><i class="fa fa-pencil"></i></span></p>
+
+                    <!-- The note section, initially hidden -->
+                    <div id="app-restaurant" v-if="displayTextField">
+                    <textarea placeholder="Write your note here..." v-model="notesTextField"></textarea>
+                    <div class="order-type-container">
+                        <div class="delivery-option rounded w-100">
+                        <input
+                            type="radio"
+                            class="btn-check"
+                            name="optionsdelivery"
+                            id="Clear"
+                            autocomplete="off"
+                            @click="handleClear"
+                            checked
+                            value="delivery"
+                        />
+                        <label class="btn btn-primary" for="Clear"><span> Clear </span></label>
+                        <input
+                            type="radio"
+                            class="btn-check"
+                            name="optionsdelivery"
+                            id="Save"
+                            autocomplete="off"
+                            @click="toggleNoteVisibility"
+                            value="pickup"
+                        />
+                        <label class="btn btn-outline-primary" for="Save"> Save </label>
+                        </div>
+                    </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="  col-lg-4 col-md-12 col-sm-12 col-12 p-3">
-            <!-- ---- addons ---------------------- -->
-            <div class="p-3 bg-white rounded">
-                <h4 class="extra-status"> Select Payment Method </h4>
-                <div class="meal-addons payment-method rounded ">
-                    <input type="radio" class="btn-check" name="options" id="addons1" value="wallet" v-model="selectPaymentMethod" checked>
-                    <label class="btn btn-primary w-100" for="addons1">
-                        <p class="mb-0">
-                            Pay via Wallet
-                        </p>
+       <div class="col-lg-4 col-md-12 col-sm-12 col-12 p-3">
+    <!-- Addons Section -->
+    <div class="p-3 bg-white rounded">
+        <h4 class="extra-status">Select Payment Method</h4>
+        <div class="meal-addons payment-method rounded">
+            <!-- Wallet Option -->
+            <input type="radio" class="btn-check" name="options" id="addons1" value="wallet" v-model="selectPaymentMethod" checked>
+            <label class="btn btn-primary w-100" for="addons1">
+                <p class="mb-0">
+                    <img class="payment-icon" src="@/assets/wallet.png" alt="Wallet">
+                </p>
+            </label>
 
-                    </label>
+            <!-- Stripe Option -->
+            <input type="radio" class="btn-check" name="options" id="addons2" value="stripe" v-model="selectPaymentMethod">
+            <label class="btn btn-primary w-100" for="addons2">
+                <p class="mb-0">
+                    <img class="payment-icon" src="@/assets/stripe.png" alt="Stripe">
+                </p>
+            </label>
 
-                    <input type="radio" class="btn-check" name="options" id="addons2" value="stripe" v-model="selectPaymentMethod">
-                    <label class="btn btn-primary w-100" for="addons2">
-                        <p class="mb-0">
-                            Pay via Stripe
-                        </p>
-                    </label>
-                </div>
-            </div>
-            <div class="biling-details-container bg-white p-3 rounded">
-                <!-- <div class="billing-detail">
-                        <p class=""> Subtotal </p>
-                        <p class=""> A$ {{ TotalOrderPrice }} </p>
-                    </div> -->
-                <!-- <div class="billing-detail">
-                        <p class=""> Tax </p>
-                        <p class=""> A$ 0</p>
-                    </div>
-                    <div class="billing-detail detail-green" v-if="selectedOption == 'delivery'">
-                        <p class="" > Delivery Charges</p>
-                        <p class=""> Yay! Free Delivery </p>
-                    </div>
-                    <div class="billing-detail detail-green" v-else>
-                        <p class="" >Pick Up Charges</p>
-                        <p class=""> Yay! Free Delivery </p>
-                    </div>   -->
-                <div class="billing-detail grand-total">
-                    <p class=""> Subtotal </p>
-                    <p class=""> A$ {{ TotalOrderPrice }} </p>
-                </div>
-                <div class="billing-detail detail-green my-2" v-if="selectPaymentMethod==='wallet'">
-                    <p class="">Wallet balance</p>
-                    <p class=""> A$ {{ balance }} </p>
-                </div>
-                <div v-else>
-                    <div id="card-element" ref="cardElementRef"></div>
-                    <button type="button" class="btn btn-primary w-100 mt-2" @click="handleCheckOutSubmit" :disabled="!cardComplete">Continue to Payment</button>
-                </div>
-                <button type="button" class="btn btn-primary w-100 mt-2" v-if="selectPaymentMethod==='wallet'" @click="handleCheckOutSubmit" :disabled="TotalOrderPrice>=balance">Continue to Payment</button>
-            </div>
+            <!-- WeChat Option -->
+            <input type="radio" class="btn-check" name="options" id="addons3" value="wechat" v-model="selectPaymentMethod">
+            <label class="btn btn-primary w-100" for="addons3">
+                <p class="mb-0">
+                    <img class="payment-icon" src="@/assets/wechat.png" alt="WeChat">
+                </p>
+            </label>
+
+            <!-- PayPal Option -->
+            <input type="radio" class="btn-check" name="options" id="addons4" value="paypal" v-model="selectPaymentMethod">
+            <label class="btn btn-primary w-100" for="addons4">
+                <p class="mb-0">
+                    <img class="payment-icon" src="@/assets/money.png" alt="PayPal">
+                </p>
+            </label>
+
+            <!-- Alipay Option -->
+            <input type="radio" class="btn-check" name="options" id="addons5" value="alipay" v-model="selectPaymentMethod">
+            <label class="btn btn-primary w-100" for="addons5">
+                <p class="mb-0">
+                    <img class="payment-icon" src="@/assets/logo-alipay.png" alt="Alipay">
+                </p>
+            </label>
         </div>
+    </div>
+
+    <!-- Billing Details Section -->
+    <div class="billing-details-container bg-white p-3 rounded">
+        <div class="billing-detail grand-total">
+            <p>Subtotal</p>
+            <p>A$ {{ TotalOrderPrice }}</p>
+        </div>
+
+        <!-- Display balances for specific payment methods -->
+        <div class="billing-detail detail-green my-2" v-if="selectPaymentMethod === 'wallet'">
+            <p>Wallet Balance</p>
+            <p>A$ {{ balance }}</p>
+        </div>
+
+        <!-- Credit Card Option -->
+        <div v-if="selectPaymentMethod === 'stripe'">
+            <div id="card-element" ref="cardElementRef"></div>
+            <button type="button" class="btn btn-primary w-100 mt-2" @click="handleCheckOutSubmit" :disabled="!cardComplete">Continue to Payment</button>
+        </div>
+
+        <!-- Wallet Payment Option -->
+        <button type="button" class="btn btn-primary w-100 mt-2" v-if="selectPaymentMethod === 'wallet'" @click="handleCheckOutSubmit" :disabled="TotalOrderPrice >= balance">Continue to Payment</button>
+
+        <!-- WeChat Payment Option -->
+        <button type="button" class="btn btn-primary w-100 mt-2" v-else @click="handleCheckOutSubmit">Continue to Payment</button>
+    </div>
+</div>
+
     </div>
 </div>
 <button type="button" ref="showFail" class="d-none" data-bs-toggle="modal" data-bs-target="#orderFailed"></button>
@@ -536,6 +660,73 @@ export default {
 </template>
 
 <style>
+
+
+div#app-note {
+    padding-top: 20px;
+}
+
+#app-restaurant {
+    text-align: center;
+    padding: 20px 0;
+}
+
+#app-restaurant textarea {
+    width: 100%;
+    height: 150px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    color: #333;
+    resize: none;
+    transition: all 0.3s ease;
+}
+
+#app-restaurant textarea:focus {
+    border-color: #007BFF;
+    background-color: #ffffff;
+    outline: none;
+}
+
+.payment-icon {
+    max-width: 30px;
+    max-height: 30px;
+    margin: 0 auto;
+    display: block;
+}
+.payment-method label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
+.billing-detail p {
+    font-size: 14px;
+    margin-bottom: 0;
+}
+
+.billing-detail.grand-total p {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.billing-detail.detail-green p {
+    color: green;
+}
+
+button:disabled {
+    background-color: #d3d3d3;
+    cursor: not-allowed;
+}
+
+button {
+    transition: background-color 0.3s;
+}
+
+
 :root {
     --body-color: #f1f0f5;
     --divider-color: #e4e4e4;
@@ -641,9 +832,9 @@ export default {
     height: 100%;
     width: fit-content;
     text-align: center;
-    background-color: var(--light-green-color);
+    background-color: var(--order-background-color);
     /* text-align:left; */
-    border: 2px solid var(--light-green-color);
+    border: 2px solid var(--order-background-color);
     color: white;
     display: flex;
     gap: 10px;
@@ -789,9 +980,8 @@ a.add-addrss-button {
 
 .payment-method .btn-check+.btn {
     width: fit-content !important;
-    padding: 5px 20px !important;
+    padding: 2px 10px !important;
     height: 36px;
-    border: 2px solid #d2d2d2 !important;
     color: #d2d2d2 !important;
 }
 
@@ -800,8 +990,16 @@ a.add-addrss-button {
     background-color: #d2d2d2 !important;
     border: 2px solid #d2d2d2 !important;
     color: var(--card-heading-color) !important;
-    padding: 5px 20px !important;
+    padding: 2px 10px !important;
     height: 36px;
+}
+
+.btn-primary:disabled {
+  background-color: var(--light-green-color) !important;
+  border: 1px solid var(--light-green-color);
+}
+.btn-primary:disabled:hover {
+  background-color: var(--light-green-color) !important;
 }
 
 @media screen and (max-width:767.91px) {

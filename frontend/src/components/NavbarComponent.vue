@@ -3,6 +3,8 @@ import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { storeToRefs } from 'pinia';
 import NavbarMenu from './NavbarMenu.vue';
 import { useAuthStore } from '@/stores/auth';
+import { useTranslationStore } from '../stores/translation';
+
 
 export default {
   name: 'UserDropdown',
@@ -12,6 +14,7 @@ export default {
   setup() {
     // Initialize the authentication store
     const authStore = useAuthStore();
+    const translationStore = useTranslationStore();
     
     // Destructure the 'user' from the store's reactive references
     const { user, delivery } = storeToRefs(authStore);
@@ -22,6 +25,9 @@ export default {
     // Reference to the dropdown element for detecting outside clicks
     const dropdown = ref(null);
     
+    const t = (label, modules) => {
+            return translationStore.translate(label, modules);
+        };
     /**
      * Toggles the dropdown's visibility.
      */
@@ -66,6 +72,7 @@ export default {
       toggleDropdown,
       handleLogout,
       dropdown,
+      t,
     };
   },
 };
@@ -88,7 +95,7 @@ export default {
                         <div class="icon-location">
                             <i class="fa-solid fa-location-dot"></i>
                         </div>
-                        <p class="mb-0">4648 Rocky Road Philadelphia</p>
+                        <p class="mb-0">{{ t('4648_rocky_road_philadelphia', ['footer'])}}</p>
                     </div>
                     <div class="login-register d-flex align-items-center gap-3 login-hidden" v-if="!user">
                         
@@ -126,7 +133,7 @@ export default {
                         </div>
                         <div class="text-mania mobilehide">
                           <h6 class="mb-0">{{ user.full_name }}</h6>
-                          <small v-if="delivery">Delivery Available</small>
+                          <small v-if="delivery">{{ t('delivery_available', ['navbar']) }}</small>
                         </div>
                       </button>
                       <div
@@ -136,11 +143,11 @@ export default {
                       > 
                         <div class="text-mania desktophide p-3">
                             <h6 class="mb-0">{{ user.full_name }}</h6>
-                            <small v-if="delivery">Delivery Available</small>
+                            <small v-if="delivery">{{ t('delivery_available', ['navbar']) }}</small>
                         </div>
-                        <a class="dropdown-item" to="/profile" disabled>My Profile</a>
+                        <router-link class="dropdown-item" to="/profile">{{ t('my_profile', ['navbar']) }}</router-link>
                         <hr class="dropdown-divider" />
-                        <a class="dropdown-item text-danger" @click="handleLogout">Logout</a>
+                        <a class="dropdown-item text-danger" @click="handleLogout">{{ t('logout', ['navbar']) }}</a>
                       </div>
                     </div>
 

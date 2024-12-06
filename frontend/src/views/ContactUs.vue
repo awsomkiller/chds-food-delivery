@@ -1,3 +1,13 @@
+<script setup>
+import { useTranslationStore } from '@/stores/translation';
+import FooterComponent from '@/components/FooterComponent.vue';
+
+const translationStore = useTranslationStore();
+
+const t = (label, modules) => {
+  return translationStore.translate(label, modules);
+};
+</script>
 <template>
       <section class="contant-us">
     <div class="container">
@@ -16,7 +26,7 @@
             </defs>
             </svg>
           </span> 
-          Contact Us
+          {{ t('contact-us-heading', ['contact-us']) }}
             <span>
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clip-path="url(#clip0_312_6)">
@@ -33,7 +43,7 @@
           </p>
         </div>
           <h2 class="title text-center" data-wow-delay="0.7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInUp;">
-            Hungry for more info? Contact us, and we’ll serve you the details!
+            {{ t('contact-us-second-heading', ['contact-us']) }}
           </h2>
       </div>
     </div>
@@ -49,18 +59,18 @@
           </div>
           <div class="col-md-5">
             <div class="contact-form-content-wrap">
-              <h3 class="touch-us">Tell Us What’s on Your Mind</h3>
+              <h3 class="touch-us">{{ t('tell-us-heading-form', ['contact-us']) }}</h3>
               <div class="row ">
                 <div class="col-lg-6 p-2">
                   <div class="input-wrap-withouticon password-bottom-space">
                     <!-- <label>Company Name</label> -->
                     <label for="exampleFormControlInput1" class="form-label"
-            >First Name</label>
+            >{{ t('label-first-name', ['contact-us']) }}</label>
                     <input
                       type="text"
                       name="username"
                       class="form-control"
-                      placeholder="Enter First Name"
+                      :placeholder="t('enter_first_name', ['contact-us'])"
                     />
                   </div>
                 </div>
@@ -68,12 +78,12 @@
                   <div class="input-wrap-withouticon password-bottom-space">
                     <!-- <label>Company Name</label> -->
                     <label for="exampleFormControlInput1" class="form-label"
-            >Last Name</label>
+            >{{ t('label-last-name', ['contact-us']) }}</label>
                     <input
                       type="text"
                       name="username"
                       class="form-control"
-                      placeholder="Enter Last Name"
+                      :placeholder="t('enter_last_name', ['contact-us'])"
                     />
                   </div>
                 </div>
@@ -81,7 +91,7 @@
                   <div class="input-wrap-withouticon password-bottom-space">
                     <!-- <label>Company Name</label> -->
                     <label for="exampleFormControlInput1" class="form-label"
-            >Message</label>
+            >{{ t('message', ['contact-us']) }}</label>
             <div class="form-floating">
               <textarea class="form-control" placeholder="Leave a Message here" id="floatingTextarea2" style="height: 150px"></textarea>
              
@@ -92,7 +102,7 @@
               </div>
               <div class="text-end mt-5 contant-btn">
                 <button class="btn btn-primary " type="button">
-                  Contact Us
+                  {{ t('contact-us-btn', ['contact-us']) }}
                 </button>
 
               </div>
@@ -106,9 +116,7 @@
   </section>
   <FooterComponent />
 </template>
-<script setup>
-  import FooterComponent from '@/components/FooterComponent.vue';
-</script>
+
 <style>
  /* --------Contant-us------ */
 

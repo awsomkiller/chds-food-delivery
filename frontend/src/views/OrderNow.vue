@@ -5,6 +5,7 @@ import { useMenuStore } from "@/stores/menu";
 import { useCartStore } from "@/stores/cart";
 import { useAuthStore } from "@/stores/auth";
 import { useWalletStore } from "@/stores/wallet";
+import { useTranslationStore } from "@/stores/translation";
 
 import { storeToRefs } from "pinia";
 
@@ -17,6 +18,7 @@ export default {
     const cartStore = useCartStore();
     const authStore = useAuthStore();
     const walletStore = useWalletStore();
+    const translationStore = useTranslationStore();
 
     const {
       items,
@@ -102,6 +104,10 @@ export default {
         menuStore.selectCategory(category);
     }
 
+    const t = (label, modules) => {
+        return translationStore.translate(label, modules);
+    };
+
     onMounted(() => {
       menuStore.resetItems();
       menuStore.loadCategories();
@@ -123,6 +129,7 @@ export default {
     });
 
     return {
+      t,
       items,
       selectedItem,
       cart,
@@ -186,7 +193,7 @@ export default {
                                     v-model="selectedCategory"
                                     @change="handleCategoryChange(selectedCategory)"
                                     >
-                                    <option value="">All CHDS Food</option>
+                                    <option value="">All CHDS Food </option>
                                     
                                     <option v-if="categoriesLoading" disabled>Loading categories...</option>
                                     <option v-else-if="categoriesError" disabled>Error loading categories</option>
@@ -222,14 +229,14 @@ export default {
                 >
                   <div class="card-item-food p-3">
                     <div class="food-item-detail">
-                      <h5>{{ item.name }}</h5>
+                      <h5>{{ t( item.trans_code, ['menu-item'] ) }}</h5>
                       <p class="item-price">{{ item.price }}</p>
-                      <p class="item-description">{{ truncateDescription(item.description) }}</p>
+                      <p class="item-description">{{ truncateDescription(t( item.trans_desc_code, ['menu-item'])) }}</p>
                     </div>
                     <div class="food-image-n-add-item">
                       <div class="position-relative">
                         <img class="" :src="getItemImage(item)" />
-                        <a href="" class="add-item-action" data-bs-toggle="modal" data-bs-target="#exampleModal" @click="openItemModal(item)">Add +</a>
+                        <a href="" class="add-item-action" data-bs-toggle="modal" data-bs-target="#exampleModal" @click="openItemModal(item)">{{t('add', ['ordernow'])}}</a>
                       </div>
                     </div>
                   </div>
@@ -238,10 +245,10 @@ export default {
   
               <!-- Loading Indicator -->
               <div v-if="loading" class="loading-indicator">
-                Loading more items...
+                {{t('loadin_more_items', ['ordernow'] )}}
               </div>
               <div v-if="isAllItemsLoaded" class="end-of-items">
-                All items loaded.
+                {{t('all_items_loaded', ['ordernow'] )}}
               </div>
             </div>
           </div>
@@ -258,8 +265,8 @@ export default {
 <div class="mobile-cart">
     <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
         <div class="view-cart-mobile">
-            <p class="mb-0"> {{ totalQty }} Items</p>
-            <p class="mb-0"> View Cart </p>
+            <p class="mb-0"> {{ totalQty }} {{t('items', ['ordernow'] )}}</p>
+            <p class="mb-0"> {{ totalQty }} {{t('view_cart', ['ordernow'] )}} </p>
         </div>
     </button>
 </div>
@@ -861,6 +868,14 @@ export default {
     align-items: center;
     font-weight: 700;
     justify-content: space-between;
+}
+
+.btn-primary:disabled {
+  background-color: var(--light-green-color) !important;
+  border: 1px solid var(--light-green-color);
+}
+.btn-primary:disabled:hover {
+  background-color: var(--light-green-color) !important;
 }
 
 @media screen and (max-width:991.91px) {

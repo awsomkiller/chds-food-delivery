@@ -3,12 +3,18 @@
     import { storeToRefs } from 'pinia';
     import { useCartStore } from '@/stores/cart';
     import { useAuthStore } from '@/stores/auth';
+    import { useTranslationStore } from '@/stores/translation';
     
     export default {
         name: 'CartData',
         setup(){
             const cartStore = useCartStore();
             const authStore = useAuthStore();
+            const translationStore = useTranslationStore();
+
+            const t = (label, modules) => {
+                return translationStore.translate(label, modules);
+            };
 
             const { cart, totalQty, TotalOrderPrice } = storeToRefs(cartStore);
             const { user } = storeToRefs(authStore);
@@ -22,6 +28,7 @@
             };
 
             return{
+                t,
                 cart,
                 user,
                 totalQty,
@@ -41,10 +48,10 @@
                     <img class="" src="../assets/CHDS logo Blk transparent.png"> 
                 </div>
                 <div class="outlet-detail">
-                    <h5> Chi Hun Da Su </h5>
+                    <h5> {{ t('chi_hun_da_su', ['cart']) }} </h5>
                 </div>
             </div>
-            <h4 class="cart-heading mb-0"> Your Cart</h4>
+            <h4 class="cart-heading mb-0"> {{ t('your_cart', ['cart']) }}</h4>
         </div>
         <div>
             <ul class="list-unstyled orderl-list">
@@ -74,16 +81,16 @@
         </div>
         <div>
             <div class="final-subtotal">
-                <span>Subtotal </span>
+                <span>{{ t('subtotal', ['cart']) }} </span>
                 <span> A${{ TotalOrderPrice }}</span>
             </div>
             <div class="final-subtotal fw-normal">
-                <span>You have total {{ totalQty }} items in your cart </span>
+                <span>{{ t('you_have_total', ['cart']) }} {{ totalQty }} {{ t('items_in_your_cart', ['cart']) }} </span>
             </div>
-            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#loginModal" v-if="!user"> Login to continue </button>
-            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#addressModal" v-else-if="user && !user.primary_address"> Add your address </button>
-            <router-link to="/checkout" class="btn btn-primary w-100" v-else-if="user && totalQty > 0">Proceed to Checkout </router-link>
-            <button v-else-if="user && totalQty <= 0" class="btn btn-primary w-100 " disabled > Proceed to Checkout  </button>
+            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#loginModal" v-if="!user"> {{ t('login_to_continue', ['cart']) }}</button>
+            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#addressModal" v-else-if="user && !user.primary_address"> {{ t('add_your_address', ['cart']) }}</button>
+            <router-link to="/checkout" class="btn btn-primary w-100" v-else-if="user && totalQty > 0">{{ t('proceed_to_checkout', ['cart']) }} </router-link>
+            <button v-else-if="user && totalQty <= 0" class="btn btn-primary w-100 " disabled >{{ t('proceed_to_checkout', ['cart']) }} </button>
         </div>         
     </div>
 </template>

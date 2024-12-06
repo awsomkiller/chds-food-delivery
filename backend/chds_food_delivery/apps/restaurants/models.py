@@ -60,6 +60,8 @@ class MenuItem(models.Model):
     tags = models.ManyToManyField(MenuItemTags, verbose_name=_("Tags"))
     is_popular = models.BooleanField(default=False)
     is_best_selling= models.BooleanField(default=False)
+    trans_code = models.CharField(_("Translation Code"), max_length=255, blank=True, null=True)
+    trans_desc_code = models.CharField(_("Translation Description Code"), max_length=255,  blank=True, null=True)
 
     class Meta:
         verbose_name = "Menu Dish"

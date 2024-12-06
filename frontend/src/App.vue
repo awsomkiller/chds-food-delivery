@@ -8,7 +8,14 @@ import AddItem from "./components/AddItem.vue";
 import MobileSidebar from "./components/MobileSidebar.vue";
 import AddAddress from "./components/AddAddress.vue";
 import OrderStatus from "./components/OrderStatus.vue";
+import { useTranslationStore } from "./stores/translation";
+import { onMounted } from "vue";
 
+const translationStore = useTranslationStore();
+
+onMounted(()=>{
+  translationStore.fetchTranslations();
+});
 
 </script>
 <template>

@@ -1,3 +1,12 @@
+<script setup>
+import { useTranslationStore } from '@/stores/translation';
+
+const translationStore = useTranslationStore();
+
+const t = (label, modules) => {
+      return translationStore.translate(label, modules);
+    };
+</script>
 <template>
 <footer class="footer-section bg-title fix">
     <div class="footer-widgets-wrapper">
@@ -20,8 +29,8 @@
                                 <i class="fa-solid fa-location-dot"></i>
                             </div>
                             <div class="item2">
-                                <h6>address</h6>
-                                <p>4648 Rocky Road Philadelphia</p>
+                                <h6>{{ t('address', ['footer']) }}</h6>
+                                <p>{{ t('4648_rocky_road_philadelphia', ['footer']) }}</p>
                             </div>
                         </div>
                     </div>
@@ -29,7 +38,7 @@
                         <div class="fancy-box">
                             <div class="item1"><i class="fa-solid fa-envelope"></i></div>
                             <div class="item2">
-                                <h6>send email</h6>
+                                <h6>{{ t('send_email', ['footer']) }}</h6>
                                 <p>info@chds.com.au</p>
                             </div>
                         </div>
@@ -40,7 +49,7 @@
                                 <i class="fa-solid fa-phone"></i>
                             </div>
                             <div class="item2">
-                                <h6>Customer Care</h6>
+                                <h6>{{ t('customer_care', ['footer']) }}</h6>
                                 <p>04 6846 2068 </p>
                             </div>
                         </div>
@@ -107,31 +116,31 @@
                 ">
                         <div class="single-footer-widget">
                             <div class="widget-head">
-                                <h3>Quick Links</h3>
+                                <h3>{{ t('quick_links', ['footer']) }}</h3>
                             </div>
                             <ul class="list-area">
                                 <li>
                                     <router-link to="/">
                                         <i class="fa-solid fa-angles-right"></i>
-                                        Home
+                                        {{ t('home', ['footer']) }}
                                     </router-link>
                                 </li>
                                 <li>
                                     <router-link to="/ordernow">
                                         <i class="fa-solid fa-angles-right"></i>
-                                        Order Now
+                                        {{ t('order_now', ['footer']) }}
                                     </router-link>
                                 </li>
                                 <li>
                                     <router-link to="/ourstory">
                                         <i class="fa-solid fa-angles-right"></i>
-                                        Our Story
+                                        {{ t('our_story', ['footer']) }}
                                     </router-link>
                                 </li>
                                 <li>
                                     <router-link to="/contact-us">
                                         <i class="fa-solid fa-angles-right"></i>
-                                        Contact Us
+                                        {{ t('contact_us', ['footer']) }}
                                     </router-link>
                                 </li>
                             </ul>
@@ -148,11 +157,11 @@
                     ">
                         <div class="single-footer-widget">
                             <div class="widget-head">
-                                <h3>Available Timings</h3>
+                                <h3>{{ t('available_timing', ['footer']) }}</h3>
                             </div>
                             <ul class="list-area">
                                 <li class="mb-2">
-                                    Monday | Wednesday | Saturday
+                                    {{ t('monday_wednesday_friday', ['footer']) }}
                                 </li>
                                 <li>
                                     <span class="text-theme-color2"> 2:30pm - 8pm </span>
@@ -175,7 +184,7 @@
                 animation-delay: 0.3s;
                 animation-name: fadeInLeft;
               ">
-                    <a href=""> Chi Hun Da Su</a> © 2024. All rights reserved.
+                    {{ t('chi_hun_da_su_2024_all_rights_reserved', ['footer']) }}
                 </p>
             </div>
         </div>

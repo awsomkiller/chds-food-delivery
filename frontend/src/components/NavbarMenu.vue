@@ -1,5 +1,6 @@
 <script>
 import { useAuthStore } from '@/stores/auth';
+import { useTranslationStore } from '../stores/translation';
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 
@@ -18,10 +19,24 @@ export default {
         }
     };
 
+    const translationStore = useTranslationStore();
+    const selectedLanguage = ref(translationStore.currentLanguage);
+
+    const changeLanguage = () => {
+      translationStore.setLanguage(selectedLanguage.value);
+    };
+
+    const t = (label, modules) => {
+      return translationStore.translate(label, modules);
+    };
+
     return {
       user,
       closeOffcanvas,
       toggleSidebar,
+      selectedLanguage,
+      changeLanguage,
+      t,
     };
   },
 };
@@ -42,16 +57,16 @@ export default {
         </div>
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-            <router-link class="nav-link" to="/" active-class="active"  @click="closeOffcanvas" >Home</router-link>
+            <router-link class="nav-link" to="/" active-class="active"  @click="closeOffcanvas" >{{ t('home', ['navbar']) }}</router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link" to="/ordernow" active-class="active"  @click="closeOffcanvas" >Order Now</router-link>
+            <router-link class="nav-link" to="/ordernow" active-class="active"  @click="closeOffcanvas" >{{ t('order_now', ['navbar']) }}</router-link>
         </li>   
         <li class="nav-item">
-            <router-link class="nav-link" to="/ourstory" active-class="active"  @click="closeOffcanvas">Our Story</router-link>
+            <router-link class="nav-link" to="/ourstory" active-class="active"  @click="closeOffcanvas">{{ t('Our_story', ['navbar']) }}</router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link" to="/contact-us" active-class="active" @click="closeOffcanvas">Contact Us</router-link>
+            <router-link class="nav-link" to="/contact-us" active-class="active" @click="closeOffcanvas">{{ t('contact', ['navbar']) }}</router-link>
         </li>
 
 
@@ -70,9 +85,9 @@ export default {
         
         <div class="d-flex gap-2 contact-wrap">
             <form class="d-flex position-relative border-set" role="search">
-                <select class="form-select search" aria-label="Default select example">
-                <option selected>English</option>
-                <option value="1">Chinese</option>
+                <select class="form-select search" aria-label="Default select example"  v-model="selectedLanguage" @change="changeLanguage">
+                    <option value="en">English</option>
+                    <option value="zh">中文</option>
                 </select>
             </form>
         </div>

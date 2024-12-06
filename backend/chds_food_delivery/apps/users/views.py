@@ -52,7 +52,24 @@ class LoginApiView(TokenObtainPairView):
 class UserDetails(APIView):
     def get(self, request):
         serializer = UserDetailsSerializer(request.user)
-        return Response(serializer.data, status=status.HTTP_200_OK)        
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        user = request.user
+        print(request.data)
+        full_name = request.data.get('full_name')
+        profile_picture = request.data.get('profile_picture')
+        user = User.objects.get(id=user.id) 
+        user.full_name = full_name if full_name else user.full_name
+        user.save()
+        if profile_picture:
+            UserProfile.objects.get_or_create(
+                user=user,
+                defaults={
+                    'user_image': profile_picture,
+                }
+            )
+        return Response({"message": "profile updated"}, status=status.HTTP_200_OK)           
     
 class ForgetApiView(APIView):
     def post(self,request):

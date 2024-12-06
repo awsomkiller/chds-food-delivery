@@ -566,9 +566,11 @@ max-width: 2500px;
   background-color: transparent;
   /* color: white; */
   border-color: white;
+  color: white;
 }
 .desktop-menu .form-select.search:focus-visible{
   border-color: white;
+  color: white;
 }
 
 .follow-us i {
@@ -2618,6 +2620,4 @@ ul {
   .offer-content {
       text-align: center;
   }
-
-  
 }

@@ -21,6 +21,7 @@ import {
     Navigation
 } from 'swiper/modules';
 import { useMenuStore } from '@/stores/menu';
+import { useTranslationStore } from '@/stores/translation';
 import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
 
@@ -32,6 +33,7 @@ export default {
     },
     setup() {
       const menuStore = useMenuStore();
+      const translationStore = useTranslationStore()
       const {best_sellings, popular} = storeToRefs(menuStore);
 
       const getItemImage = (item) => {
@@ -39,6 +41,10 @@ export default {
         const mainImage = item.item_images.find((img) => img.is_main);
         const path = mainImage ? mainImage.image : "";
         return "https://api.chds.com.au" + path;
+        };
+
+        const t = (label, modules) => {
+            return translationStore.translate(label, modules);
         };
 
         onMounted(()=>{
@@ -49,6 +55,7 @@ export default {
             best_sellings,
             getItemImage,
             popular,
+            t,
         };
     },
 };
@@ -60,7 +67,7 @@ export default {
             <div class="row align-items-center">
               <div class="col-lg-5 col-md-12 col-sm-12 col-12 orderl-lg-1 order-md-2 order-sm-2 order-2">
               <div class="main-content-wrap">
-                  <h4><Span class="wrap-text">Welcome to Healthly:</Span> Your Path to Wellness
+                  <h4><Span class="wrap-text">{{ t('welcome_to_healthly:', ['homepage']) }}</Span> {{t('your_path_to_wellness', ['homepage'])}}
                     <span class="wrap-design">
                       <svg width="40" height="10" viewBox="0 0 40 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clip-path="url(#clip0_509_79)">
@@ -76,12 +83,10 @@ export default {
                 </h4>
                 
                   
-                  <p class="mb-0">Explore meals designed to fuel both your body and mind.
-                    Nourish yourself with fresh, wholesome, and balanced dishes.
-                    Savor the benefits of healthy food that supports your well-being.</p>
+                  <p class="mb-0"> {{t('homepage_description', ['homepage'])}}</p>
               </div>
               <!-- <button class="btn theme-btn theme-outline-btn mt-5" > Order Now<span class="round-arrow ms-2"><i class="fa-solid fa-arrow-right-long"></i></span></button> -->
-              <router-link  type="button" class="btn theme-btn theme-outline-btn mt-5" to="/ordernow" active-class="active"  @click="closeOffcanvas" >Order Now<span class="round-arrow ms-2"><i class="fa-solid fa-arrow-right-long"></i></span></router-link>
+              <router-link  type="button" class="btn theme-btn theme-outline-btn mt-5" to="/ordernow" active-class="active"  @click="closeOffcanvas" >{{t('order_now', ['homepage'])}}<span class="round-arrow ms-2"><i class="fa-solid fa-arrow-right-long"></i></span></router-link>
               </div>
               <div class="col-lg-7 col-md-12 col-sm-12 col-12 orderl-lg-2 order-md-1 order-sm-1 order-1">
                 <div class="main-img text-center">
@@ -106,7 +111,7 @@ export default {
                             </defs>
                         </svg>
                     </span>
-                    Our Food
+                    {{ t('our_food', ['homepage']) }}
                     <span>
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clip-path="url(#clip0_312_6)">
@@ -121,7 +126,7 @@ export default {
                         </svg>
                     </span>
                 </p>
-                <h4>Popular Food Items</h4>
+                <h4>{{t('popular_food_items', ['homepage'])}}</h4>
             </div>
             <div class="container">
                 <div class="swiper-container ">
@@ -847,7 +852,7 @@ export default {
                                 </defs>
                                 </svg>
                               </span> 
-                              About Us
+                              {{t('about_us', ['homepage'])}}
                                 <span>
                                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <g clip-path="url(#clip0_312_6)">
@@ -864,13 +869,12 @@ export default {
                               </p>
                             </div>
                               <h2 class="title text-center mt-3" data-wow-delay="0.7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInUp;">
-                                Transform Your Body
-                                Elevate Your Health
+                                {{t('transform_your_body_elevate_your_health', ['homepage'])}}
                               </h2>
-                              <div class="text" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: fadeInUp;">Discover the joy of healthy eating with delicious, sustainable meals crafted for long-term vitality and happiness.</div>
+                              <div class="text" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: fadeInUp;">{{t('about_us_description', ['homepage'])}}</div>
                               <div class="btn-wrapper mt-4 w-40" data-wow-delay="0.9s" style="visibility: visible; animation-delay: 0.9s; animation-name: fadeInUp;">
                                   
-                                  <router-link class=" theme-btn btn mx-auto " to="/ordernow" active-class="active"  @click="closeOffcanvas" >ORDER NOW <i class="fa-solid fa-arrow-right-long"></i></router-link>
+                                  <router-link class=" theme-btn btn mx-auto " to="/ordernow" active-class="active"  @click="closeOffcanvas" >{{t('order_now', ['homepage'])}}<i class="fa-solid fa-arrow-right-long"></i></router-link>
                               </div>
                           </div>
                       </div>
@@ -901,7 +905,7 @@ export default {
                                     </defs>
                                 </svg>
                             </span>
-                            Popular Dishes
+                            {{t('popular_dishes', ['homepage'])}}
                             <span>
                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <g clip-path="url(#clip0_312_6)">
@@ -918,7 +922,7 @@ export default {
                         </p>
                     </div>
                     <h2 class="title text-center" data-wow-delay="0.7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInUp;">
-                        Best selling Dishes
+                        {{t('best_selling_dishes', ['homepage'])}}
                     </h2>
                 </div>
                 <div class="dishes-card-wrap style1">
@@ -994,7 +998,7 @@ export default {
                   </div>
                   <div class="btn-wrapper w-30 text-center mt-5" data-wow-delay="0.9s" style="visibility: visible; animation-delay: 0.9s; animation-name: fadeInUp;">
               
-                    <router-link class=" theme-btn btn mx-auto " to="/ordernow" active-class="active"  @click="closeOffcanvas" >ORDER NOW <i class="fa-solid fa-arrow-right-long"></i></router-link>
+                    <router-link class=" theme-btn btn mx-auto " to="/ordernow" active-class="active"  @click="closeOffcanvas" >{{t('order_now', ['homepage'])}} <i class="fa-solid fa-arrow-right-long"></i></router-link>
 
                 </div>
             </div>
@@ -1015,11 +1019,11 @@ export default {
 
                         <div class="col-xl-7 order-2 order-xl-1">
                             <div class="cta-content">
-                                <h6 class="wow fadeInUp" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">WELCOME Chi Hun Da Su</h6>
-                                <h3 class="wow fadeInUp" data-wow-delay="0.7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInUp;">Be a member with CHDS,</h3>
-                                <p class="wow fadeInUp" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: fadeInUp;"> open exclusive deals and meal plan.</p>
+                                <h6 class="wow fadeInUp" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">{{t('welcome_chi_hun_da_su', ['homepage'])}}</h6>
+                                <h3 class="wow fadeInUp" data-wow-delay="0.7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInUp;">{{t('be_a_member_with_chds', ['homepage'])}}</h3>
+                                <p class="wow fadeInUp" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: fadeInUp;"> {{t('open_exclusive_deals_and_meal_plan', ['homepage'])}}</p>
                                 <!-- <button class="btn theme-btn" type="button"> Order Now<span class="round-arrow ms-2"><i class="fa-solid fa-arrow-right-long"></i></span></button> -->
-                                <router-link type="button" class="theme-btn btn " to="/ordernow" active-class="active"  @click="closeOffcanvas" >ORDER NOW <i class="fa-solid fa-arrow-right-long"></i></router-link>
+                                <router-link type="button" class="theme-btn btn " to="/ordernow" active-class="active"  @click="closeOffcanvas" >{{t('order_now', ['homepage'])}} <i class="fa-solid fa-arrow-right-long"></i></router-link>
 
                             </div>
                         </div>
@@ -1053,7 +1057,7 @@ export default {
                       </defs>
                       </svg>
                     </span> 
-                      Food Menu
+                      {{ t('food_menu', ['homepage'])}}
                       <span>
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <g clip-path="url(#clip0_312_6)">
@@ -1070,7 +1074,7 @@ export default {
                     </p>
                   </div>
                     <h2 class="title text-center" data-wow-delay="0.7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInUp;">
-                      Chi Hun Da Su Foods Menu
+                      {{ t('chi_hun_da_su_foods_menu', ['homepage']) }}
                     </h2>
                 </div>
                 <div class="row ">
@@ -1204,7 +1208,7 @@ export default {
                                     </defs>
                                 </svg>
                             </span>
-                            Testimonials
+                            {{t('testimonials', ['homepage'])}}
                             <span>
                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <g clip-path="url(#clip0_312_6)">
@@ -1221,7 +1225,7 @@ export default {
                         </p>
                     </div>
                     <h2 class="title text-center" data-wow-delay="0.7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInUp;">
-                        What Clients Say About Us
+                        {{t('what_clients_say_about_us', ['homepage'])}}
                     </h2>
                 </div>
                 <div class="over-flow">

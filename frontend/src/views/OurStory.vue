@@ -2,29 +2,29 @@
     <section class="about-banner position-relative d-flex align-items-center justify-content-center">
       <div class="container-xl">
         <div class="heading text-center">
-          <h1 class="text-white m-0">OUR STORY</h1>
+          <h1 class="text-white m-0">{{ t('our-story-heading', ['our-story']) }}</h1>
         </div>
       </div>
     </section>
     <section class="our-story">
       <div class="container-xl">
         <div class="story-content text-center">
-          <p>With over 25 years of experience in the fitness industry, we are passionate about creating not just aesthetically pleasing bodies, but sustainable, long-term healthy eating habits. Driven by a love for exploring different flavors, we have dedicated years to developing healthy, delicious recipes that you can enjoy for a lifetime.</p>
-          <p class="pt-3">Our mission is simple: to make healthy eating both enjoyable and sustainable. We believe that a balanced, nourishing diet is the foundation of a happy life. With our meals, we aim to bring you joy and vitality, helping you live simply and eat well, while sustaining long-term health and happiness.</p>
+          <p>{{ t('our-story-description-1', ['our-story']) }}</p>
+          <p class="pt-3">{{ t('our-story-description-2', ['our-story']) }}</p>
         </div>
       </div>
     </section>
     <section class="choose position-relative">
       <div class="container">
          <div class="heading text-center">
-          <h1 class="text-white m-lg-5 m-md-3 border-bottom pb-3 w-auto">Why People Choose Us</h1>
+          <h1 class="text-white m-lg-5 m-md-3 border-bottom pb-3 w-auto">{{ t('choose-us-heading', ['our-story']) }}</h1>
         </div>
         <div class="row">
           <div class="col-sm-12">
             <div class="d-flex align-items-center justify-content-center mt-4">
               <div class="box-content first bg-white p-4">
-                <p class="fw-bold" >Health-First Fusion</p>
-                <p class="pt-2">We blend the best of traditional Chinese cuisine with modern, health-conscious ingredients, ensuring each meal is packed with balanced nutrition and rich, authentic flavors.</p>
+                <p class="fw-bold" >{{ t('health-first-fusion-heading', ['our-story']) }}</p>
+                <p class="pt-2">{{ t('health-first-fusion-heading-description', ['our-story']) }}</p>
               </div>
             </div>
           </div>
@@ -32,12 +32,12 @@
         <div class="row last">
           <div class="col-md-4">
            <div class="box-content bg-white p-4">
-              <p class="fw-bold">Freshly Made, Always</p>
-              <p class="pt-2">Every meal is prepared fresh, from scratch, using high-quality, wholesome ingredients. No preservatives, no shortcuts—just clean, delicious food crafted to fuel your workout and recovery.</p>
+              <p class="fw-bold">{{ t('member-deals-heading', ['our-story']) }}</p>
+              <p class="pt-2">{{ t('member-deals-description', ['our-story']) }}</p>
             </div>
              <div class="box-content bg-white p-4 mt-4">
-              <p class="fw-bold">Exclusive Member Deals</p>
-              <p class="pt-2">As a valued member, you get access to exclusive discounts and special meal deals designed just for you, offering both savings and variety to keep your diet exciting and sustainable.</p>
+              <p class="fw-bold">{{ t('freshly-made-heading', ['our-story']) }}</p>
+              <p class="pt-2">{{ t('freshly-made-description', ['our-story']) }}</p>
             </div>
           </div>
           <div class="col-md-4 d-flex justify-content-center align-items-center">
@@ -47,12 +47,12 @@
           </div>
            <div class="col-md-4">
            <div class="box-content bg-white p-4">
-              <p class="fw-bold">Deliciously Healthy</p>
-              <p class="pt-2">We believe healthy food should be delicious. Our menu is carefully crafted to bring you the best in Chinese fusion flavors, offering meals that taste amazing while meeting all your nutritional needs.</p>
+              <p class="fw-bold">{{ t('deliciously-healthy-heading', ['our-story']) }}</p>
+              <p class="pt-2">{{ t('deliciously-healthy-description', ['our-story']) }}</p>
             </div>
              <div class="box-content bg-white p-4 mt-4">
-              <p class="fw-bold">Personalized Nutrition Guidance</p>
-              <p class="pt-2">Our service includes access to one-on-one nutritional guidance to help you make informed choices that align with your fitness goals, ensuring every meal is both satisfying and supportive of your progress.</p>
+              <p class="fw-bold">{{ t('personalized-nutrition-guidance-heading', ['our-story']) }}</p>
+              <p class="pt-2">{{ t('personalized-nutrition-guidance-description', ['our-story']) }}</p>
             </div>
           </div>
 
@@ -61,8 +61,8 @@
           <div class="col-sm-12">
             <div class="d-flex align-items-center justify-content-center mt-4">
               <div class="box-content first bg-white p-4">
-                <p class="fw-bold">Exclusive Gym Partnerships & Training Deals</p>
-                <p class="pt-2">Enjoy special offers on training programs through our gym partnerships, combining the best in tailored meal plans with professional training for a fully integrated approach to wellness.</p>
+                <p class="fw-bold">{{ t('exclusive-gym-partnerships-heading', ['our-story']) }}</p>
+                <p class="pt-2">{{ t('exclusive-gym-partnerships-description', ['our-story']) }}</p>
               </div>
             </div>
           </div>
@@ -73,6 +73,14 @@
 </template>
 <script setup>
 import FooterComponent from '@/components/FooterComponent.vue';
+import { useTranslationStore } from '@/stores/translation';
+
+const translationStore = useTranslationStore();
+
+const t = (label, modules) => {
+	return translationStore.translate(label, modules);
+};
+
 </script>
 
 <style>

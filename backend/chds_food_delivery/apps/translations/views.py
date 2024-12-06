@@ -6,6 +6,7 @@ from apps.translations.serializers import TranslationSerializer,ModulesSerialize
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
 
 
 class ListLanguageFeatureView(ReadOnlyModelViewSet):
@@ -13,28 +14,21 @@ class ListLanguageFeatureView(ReadOnlyModelViewSet):
     queryset = Module.objects.all()
     serializer_class = ModulesSerializer
 
-class TranslationApi(ModelViewSet):
+class TranslationListApi(APIView):
     """
-    A simple ViewSet for viewing languages.
+    API view to retrieve list of translations.
     """
     permission_classes = [AllowAny]
-    queryset = Translation.objects.all()
-    serializer_class = TranslationSerializer
-    ordering_fields = ['label', 'value', 'language']
-    search_fields=["label", "value", "language"]
-    
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        language_id = self.request.query_params.get('language')
-        feature_id = self.request.query_params.get('feature')
 
-        if language_id:
-            queryset = queryset.filter(language__id=language_id)
+    def get(self, request, format=None):
+        module = request.query_params.get('module')
+        translations = Translation.objects.all()
 
-        if feature_id:
-            queryset = queryset.filter(feature__id=feature_id)
+        if module:
+            translations = translations.filter(module=module)
 
-        return queryset
+        serializer = TranslationSerializer(translations, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
 class FetchTranslationBasedOnFeatureView(ViewSet):
     """

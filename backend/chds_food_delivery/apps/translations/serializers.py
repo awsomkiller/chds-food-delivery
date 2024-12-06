@@ -11,7 +11,7 @@ class TranslationSerializer(serializers.ModelSerializer):
     """
     Serializer to only serialize GET request
     """
-    feature = ModulesSerializer(many=True)
+    module = ModulesSerializer()
     class Meta:
         model = Translation
-        fields = ['id', 'label', 'value', 'language', 'feature']
+        fields = ['id', 'label', 'value', 'language', 'module']
