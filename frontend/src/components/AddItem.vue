@@ -1,6 +1,7 @@
 <!-- AddItem.vue -->
 <script>
 import { useMenuStore } from '@/stores/menu';
+import { useTranslationStore } from '@/stores/translation';
 import { storeToRefs } from 'pinia';
 import { useCartStore } from '@/stores/cart';
 import { computed, onMounted } from 'vue';
@@ -9,7 +10,13 @@ export default {
     setup() {
         const menuStore = useMenuStore();
         const cartStore = useCartStore();
+        const translationStore = useTranslationStore();
+
         const { selectedItem } = storeToRefs(menuStore);
+
+        const t = (label, modules) => {
+            return translationStore.translate(label, modules);
+        };
 
         onMounted(() => {
             cartStore.resetActive();
@@ -65,6 +72,7 @@ export default {
         };
 
         return {
+            t,
             selectedItem,
             getItemImage,
             selectPortion,
@@ -92,9 +100,9 @@ export default {
                 <img class="mb-3" :src="getItemImage(selectedItem)">
                 
                 <div>
-                    <h5> {{ selectedItem.name }}</h5>
+                    <h5> {{ t(selectedItem.name, ['menu_item']) }}</h5>
                     <p>
-                        {{ selectedItem.description }}
+                        {{ t(selectedItem.description, ['menu_item']) }}
                     </p>
 
                     <div class="price-text"> <span class="fw-bold">{{ selectedItem.price }}</span> </div>
@@ -165,7 +173,7 @@ export default {
                         <i class="fa-solid fa-plus"></i>
                     </a>
                 </div>
-                <button type="button" class="btn btn-primary" @click="addToCart" data-bs-dismiss="modal" aria-label="Close">Add to Cart</button>
+                <button type="button" class="btn btn-primary" @click="addToCart" data-bs-dismiss="modal" aria-label="Close">{{t('add_to_cart', ['ordernow'])}}</button>
             </div>
 
           </div>

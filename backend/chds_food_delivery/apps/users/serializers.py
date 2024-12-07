@@ -65,16 +65,7 @@ class LoginSerializer(TokenObtainPairSerializer):
             "name": user_address.name,
             "city":user_address.city,
             "postal_code":user_address.postal_code 
-        } if user_address else None
-    
-    def _get_user_profile(self,user):   
-        profile = UserProfile.objects.filter(user=user).first()
-        return {
-                "data_of_birth": profile.date_of_birth,
-                "user_image": profile.user_image if profile.user_image else None,
-            } if profile else None
-            
-    
+        } if user_address else None   
     
     def validate(self, attrs):
         identifier = attrs.get("email")
@@ -89,7 +80,6 @@ class LoginSerializer(TokenObtainPairSerializer):
             "user":{
                 "id": user.id,
                 "email": user.email,
-                "profile": self._get_user_profile(user),
                 "primary_address": self._get_user_address(user),
                 "full_name": user.full_name,
             }
