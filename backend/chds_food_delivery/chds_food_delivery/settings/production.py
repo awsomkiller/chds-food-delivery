@@ -59,3 +59,6 @@ CORS_ORIGIN_WHITELIST = (
     "https://www.chds.com.au",
     "https://chds.com.au",
 )
+
+MEDIA_ROOT = os.path.join("/","var","www","media")
+STATIC_ROOT = os.path.join("/","var","www","static")

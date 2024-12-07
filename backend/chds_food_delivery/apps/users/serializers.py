@@ -219,7 +219,7 @@ class UserDetailsSerializer(serializers.ModelSerializer):
     billing_address = serializers.SerializerMethodField()
     
     class Meta:
-        fields = ['id', 'email', 'profile', 'primary_address', 'full_name', 'billing_address']
+        fields = ['id', 'email', 'profile', 'primary_address', 'full_name', 'billing_address', 'mobile_number']
         model = User
 
     def get_primary_address(self, obj):

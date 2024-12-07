@@ -7,7 +7,7 @@ export const useAuthStore = defineStore('auth', {
     accessToken: null,
     refreshToken: null,
     delivery: false,
-    profileImage: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
+    profileImage: null,
     fullName: '',
     email: '',
     phoneNumber: '',
@@ -22,17 +22,16 @@ export const useAuthStore = defineStore('auth', {
     async login(credentials) {
       try {
         const response = await axios.post('/login/', credentials);
-        const { access_token, refresh_token, user } = response.data;
+        const { access_token, refresh_token } = response.data;
 
         this.accessToken = access_token;
         this.refreshToken = refresh_token;
-        this.user = user;
 
         localStorage.setItem('accessToken', access_token);
         localStorage.setItem('refreshToken', refresh_token);
 
         axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
-        await this.fetchUserDetails()
+        this.fetchUserDetails()
         return response.data;
       } catch (error) {
         let errorMessage = 'An unexpected error occurred. Please try again.';
@@ -58,13 +57,17 @@ export const useAuthStore = defineStore('auth', {
 
     async fetchUserDetails() {
       try {
-        const response = await axios.get('/details/');
-
-        this.user = response.data;
-        localStorage.setItem('user', JSON.stringify(this.user));
-        this.deliveryEligibilityCheck();
-        this.initializeProfile();
-        return;
+        if(this.accessToken){
+          const response = await axios.get('/details/');
+          this.user = response.data;
+          localStorage.setItem('user', JSON.stringify(this.user));
+          this.deliveryEligibilityCheck();
+          this.initializeProfile();
+          return;
+        } else{
+          console.log("User not logged in");
+        }
+        
       } catch (error) {
         console.error('Login failed:', error.response?.data || error.message);
         throw error;
@@ -72,9 +75,11 @@ export const useAuthStore = defineStore('auth', {
     },
 
     deliveryEligibilityCheck(){
-      const postal_code = this.user.primary_address?.postal_code;
-      const eligible_postal_code = this.getEligiblePostalCodes();
-      this.delivery = eligible_postal_code.includes(parseInt(postal_code));
+      if(this.user.primary_address){
+        const postal_code = this.user.primary_address.postal_code;
+        const eligible_postal_code = this.getEligiblePostalCodes();
+        this.delivery = eligible_postal_code.includes(parseInt(postal_code));
+      }
     },
 
     getEligiblePostalCodes() {
@@ -196,27 +201,36 @@ export const useAuthStore = defineStore('auth', {
     setState(state) {
       this.state = state;
     },
-    saveProfile() {
-      // try {
-        const payload = { profile_image: this.profileImage, full_name:this.full_name };
-        console.log(payload);
-      //   const response = await axios.post('/details/', payload);
-      //   await this.fetchUserDetails();
-      //   console.log('Profile saved successfully:', response.data);
-      // } catch (error) {
-      //   console.error('Error saving profile:', error);
-      // }
+    async saveProfile() {
+        const payload = { 
+          profile_picture: this.profileImage,
+          full_name:this.fullName, 
+        };
+        try{
+          await axios.post('/details/', payload);
+          await this.fetchUserDetails();
+          this.fetchUserDetails();
+        }
+        catch (error) {
+        console.error('Error saving profile:', error);
+        throw error;
+      }
     },
-    initializeProfile(){
-      this.fullName = this.user.full_name
-      this.email = this.user.email
-      this.phoneNumber = this.user.mobile_number
-      this.street1 = this.user.billing_address.street_address1
-      this.street2 = this.user.billing_address.street_address2
-      this.suburbs = this.user.billing_address.suburbs
-      this.pincode = this.user.billing_address.pincode
-      this.city = this.user.billing_address.city
-      this.profileImage = this.user.profileImage
+    initializeProfile(){  
+      if(this.user){
+        this.fullName = this.user.full_name ? this.user.full_name : ""
+        this.email = this.user.email;
+        this.phoneNumber = this.user.mobile_number;
+        if(this.user.billing_address){
+          this.street1 = this.user.billing_address.street_address1;
+          this.street2 = this.user.billing_address.street_address2;
+          this.suburbs = this.user.billing_address.suburbs;
+          this.pincode = this.user.billing_address.pincode;
+          this.city = this.user.billing_address.city;
+        }
+      } else {
+        console.warn('User not found')
+      }
     }
   },
 });

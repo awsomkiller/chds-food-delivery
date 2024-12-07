@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
 
 const caxios = axios.create({
-  baseURL: 'https://api.chds.com.au/ordernow/api',
+  baseURL: process.env.VUE_APP_API_URL,
   timeout: 5000,
 });
 

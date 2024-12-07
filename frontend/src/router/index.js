@@ -5,6 +5,7 @@ import CheckoutPage from '@/views/CheckoutPage.vue';
 import OurStory from '@/views/OurStory.vue';
 import ProfilePage from '@/views/ProfilePage.vue';
 import ContactUs from '@/views/ContactUs.vue';
+import OrderSuccess from '@/views/OrderSuccess.vue';
 
 const routes = [
   {
@@ -53,6 +54,16 @@ const routes = [
     component: ProfilePage,
     meta: {
       title: 'Profile Page - Chi Hun Da Su',
+      favicon: '@/assets/icons/CHDS logo Blk on White.ico',
+    },
+  },
+
+  {
+    path: '/order/success',
+    name: 'ordersuccess',
+    component: OrderSuccess,
+    meta: {
+      title: 'Order Success - Chi Hun Da Su',
       favicon: '@/assets/icons/CHDS logo Blk on White.ico',
     },
   },

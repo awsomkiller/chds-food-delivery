@@ -1,3 +1,7 @@
+import base64
+import imghdr
+import uuid
+from django.core.files.base import ContentFile
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import (TokenObtainPairView,TokenRefreshView)
 from rest_framework.permissions import AllowAny
@@ -56,20 +60,53 @@ class UserDetails(APIView):
 
     def post(self, request):
         user = request.user
-        print(request.data)
         full_name = request.data.get('full_name')
-        profile_picture = request.data.get('profile_picture')
-        user = User.objects.get(id=user.id) 
-        user.full_name = full_name if full_name else user.full_name
-        user.save()
+        profile_picture = request.data.get('profile_picture')  # Base64 string
+
+        # Update full name if provided
+        if full_name:
+            user.full_name = full_name
+            user.save()
+
+        # Process profile picture if provided
         if profile_picture:
-            UserProfile.objects.get_or_create(
-                user=user,
-                defaults={
-                    'user_image': profile_picture,
-                }
-            )
-        return Response({"message": "profile updated"}, status=status.HTTP_200_OK)           
+            # Validate and decode base64 string
+            try:
+                # Remove the header if present (e.g., "data:image/png;base64,")
+                if ',' in profile_picture:
+                    header, profile_picture = profile_picture.split(',', 1)
+                
+                # Decode the base64 string
+                decoded_file = base64.b64decode(profile_picture)
+            except (TypeError, ValueError) as e:
+                return Response(
+                    {"error": "Invalid image data."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            # Determine the image type
+            image_type = imghdr.what(None, decoded_file)
+            if image_type not in ['jpeg', 'png', 'gif']:
+                return Response(
+                    {"error": "Unsupported image type."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            # Generate a unique file name
+            file_extension = 'jpg' if image_type == 'jpeg' else image_type
+            file_name = f"{uuid.uuid4()}.{file_extension}"
+            
+            # Create a ContentFile
+            image_file = ContentFile(decoded_file, name=file_name)
+            
+            # Get or create the UserProfile
+            user_profile, created = UserProfile.objects.get_or_create(user=user)
+            
+            # Assign the image to the user_profile's ImageField
+            user_profile.user_image = image_file
+            user_profile.save()
+
+        return Response({"message": "Profile updated successfully."}, status=status.HTTP_200_OK)         
     
 class ForgetApiView(APIView):
     def post(self,request):

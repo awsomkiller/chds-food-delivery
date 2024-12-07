@@ -35,7 +35,7 @@ export default {
       const menuStore = useMenuStore();
       const translationStore = useTranslationStore()
       const {best_sellings, popular} = storeToRefs(menuStore);
-
+      const {isLoaded} = storeToRefs(translationStore);
       const getItemImage = (item) => {
         if (!item || !item.item_images) return "";
         const mainImage = item.item_images.find((img) => img.is_main);
@@ -54,6 +54,7 @@ export default {
             modules: [Pagination, Navigation],
             best_sellings,
             getItemImage,
+            isLoaded,
             popular,
             t,
         };
@@ -63,7 +64,7 @@ export default {
 
 <template>
     <div class="main">
-      <div class="main-content">
+      <div class="main-content" v-if="isLoaded">
             <div class="row align-items-center">
               <div class="col-lg-5 col-md-12 col-sm-12 col-12 orderl-lg-1 order-md-2 order-sm-2 order-2">
               <div class="main-content-wrap">

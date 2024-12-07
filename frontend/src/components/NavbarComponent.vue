@@ -17,7 +17,7 @@ export default {
     const translationStore = useTranslationStore();
     
     // Destructure the 'user' from the store's reactive references
-    const { user, delivery } = storeToRefs(authStore);
+    const { user, delivery, profileImage } = storeToRefs(authStore);
     
     // Reactive state to manage dropdown visibility
     const isDropdownOpen = ref(false);
@@ -54,6 +54,14 @@ export default {
       }
     };
     
+    const getProfileImage = () => {
+      if (user.value && user.value.profile && user.value.profile.user_image) {
+        const baseURL = process.env.VUE_APP_back_URL;
+        return baseURL + user.value.profile.user_image;
+      } else {
+        return "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png";
+      }
+    };
     // Add event listener for detecting outside clicks when component is mounted
     onMounted(() => {
       document.addEventListener('click', handleClickOutside);
@@ -67,9 +75,11 @@ export default {
     // Return all reactive properties and methods to the template
     return {
       user,
+      profileImage,
       delivery,
       isDropdownOpen,
       toggleDropdown,
+      getProfileImage,
       handleLogout,
       dropdown,
       t,
@@ -120,15 +130,8 @@ export default {
                         <div>
                           <img
                             class="profile-image"
-                            v-if="user.profile"
-                            :src="user.profile"
+                            :src="getProfileImage()"
                             alt="Profile Image"
-                          />
-                          <img
-                            class="profile-image"
-                            v-else
-                            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
-                            alt="Default Profile Image"
                           />
                         </div>
                         <div class="text-mania mobilehide">
