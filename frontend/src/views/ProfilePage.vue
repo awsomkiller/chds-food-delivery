@@ -7,6 +7,7 @@ import { stripePromise } from "@/stripe.js";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 import { useOrderStore } from "@/stores/order";
+import { useTranslationStore } from "@/stores/translation";
 
 export default {
   name: "ProfilePage",
@@ -14,6 +15,7 @@ export default {
     const walletStore = useWalletStore();
     const authStore = useAuthStore();
     const orderStore = useOrderStore();
+    const translationStore = useTranslationStore();
 
     const { balance, transactions } = storeToRefs(walletStore);
     const { orders } = storeToRefs(orderStore);
@@ -194,6 +196,10 @@ export default {
       }
     };
 
+    const t = (label, modules) => {
+      return translationStore.translate(label, modules);
+    };
+
     onMounted(async () => {
       await nextTick();
       initializeStripe();
@@ -203,6 +209,7 @@ export default {
     });
 
     return {
+      t,
       orders,
       profileImage,
       getProfileImage,
@@ -257,7 +264,7 @@ export default {
                     aria-controls="home-tab-pane"
                     aria-selected="true"
                   >
-                    Personal Detail
+                   {{ t('change_password', ['profile'])}}
                   </button>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -271,7 +278,7 @@ export default {
                     aria-controls="ewallet-tab-pane"
                     aria-selected="false"
                   >
-                    Wallet
+                  {{ t('wallet', ['profile'])}}
                   </button>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -285,7 +292,7 @@ export default {
                     aria-controls="ewallethistory-tab-pane"
                     aria-selected="false"
                   >
-                    Wallet History
+                  {{ t('wallet_history', ['profile'])}}
                   </button>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -299,7 +306,7 @@ export default {
                     aria-controls="profile-tab-pane"
                     aria-selected="false"
                   >
-                    Order History
+                  {{ t('order_history', ['profile'])}}
                   </button>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -313,7 +320,7 @@ export default {
                     aria-controls="changepassword-tab-pane"
                     aria-selected="false"
                   >
-                    Change Password
+                  {{ t('change_password', ['profile'])}}
                   </button>
                 </li>
               </ul>
@@ -368,7 +375,7 @@ export default {
                           class="input-wrap-withouticon password-bottom-space"
                         >
                           <!-- <label>Company Name</label> -->
-                          <label class="form-label">Email Address</label>
+                          <label class="form-label">{{ t('email_address', ['profile'])}}</label>
                           <input
                             type="text"
                             name="email"
@@ -387,7 +394,7 @@ export default {
                           <label
                             for="exampleFormControlInput1"
                             class="form-label"
-                            >Phone Number</label
+                            >{{ t('phone_number', ['profile'])}}</label
                           >
                           <input
                             type="text"
@@ -404,7 +411,7 @@ export default {
                       <div class="input-wrap-withouticon password-bottom-space">
                         <!-- <label>Company Name</label> -->
                         <label for="exampleFormControlInput1" class="form-label"
-                          >Full Name</label
+                          >{{ t('full_name', ['profile'])}}</label
                         >
                         <input
                           type="text"
@@ -421,9 +428,9 @@ export default {
                         style="background-color: #1d0b00"
                         @click="goBack"
                       >
-                        Back
+                      {{ t('back', ['profile'])}}
                       </button>
-                      <a class="btn btn-primary sm" @click="handleSave">Save</a>
+                      <a class="btn btn-primary sm" @click="handleSave">{{ t('save', ['profile'])}}</a>
                     </div>
                   </div>
                 </div>
@@ -442,13 +449,13 @@ export default {
                         <div class="wallet-icon">
                           <i class="fa-solid fa-wallet"></i>
                         </div>
-                        <p>Total Balance</p>
+                        <p>{{ t('total_balance', ['profile'])}}</p>
                         <p class="amount">A$ {{ balance }}</p>
                       </div>
                     </div>
                     <div class="col-md-6 p-3 mb-3">
                       <label for="formGroupExampleInput" class="form-label"
-                        >Add Amount In Wallet</label
+                        >{{ t('Add_amount_in_wallet', ['profile'])}}</label
                       >
                       <input
                         type="number mb-3"
@@ -458,7 +465,7 @@ export default {
                         v-model="rechargeAmount"
                       />
                       <label for="card-element" class="form-label"
-                        >Enter Card Details</label
+                        >{{ t('enter_card_details', ['profile'])}}</label
                       >
                       <div id="card-element" ref="cardElementRef"></div>
                       <button
@@ -467,7 +474,7 @@ export default {
                         :disabled="rechargeValidation()"
                         @click="handleRechargeClick"
                       >
-                        Add to Wallet
+                      {{ t('add_to_wallet', ['profile'])}}
                       </button>
                     </div>
                   </div>
@@ -485,7 +492,7 @@ export default {
                         <div class="wallet-section">
                           <!-- Wallet History Section -->
                           <div class="section wallet-history">
-                            <h2>Wallet History</h2>
+                            <h2>{{ t('wallet_history', ['profile'])}}</h2>
                             <!-- Wallet History -->
                             <div
                               v-for="txn in transactions"
@@ -598,7 +605,7 @@ export default {
                     <div class="col-md-12 p-2">
                       <div class="input-wrap-withouticon password-bottom-space">
                         <label for="oldpassword" class="form-label"
-                          >Old Password</label
+                          >{{ t('old_password', ['profile'])}}</label
                         >
                         <input
                           id="oldpassword"
@@ -614,7 +621,7 @@ export default {
                     <div class="col-md-12 p-2">
                       <div class="input-wrap-withouticon password-bottom-space">
                         <label for="newpassword" class="form-label"
-                          >New Password</label
+                          >{{ t('new_password', ['profile'])}}</label
                         >
                         <input
                           id="newpassword"
@@ -631,7 +638,7 @@ export default {
                       <div class="input-wrap-withouticon password-bottom-space">
                         <!-- <label>Company Name</label> -->
                         <label for="exampleFormControlInput1" class="form-label"
-                          >Confirm Password</label
+                          >{{ t('confirm_password', ['profile'])}}</label
                         >
                         <input
                           type="password"
@@ -645,130 +652,12 @@ export default {
                   </div>
                   <div class="footer-button">
                     <a class="btn btn-primary sm" @click="handlePasswordChange"
-                      >Change Password</a
+                      >{{ t('change_password', ['profile'])}}</a
                     >
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- order detail popup -->
-  <div
-    class="modal modal-food-item fade"
-    id="orderhistorydetailModal"
-    tabindex="-1"
-    aria-labelledby="orderhistorydetailModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Order History Detail</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body">
-          <div class="store-n-diliveri bg-white p-3 rounded mb-3">
-            <ul class="list-unstyled mb-0">
-              <!-- History of order item -->
-              <li class="Item-for-checkout">
-                <div>
-                  <p class="mb-0">
-                    5
-                    <span> <i class="fa-solid fa-xmark"></i></span>
-                    Wine-Marinated Chicken Hearts
-                  </p>
-                  <p class="item-type-hd mb-0">Q: Main Dish (300g)</p>
-                  <p class="item-type-hd mb-0">Extra Protein</p>
-                  <p class="item-type-hd mb-0">Extra Vegetable</p>
-                  <p class="item-type-hd mb-0">Extra Rice</p>
-                </div>
-                <div class="price-n-item-option">
-                  <p class="mb-0">2nd june 2024</p>
-                </div>
-              </li>
-
-              <!-- History of order item -->
-              <li class="Item-for-checkout">
-                <div>
-                  <p class="mb-0">
-                    5
-                    <span> <i class="fa-solid fa-xmark"></i></span>
-                    Wine-Marinated Chicken Hearts
-                  </p>
-                  <p class="item-type-hd mb-0">Q: Main Dish (300g)</p>
-                  <p class="item-type-hd mb-0">Extra Protein</p>
-                  <p class="item-type-hd mb-0">Extra Vegetable</p>
-                  <p class="item-type-hd mb-0">Extra Rice</p>
-                </div>
-                <div class="price-n-item-option">
-                  <p class="mb-0">2nd june 2024</p>
-                </div>
-              </li>
-
-              <!-- History of order item -->
-              <li class="Item-for-checkout">
-                <div>
-                  <p class="mb-0">
-                    5
-                    <span> <i class="fa-solid fa-xmark"></i></span>
-                    Wine-Marinated Chicken Hearts
-                  </p>
-                  <p class="item-type-hd mb-0">Q: Main Dish (300g)</p>
-                  <p class="item-type-hd mb-0">Extra Protein</p>
-                  <p class="item-type-hd mb-0">Extra Vegetable</p>
-                  <p class="item-type-hd mb-0">Extra Rice</p>
-                </div>
-                <div class="price-n-item-option">
-                  <p class="mb-0">2nd june 2024</p>
-                </div>
-              </li>
-
-              <!-- History of order item -->
-              <li class="Item-for-checkout">
-                <div>
-                  <p class="mb-0">
-                    5
-                    <span> <i class="fa-solid fa-xmark"></i></span>
-                    Wine-Marinated Chicken Hearts
-                  </p>
-                  <p class="item-type-hd mb-0">Q: Main Dish (300g)</p>
-                  <p class="item-type-hd mb-0">Extra Protein</p>
-                  <p class="item-type-hd mb-0">Extra Vegetable</p>
-                  <p class="item-type-hd mb-0">Extra Rice</p>
-                </div>
-                <div class="price-n-item-option">
-                  <p class="mb-0">2nd june 2024</p>
-                </div>
-              </li>
-
-              <!-- History of order item -->
-              <li class="Item-for-checkout">
-                <div>
-                  <p class="mb-0">
-                    5
-                    <span> <i class="fa-solid fa-xmark"></i></span>
-                    Wine-Marinated Chicken Hearts
-                  </p>
-                  <p class="item-type-hd mb-0">Q: Main Dish (300g)</p>
-                  <p class="item-type-hd mb-0">Extra Protein</p>
-                  <p class="item-type-hd mb-0">Extra Vegetable</p>
-                  <p class="item-type-hd mb-0">Extra Rice</p>
-                </div>
-                <div class="price-n-item-option">
-                  <p class="mb-0">2nd june 2024</p>
-                </div>
-              </li>
-            </ul>
           </div>
         </div>
       </div>

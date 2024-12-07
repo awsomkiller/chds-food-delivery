@@ -395,13 +395,13 @@ export default {
                         </router-link>
                         <div class="outlet-card p-2 ">
                             <div class="outlet-detail">
-                                <h5> Chi Hun Da Su </h5>
-                                <p> Location </p>
+                                <h5>{{ t('chi_hun_da_su', ['checkout'])}}</h5>
+                                <p> {{ t('location', ['checkout'])}}</p>
                             </div>
                         </div>
                     </div>
                     <div class="billing-addshown" v-if="billing_address">
-                        <p> Billing-Address</p>
+                        <p> {{ t('billing_address', ['checkout'])}}</p>
                         <h6> {{ billing_address }}</h6>
                     </div>
                 </div>
@@ -412,13 +412,13 @@ export default {
                             <!-- Delivery Option -->
                             <input type="radio" class="btn-check" name="optionsdelivery" id="deliverychosen" autocomplete="off" value="delivery" v-model="selectedOption">
                             <label class="btn btn-primary" for="deliverychosen">
-                                <span> Delivery </span>
+                                <span> {{ t('delivery', ['checkout'])}} </span>
                             </label>
 
                             <!-- Pickup Option -->
                             <input type="radio" class="btn-check" name="optionsdelivery" id="pickupchosen" autocomplete="off" value="pickup" v-model="selectedOption">
                             <label class="btn btn-outline-primary" for="pickupchosen">
-                                Pick Up
+                                {{ t('pick_up', ['checkout'])}}
                             </label>
                         </div>
                     </div>
@@ -427,19 +427,19 @@ export default {
                             Kitchen is not taking any delivery orders !!
                         </div>
                         <div class="schedule-order mb-3" v-else>
-                            <h6>Select Delivery Date and Time</h6>
+                            <h6>{{ t('select_delivery_date_and_time', ['checkout'])}}</h6>
                             <div class="row">
                                 <!-- Select Delivery Day -->
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2"> 
-                                    <label for="delivery-datepicker" class="form-label" >Choose a date</label>
+                                    <label for="delivery-datepicker" class="form-label" >{{ t('choose_a_date', ['checkout'])}}</label>
                                     <input type="text" id="delivery-datepicker" class="form-control datepicker" @load="initializeFlatpickr" />
                                 </div>
                                 
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2">
-                                    <label for="deliveryTimeSlot" class="form-label">Choose Time Slot</label>
+                                    <label for="deliveryTimeSlot" class="form-label">{{ t('choose_time_slot', ['checkout'])}}</label>
                                     <select id="deliveryTimeSlot" class="form-select" v-model="schedule_date" @change="handleTimeSlotChange">
                                         <option disabled value="">
-                                            {{  delivery_time_slots.length ? 'Choose Time Slot' : 'No Time Slots Available' }}
+                                            {{  delivery_time_slots.length ? t('choose_time_slot', ['checkout']) : t('no_time_slots', ['checkout']) }}
                                         </option>
                                         <option v-for="slot in delivery_time_slots" :key="slot.id" :value="slot.name">
                                             {{ slot.name }}
@@ -449,7 +449,7 @@ export default {
                             </div>
                         </div>
                         <div class="alert alert-danger" role="alert" v-if="!eligibleAddress.length">
-                            You don't have any address eligible for delivery, Please choose pickup option.
+                            {{ t('eligible _delivery_address_warning', ['checkout']) }}
                         </div>
                         <div class="address-radio">
                             <div v-for="address in eligibleAddress" :key="address.id">
@@ -465,7 +465,7 @@ export default {
                                     <div>
                                         <i class="fa-solid fa-plus"></i>
                                     </div>
-                                    <p class="mb-0"> Add New Address </p>
+                                    <p class="mb-0">+ {{ t('add_new_address',['checkout'])}} </p>
                                 </div>
                             </a>
                         </div>
@@ -476,7 +476,7 @@ export default {
                             Kitchen is closed for Pickup order.
                         </div>
                         <div class="schedule-order mb-3" v-else>
-                            <h6>Select Pickup Date and Time</h6>
+                            <h6>{{ t('select_pickup_date_and_time',['checkout'])}}</h6>
                             <div class="row">
                                 <!-- Select Pickup Day -->
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2"> 
@@ -486,10 +486,10 @@ export default {
 
                                 <!-- Select Pickup Time Slot -->
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2">
-                                    <label for="pickupTimeSlot" class="form-label">Choose Time Slot</label>
+                                    <label for="pickupTimeSlot" class="form-label">{{ t('choose_time_slot',['checkout'])}}</label>
                                     <select id="pickupTimeSlot" class="form-select" v-model="schedule_date"  @change="handleTimeSlotChange">
                                         <option disabled value="">
-                                            {{  pickup_time_slots.length ? 'Choose Time Slot' : 'No Time Slots Available' }}
+                                            {{  pickup_time_slots.length ? t('choose_time_slot',['checkout']) : t('no_time_slots',['checkout']) }}
                                         </option>
                                         <option v-for="slot in pickup_time_slots" :key="slot.id" :value="slot.name">
                                             {{ slot.name }}
@@ -499,7 +499,7 @@ export default {
                             </div>
                         </div>
                         <div>
-                            <h6> Select the outlet to pick up the order </h6>
+                            <h6> {{ t('select_the_outlet',['checkout']) }} </h6>
                             <div class="address-radio">
                                 <div v-for="address in pickUpAddresses" :key="address.id">
                                     <input type="radio" class="btn-check" name="outlets" :id="'pickup-' + address.id" autocomplete="off" v-model="selectedPickupAddress" :value="address">
@@ -520,7 +520,7 @@ export default {
                 </div>
             </div>
             <!-- items added in the cart list -->
-            <h6>Items Added</h6>
+            <h6>{{ t('items_added',['checkout']) }}</h6>
             <div class="store-n-diliveri bg-white p-3 rounded mb-3">
                 <ul class="list-unstyled mb-0">
 
@@ -532,7 +532,7 @@ export default {
                             <p class="item-type-hd mb-0" v-for="addon in item.addons" :key="addon.id">Extra {{ addon.name }}</p>
                         </div>
                         <div class="price-n-item-option">
-                            <button type="button" class="btn btn-danger" @click="handleDelete(item.id)">Delete</button>
+                            <button type="button" class="btn btn-danger" @click="handleDelete(item.id)">{{ t('delete',['checkout']) }}</button>
                             <p class="mb-0"> A$ {{ item.total_price }} </p>
                         </div>
                     </li>
@@ -540,7 +540,7 @@ export default {
                 <div id="app-note">
                     <!-- Button with pencil icon to toggle visibility -->
                     <button @click="toggleNoteVisibility" v-if="!notesTextField && !displayTextField" class="btn btn-secondary">
-                    <i class="fa fa-pencil"></i> Add a note for the restaurant
+                    <i class="fa fa-pencil"></i> {{ t('add_notes_restaurant',['checkout']) }}
                     </button>
 
                     <p v-if="notesTextField && !displayTextField">{{ notesTextField }} <span @click="toggleNoteVisibility"><i class="fa fa-pencil"></i></span></p>
@@ -560,7 +560,7 @@ export default {
                             checked
                             value="delivery"
                         />
-                        <label class="btn btn-primary" for="Clear"><span> Clear </span></label>
+                        <label class="btn btn-primary" for="Clear"><span> {{ t('clear',['checkout']) }} </span></label>
                         <input
                             type="radio"
                             class="btn-check"
@@ -570,7 +570,7 @@ export default {
                             @click="toggleNoteVisibility"
                             value="pickup"
                         />
-                        <label class="btn btn-outline-primary" for="Save"> Save </label>
+                        <label class="btn btn-outline-primary" for="Save"> {{ t('save',['checkout']) }} </label>
                         </div>
                     </div>
                     </div>
@@ -580,7 +580,7 @@ export default {
        <div class="col-lg-4 col-md-12 col-sm-12 col-12 p-3">
     <!-- Addons Section -->
     <div class="p-3 bg-white rounded">
-        <h4 class="extra-status">Select Payment Method</h4>
+        <h4 class="extra-status">{{ t('select_payment_method',['checkout']) }}</h4>
         <div class="meal-addons payment-method rounded">
             <!-- Wallet Option -->
             <input type="radio" class="btn-check" name="options" id="addons1" value="wallet" v-model="selectPaymentMethod" checked>
@@ -627,27 +627,27 @@ export default {
     <!-- Billing Details Section -->
     <div class="billing-details-container bg-white p-3 rounded">
         <div class="billing-detail grand-total">
-            <p>Subtotal</p>
+            <p>{{ t('subtotal',['checkout']) }}</p>
             <p>A$ {{ TotalOrderPrice }}</p>
         </div>
 
         <!-- Display balances for specific payment methods -->
         <div class="billing-detail detail-green my-2" v-if="selectPaymentMethod === 'wallet'">
-            <p>Wallet Balance</p>
+            <p>{{ t('wallet_balance',['checkout']) }}</p>
             <p>A$ {{ balance }}</p>
         </div>
 
         <!-- Credit Card Option -->
         <div v-if="selectPaymentMethod === 'stripe'">
             <div id="card-element" ref="cardElementRef"></div>
-            <button type="button" class="btn btn-primary w-100 mt-2" @click="handleCheckOutSubmit" :disabled="!cardComplete">Continue to Payment</button>
+            <button type="button" class="btn btn-primary w-100 mt-2" @click="handleCheckOutSubmit" :disabled="!cardComplete">{{ t('continue_payment',['checkout']) }}</button>
         </div>
 
         <!-- Wallet Payment Option -->
-        <button type="button" class="btn btn-primary w-100 mt-2" v-else-if="selectPaymentMethod === 'wallet'" @click="handleCheckOutSubmit" :disabled="TotalOrderPrice >= balance">Continue to Payment</button>
+        <button type="button" class="btn btn-primary w-100 mt-2" v-else-if="selectPaymentMethod === 'wallet'" @click="handleCheckOutSubmit" :disabled="TotalOrderPrice >= balance">{{ t('continue_payment',['checkout']) }}</button>
 
         <!-- WeChat Payment Option -->
-        <button type="button" class="btn btn-primary w-100 mt-2" v-else @click="handleCheckOutSubmit">Continue to Payment</button>
+        <button type="button" class="btn btn-primary w-100 mt-2" v-else @click="handleCheckOutSubmit">{{ t('continue_payment',['checkout']) }}</button>
     </div>
 </div>
 
