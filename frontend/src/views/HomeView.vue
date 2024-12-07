@@ -176,7 +176,7 @@ export default {
                         </div>
                         <div class="item-content">
                             <router-link to="/ordernow">
-                                <h3>{{item.name}}</h3>
+                                <h3>{{t(item.trans_code, ['menu_item'])}}</h3>
                             </router-link>
                             <div class="text kcal-wrap-content d-flex align-items-center justify-content-center gap-2">
                               <span class="d-flex align-items-center gap-2">
@@ -932,9 +932,9 @@ export default {
                             <img :src="getItemImage(item)" alt="thmb">
                         </div>
                         <router-link to="/ordernow">
-                            <h3>{{ item.name }}</h3>
+                            <h3>{{ t(item.trans_code, ['menu_item']) }}</h3>
                         </router-link>
-                        <p>Order today</p>
+                        <p>{{ t('order_today', ['homepage']) }}</p>
                         <h6>{{item.price}}</h6>
                         <!-- <div class="social-profile">
                               <span class="plus-btn"> <a href="#"> <i class="fa-regular fa-heart"></i></a></span>
@@ -1085,9 +1085,9 @@ export default {
                                       <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
                                       <div class="menu-content">
                                           <router-link to="/ordernow">
-                                              <h3 class="active">Chicken-Stuffed Bean Curd Rolls</h3>
+                                              <h3 class="active">{{t('chicken_stuffed_bean_curd_rolls',['menu_item'])}}</h3>
                                           </router-link>
-                                          <h6>A$19.00 – A$31.00</h6>
+                                          <h6>A$19.00 – A$31.00ayus</h6>
                                           <!-- <p>Minced chicken wrapped in soft bean curd sheets, steamed with ginger and seasonings. Tender, juicy, and packed with flavor, this is a healthy, light meal option.</p> -->
                                       </div>
                                   </div>

@@ -229,9 +229,9 @@ export default {
                 >
                   <div class="card-item-food p-3">
                     <div class="food-item-detail">
-                      <h5>{{ t( item.trans_code, ['menu-item'] ) }}</h5>
+                      <h5>{{ t( item.trans_code, ['menu_item'] ) }}</h5>
                       <p class="item-price">{{ item.price }}</p>
-                      <p class="item-description">{{ truncateDescription(t( item.trans_desc_code, ['menu-item'])) }}</p>
+                      <p class="item-description">{{ truncateDescription(t( item.trans_desc_code, ['menu_item'])) }}</p>
                     </div>
                     <div class="food-image-n-add-item">
                       <div class="position-relative">
