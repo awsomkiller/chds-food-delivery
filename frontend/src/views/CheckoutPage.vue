@@ -197,8 +197,7 @@ export default {
                         });
                     } else if (selectPaymentMethod.value === 'alipay') {
                         // Handle Alipay Payment
-                        result = await stripe.value.confirmAlipayPayment({
-                            clientSecret: client_secret,
+                        result = await stripe.value.confirmAlipayPayment(client_secret,{
                             payment_method: 'alipay',
                             confirmParams: {
                                 return_url: 'https://chds.com.au/order/success/',
@@ -206,8 +205,7 @@ export default {
                         });
                     } else if (selectPaymentMethod.value === 'wechat') {
                         // Handle WeChat Pay Payment
-                        result = await stripe.value.confirmWeChatPayPayment({
-                            clientSecret: client_secret,
+                        result = await stripe.value.confirmWeChatPayPayment(client_secret,{
                             payment_method_options: {
                                 wechat_pay: {
                                     client: 'web',
