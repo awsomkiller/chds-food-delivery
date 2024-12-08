@@ -199,9 +199,9 @@ export default {
                         // Handle Alipay Payment
                         result = await stripe.value.confirmAlipayPayment(client_secret,{
                             payment_method: 'alipay',
-                            confirmParams: {
-                                return_url: 'https://chds.com.au/order/success/',
-                            },
+                            // confirmParams: {
+                            //     return_url: 'https://chds.com.au/order/success/',
+                            // },
                         });
                     } else if (selectPaymentMethod.value === 'wechat') {
                         // Handle WeChat Pay Payment
@@ -339,7 +339,7 @@ export default {
             selectPaymentMethod,
             (newValue, oldValue) => {
                 console.log("Moving from", oldValue)
-                if (newValue === "stripe") {
+                if (newValue !== "wallet") {
                     initializeStripe();
                 } else {
                     unmountCardElement();
