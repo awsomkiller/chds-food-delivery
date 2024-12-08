@@ -25,6 +25,7 @@ export const useTranslationStore = defineStore('translation', {
 
       if (this.isLoading) {
         // A fetch is already in progress; return the existing promise
+        this.currentLanguage = this.getLanguageCode();
         return new Promise((resolve, reject) => {
           const checkLoaded = () => {
             if (this.isLoaded) {
@@ -161,6 +162,17 @@ export const useTranslationStore = defineStore('translation', {
             return acc;
           }, {});
       };
+    },
+    getLanguageCode() {
+      // Retrieve the browser's language setting
+      const browserLanguage = navigator.language || navigator.userLanguage;
+      console.log(browserLanguage);
+      // Check if the language starts with 'zh' (covers all Chinese variants)
+      if (browserLanguage.toLowerCase().startsWith('zh')) {
+        return 'zh';
+      } else {
+        return 'en';
+      }
     },
   },
 });
