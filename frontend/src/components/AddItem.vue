@@ -100,9 +100,9 @@ export default {
                 <img class="mb-3" :src="getItemImage(selectedItem)">
                 
                 <div>
-                    <h5> {{ t(selectedItem.name, ['menu_item']) }}</h5>
+                    <h5> {{ t(selectedItem.trans_code, ['menu_item']) }}</h5>
                     <p>
-                        {{ t(selectedItem.description, ['menu_item']) }}
+                        {{ t(selectedItem.trans_desc_code, ['menu_item']) }}
                     </p>
 
                     <div class="price-text"> <span class="fw-bold">{{ selectedItem.price }}</span> </div>

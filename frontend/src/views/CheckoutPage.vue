@@ -490,7 +490,7 @@ export default {
                                     <div>
                                         <i class="fa-solid fa-plus"></i>
                                     </div>
-                                    <p class="mb-0">+ {{ t('add_new_address',['checkout'])}} </p>
+                                    <p class="mb-0">{{ t('add_new_address',['checkout'])}} </p>
                                 </div>
                             </a>
                         </div>
