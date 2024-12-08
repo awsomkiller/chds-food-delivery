@@ -197,7 +197,7 @@ export default {
                         });
                     } else if (selectPaymentMethod.value === 'alipay') {
                         // Handle Alipay Payment
-                        result = await stripe.value.confirmPayment({
+                        result = await stripe.value.confirmAlipayPayment({
                             clientSecret: client_secret,
                             payment_method: 'alipay',
                             confirmParams: {
@@ -206,7 +206,7 @@ export default {
                         });
                     } else if (selectPaymentMethod.value === 'wechat') {
                         // Handle WeChat Pay Payment
-                        result = await stripe.value.confirmPayment({
+                        result = await stripe.value.confirmWeChatPayPayment({
                             clientSecret: client_secret,
                             payment_method_options: {
                                 wechat_pay: {
