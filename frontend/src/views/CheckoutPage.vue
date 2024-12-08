@@ -32,7 +32,7 @@ export default {
 
         const billing_address = authStore.getBillingAddress();
         const { user } = storeToRefs(authStore);
-        const { billing_object } = user;
+        const billing_object = user.value.billing_address;
         const {
             cart,
             totalQty,
@@ -189,21 +189,27 @@ export default {
                                     address: {
                                         line1: `${billing_object.street_address1},${billing_object.street_address2}, ${billing_object.suburbs}`,
                                         city: billing_object.city,
-                                        country: 'Australia',
+                                        country: 'AU',
                                         postal_code: billing_object.postal_code
                                     },
                                 }
                             },
                         });
                     } else if (selectPaymentMethod.value === 'alipay') {
-                        // Handle Alipay Payment
-                        console.log(stripe.value);
+                        
                         result = await stripe.value.confirmAlipayPayment(client_secret,{
                             return_url: 'https://chds.com.au/order/success/',
+
                         });
                     } else if (selectPaymentMethod.value === 'wechat') {
-                        // Handle WeChat Pay Payment
-                        result = await stripe.value.confirmWeChatPayPayment(client_secret,{
+                        // Handle Alipay Payment
+                        console.log(stripe.value);
+                        result = await stripe.value.confirmWechatPayPayment(client_secret,{
+                            payment_method_options: {
+                                wechat_pay: {
+                                    client: 'web',
+                                },
+                            },
                             return_url: 'https://chds.com.au/order/success/',
                         });
                     }
