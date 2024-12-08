@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia';
 import NavbarMenu from './NavbarMenu.vue';
 import { useAuthStore } from '@/stores/auth';
 import { useTranslationStore } from '../stores/translation';
+import { useRouter } from 'vue-router';
 
 
 export default {
@@ -15,6 +16,7 @@ export default {
     // Initialize the authentication store
     const authStore = useAuthStore();
     const translationStore = useTranslationStore();
+    const router = useRouter();
     
     // Destructure the 'user' from the store's reactive references
     const { user, delivery, profileImage } = storeToRefs(authStore);
@@ -41,7 +43,7 @@ export default {
     const handleLogout = () => {
       authStore.logout();
       // Optionally, navigate the user after logout
-      // For example: router.push('/login');
+       router.push('/');
     };
     
     /**
