@@ -5,7 +5,10 @@ import { useWorkingDaysStore } from '@/stores/workingdays';
 import { useAddressStore } from '@/stores/address';
 import { useAuthStore } from '@/stores/auth';
 import { useWalletStore } from '@/stores/wallet';
+import { useTranslationStore } from '@/stores/translation';
 import {
+    onUpdated,
+    computed,
     onMounted,
     ref,
     watch,
@@ -25,6 +28,7 @@ export default {
         const addressStore = useAddressStore();
         const authStore = useAuthStore();
         const walletStore = useWalletStore();
+        const translationStore = useTranslationStore();
 
         const billing_address = authStore.getBillingAddress();
         const { user } = storeToRefs(authStore);
@@ -39,7 +43,6 @@ export default {
             pickup_time_slots,
             schedule_date,
             schedule_time,
-            offDays,
         } = storeToRefs(workingDaysStore);
         const {
             eligibleAddress,
@@ -54,7 +57,7 @@ export default {
         const selectedPickupAddress = ref({});
         const showFail = ref(null);
         const showSuccess = ref(null);
-        const scheduleDate = ref('');
+        // const scheduleDate = ref('');
         const router = useRouter();
 
         if (totalQty.value <= 0) {
@@ -71,9 +74,16 @@ export default {
         const cardErrors = ref(null);
         const cardComplete = ref(false);
 
+        const deliveryDatepicker = ref(null);
+        const pickupDatepicker = ref(null);
+
         // Restaurant notes
         const notesTextField = ref('');
         const displayTextField = ref(false);
+
+        const activeDatePickerRef = computed(() => {
+            return selectedOption.value === 'delivery' ? deliveryDatepicker : pickupDatepicker;
+        });
 
         const initializeStripe = async () => {
             try {
@@ -281,17 +291,18 @@ export default {
             return minDate;
         }
 
-        const initializeFlatpickr = async () => {
-            const datePickers = document.querySelectorAll(".datepicker");
-            datePickers.forEach(picker => {
-                flatpickr(picker, {
+        const initializeFlatpickr = async() => {
+            await nextTick(); // Wait for DOM update
+            const el = activeDatePickerRef.value?.value;
+            if (el) {
+                flatpickr(el, {
                     dateFormat: "Y-m-d",
                     minDate: calculateMinSelectableDate(),
                     enable: [
                         function (date) {
                             const functionalDays = [1, 3, 5];
-                            const isoDate = date.toISOString().split("T")[0];
-                            return functionalDays.includes(date.getDay()) && !offDays.value.includes(isoDate);
+                            // const isoDate = date.toISOString().split("T")[0];
+                            return functionalDays.includes(date.getDay()) 
                         }
                     ],
                     onChange: (selectedDates, dateStr) => {
@@ -300,7 +311,7 @@ export default {
                         workingDaysStore.setScheduleDate(dateStr);
                     }
                 });
-            });
+            }    
         };
 
         const handleClear = () => {
@@ -310,6 +321,10 @@ export default {
         const toggleNoteVisibility = () => {
             displayTextField.value = !displayTextField.value;
         }
+
+        const t = (label, modules) => {
+            return translationStore.translate(label, modules);
+        };
 
         watch(
             totalQty,
@@ -334,25 +349,33 @@ export default {
             }
         );
 
-        watch(selectedOption, async () => {
-            await initializeFlatpickr();
-            scheduleDate.value = null;
+        watch(selectedOption, async (newVal) => {
+            await nextTick();
+            if (newVal === 'delivery') {
+                initializeFlatpickr(deliveryDatepicker);
+            } else {
+                initializeFlatpickr(pickupDatepicker);
+            }
         });
 
         onMounted(async () => {
-            await initializeFlatpickr();
             await nextTick();
             workingDaysStore.fetchTimeSlots();
-
             if (TotalOrderPrice.value > balance.value || !balance.value) {
                 selectPaymentMethod.value = "stripe";
                 await initializeStripe();
             } else {
                 selectPaymentMethod.value = "wallet";
             }
+            await initializeFlatpickr();
+        });
+
+        onUpdated(async () => {
+            await initializeFlatpickr();
         });
 
         return {
+            t,
             cart,
             totalQty,
             cardComplete,
@@ -362,6 +385,8 @@ export default {
             TotalOrderPrice,
             handleDelete,
             selectedOption,
+            deliveryDatepicker,
+            pickupDatepicker,
             showFail,
             balance,
             showSuccess,
@@ -432,7 +457,7 @@ export default {
                                 <!-- Select Delivery Day -->
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2"> 
                                     <label for="delivery-datepicker" class="form-label" >{{ t('choose_a_date', ['checkout'])}}</label>
-                                    <input type="text" id="delivery-datepicker" class="form-control datepicker" @load="initializeFlatpickr" />
+                                    <input type="text" ref="deliveryDatepicker" id="delivery-datepicker" class="form-control datepicker" @load="initializeFlatpickr" />
                                 </div>
                                 
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2">
@@ -481,7 +506,7 @@ export default {
                                 <!-- Select Pickup Day -->
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2"> 
                                     <label for="pickup-datepicker" class="form-label" @click="initializeFlatpickr">Choose a date</label>
-                                    <input type="text" id="pickup-datepicker" class="form-control datepicker" />
+                                    <input type="text" ref="pickupDatepicker" id="pickup-datepicker" class="form-control datepicker" />
                                 </div>
 
                                 <!-- Select Pickup Time Slot -->

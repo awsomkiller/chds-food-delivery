@@ -129,7 +129,6 @@ export const useTranslationStore = defineStore('translation', {
         if (moduleTranslations && moduleTranslations[label]) {
           translation = moduleTranslations[label];
         }
-        console.log(translation, label, moduleCodes);
         if (!translation) {
           // Fallback to English if current language translation is missing
           moduleCodes.forEach((code) => {

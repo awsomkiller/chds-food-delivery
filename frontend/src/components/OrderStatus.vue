@@ -62,77 +62,7 @@
       </div>
     </div>
   </div>
-  <div
-    class="modal modal-details fade"
-    id="orderDetails"
-    tabindex="-1"
-    aria-labelledby="orderDetailsModal"
-    aria-hidden="true"
-  >
-  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-body text-center">
-        
-        <div class="order-details-container">
-            <!-- Header -->
-            <div class="header">
-              <div class="title">Order Details</div>
-              <div class="help">Help</div>
-            </div>
 
-            <!-- Address Section -->
-            <div class="address-section">
-              <h3>Delivered to Sunny Enclave</h3>
-              <p>
-                Ground Floor, 2623-C, Sector 125, Sunny Enclave,
-                Kharar, Punjab 140301, India
-              </p>
-            </div>
-
-            <!-- Status Section -->
-            <div class="status-section">
-              <img
-                class="img-fluid float-bob"
-                src="@/assets/homepage/45img.png"
-                alt="thumb"
-              />
-              <div>
-                <div class="status-text">Order Delivered</div>
-                <div class="status-date">on 10 Jul 2024 19:35</div>
-              </div>
-            </div>
-
-            <!-- Order Summary -->
-            <div class="order-summary">
-              <h3>Order #93</h3>
-              <div class="summary-item">
-                <span>10 Jul 2024 19:10</span>
-                <span>Payment Mode: GPay UPI</span>
-              </div>
-              <div class="summary-item">
-                <span>1 x Veggie Paradise</span>
-                <span>₹459.00</span>
-              </div>
-              <hr />
-              <div class="summary-item">
-                <span>Sub Total</span>
-                <span>₹459.00</span>
-              </div>
-              <div class="summary-item">
-                <span>Discount</span>
-                <span>₹0.00</span>
-              </div>
-              <div class="summary-item">
-                <span>Taxes & Charges</span>
-                <span>₹42.95</span>
-              </div>
-              <div class="total">Grand Total: ₹502.00</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script setup>

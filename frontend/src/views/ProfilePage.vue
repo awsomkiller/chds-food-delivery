@@ -455,7 +455,7 @@ export default {
                     </div>
                     <div class="col-md-6 p-3 mb-3">
                       <label for="formGroupExampleInput" class="form-label"
-                        >{{ t('Add_amount_in_wallet', ['profile'])}}</label
+                        >{{ t('add_amount_in_wallet', ['profile'])}}</label
                       >
                       <input
                         type="number mb-3"
