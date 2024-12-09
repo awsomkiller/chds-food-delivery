@@ -8,6 +8,7 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 import { useOrderStore } from "@/stores/order";
 import { useTranslationStore } from "@/stores/translation";
+import { useMenuStore } from "@/stores/menu";
 
 export default {
   name: "ProfilePage",
@@ -16,6 +17,7 @@ export default {
     const authStore = useAuthStore();
     const orderStore = useOrderStore();
     const translationStore = useTranslationStore();
+    const menuStore = useMenuStore();
 
     const { balance, transactions } = storeToRefs(walletStore);
     const { orders } = storeToRefs(orderStore);
@@ -200,6 +202,16 @@ export default {
       return translationStore.translate(label, modules);
     };
 
+    const findTranslation = (meal_name) =>{
+      const items = menuStore.findItem(meal_name);
+      if(items){
+        return t(items[0].trans_code, ['menu_item'])
+      }
+      else{
+        return meal_name
+      }
+    }
+
     onMounted(async () => {
       await nextTick();
       initializeStripe();
@@ -235,6 +247,7 @@ export default {
       password_change_success,
       profile_save_success,
       profile_save_error,
+      findTranslation,
     };
   },
 };
@@ -506,18 +519,18 @@ export default {
                             >
                               <div class="left">
                                 <p>
-                                  <span>Transaction ID:</span>
-                                  {{ txn.transation_id }}
+                                  <span>{{ t('transaction_id', ['profile']) }}</span>
+                                  {{ txn.transaction_id }}
                                 </p>
                                 <p>
-                                  <span>Operation Type:</span>
-                                  {{ txn.order_type }}
+                                  <span>{{ t('operation_type', ['profile']) }}</span>
+                                  {{ t(txn.order_type, ['profile']) }}
                                 </p>
                                 <p class="text-danger">
-                                  <span>Payment Status:</span> {{ txn.status }}
+                                  <span>{{ t('payment_status', ['profile']) }}</span> {{ t(txn.status, ['profile']) }}
                                 </p>
                                 <p>
-                                  <span>Date & Time:</span> 12 Dec 2024 10:30
+                                  <span>{{ t('date_time', ['profile']) }}</span> {{txn.time}}
                                 </p>
                               </div>
                               <span class="payment-platform">{{
@@ -535,7 +548,7 @@ export default {
                           </div>
                         </div>
                         <p class="txn-list" v-if="!transactions">
-                          No Transactions to display
+                          {{t(no_transaction_to_display,['profile'])}}
                         </p>
                       </div>
                     </div>
@@ -555,11 +568,11 @@ export default {
                       <!-- Order Card 1 -->
                       <div class="order-card" v-for="order in orders" :key="order.id" >
                         <div class="order-header">
-                          <div class="delivery">{{order.order_type}}</div>
-                          <div class="status">{{ order.status }}</div>
+                          <div class="delivery">{{t(order.order_type, ['profile'])}}</div>
+                          <div class="status">{{ t(order.status, ['profile']) }}</div>
                         </div>
                         <div class="order-details">
-                          Order {{ order.order_id}} <br />
+                          {{ t('order_id', ['profile']) }} {{ order.order_id}} <br />
                           {{order.order_time}}
                         </div>
                         <div class="order-item" v-for="item in JSON.parse(order.menu_item)" :key="item.id">
@@ -567,7 +580,7 @@ export default {
                             src="https://img.icons8.com/color/48/000000/checked--v1.png"
                             alt="Item Icon"
                           />
-                          <span>{{item.meal_name}}</span>
+                          <span>{{findTranslation(item.meal_name)}}</span>
                         </div>
                         <div class="order-footer">
                           <div class="price">A$ {{ order.total_price }}</div>

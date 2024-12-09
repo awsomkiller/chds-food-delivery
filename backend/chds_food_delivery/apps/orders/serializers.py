@@ -31,6 +31,7 @@ class ListTransactionSerilaizer(serializers.ModelSerializer):
         
 class ListOrdersSerilaizer(serializers.ModelSerializer):
     transaction=serializers.SerializerMethodField(read_only=True)
+    order_time = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Orders
@@ -39,3 +40,8 @@ class ListOrdersSerilaizer(serializers.ModelSerializer):
     def get_transaction(self,obj):
         data = obj.transaction
         return ListTransactionSerilaizer(data).data
+    
+    def get_order_time(self, obj):
+        if obj.order_time:
+            return obj.order_time.strftime("%Y-%m-%d %H:%M:%S")
+        return None

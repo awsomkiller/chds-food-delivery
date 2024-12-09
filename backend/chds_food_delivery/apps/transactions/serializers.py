@@ -3,9 +3,15 @@ from decimal import Decimal
 from apps.transactions.models import Transaction,WalletCoupon, OrderCoupon,Wallet
 
 class TransactionSerializer(serializers.ModelSerializer):
+    time = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Transaction
-        fields = ['id', 'amount', 'order_type', 'transaction_id', 'transaction_from', 'status']
+        fields = ['id', 'amount', 'order_type', 'transaction_id', 'transaction_from', 'status', 'time']
+
+    def get_time(self, obj):
+        if obj.updated_at:
+            return obj.updated_at.strftime("%Y-%m-%d %H:%M:%S")
+        return None
 
 class WalletCouponSerializer(serializers.ModelSerializer):
     class Meta:

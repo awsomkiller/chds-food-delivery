@@ -79,5 +79,8 @@ export const useMenuStore = defineStore('menu', {
       this.items = [];
       this.nextPageUrl = '/menu/items/';
     },
+    findItem(meal_name) {
+      return this.items.filter((item)=> item.name === meal_name)
+    }
   },
 });
