@@ -126,7 +126,7 @@ export default {
             <!-- Addons -->
             <div v-if="currentPortion && currentPortion.addons.length" class="px-3 py-2 extra-options">
                 <div class="meal-category toggle-button-extra rounded p-3" v-for="addon in currentPortion.addons" :key="addon.id">
-                    <h4 class="extra-status"> {{ addon.name }} </h4>
+                    <h4 class="extra-status"> Extra {{ addon.name }} </h4>
                     <div class="">
                         <div class="can-toggle">
                             <input :id="'addon-'+addon.id" type="checkbox" :checked="isAddonSelected(addon)" @change="toggleAddon(addon)">

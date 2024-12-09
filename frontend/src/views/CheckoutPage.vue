@@ -627,12 +627,15 @@ export default {
             </label>
 
             <!-- PayPal Option -->
-            <input type="radio" class="btn-check" name="options" id="addons4" value="paypal" v-model="selectPaymentMethod">
-            <label class="btn btn-primary w-100" for="addons4">
-                <p class="mb-0">
-                    <img class="payment-icon" src="@/assets/money.png" alt="PayPal">
-                </p>
-            </label>
+            <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Service unavailable">
+                <input type="radio" class="btn-check" name="options" id="addons4" value="paypal" disabled>
+                <label class="btn btn-primary w-100" for="addons4">
+                    <p class="mb-0">
+                        <img class="payment-icon" src="@/assets/money.png" alt="PayPal">
+                    </p>
+                </label>
+            </span>
+
 
             <!-- Alipay Option -->
             <input type="radio" class="btn-check" name="options" id="addons5" value="alipay" v-model="selectPaymentMethod">
