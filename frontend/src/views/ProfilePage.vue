@@ -204,7 +204,7 @@ export default {
 
     const findTranslation = (meal_name) =>{
       const items = menuStore.findItem(meal_name);
-      if(items){
+      if(items.length>0){
         return t(items[0].trans_code, ['menu_item'])
       }
       else{
@@ -277,7 +277,7 @@ export default {
                     aria-controls="home-tab-pane"
                     aria-selected="true"
                   >
-                   {{ t('change_password', ['profile'])}}
+                   {{ t('personal_details', ['profile'])}}
                   </button>
                 </li>
                 <li class="nav-item" role="presentation">
