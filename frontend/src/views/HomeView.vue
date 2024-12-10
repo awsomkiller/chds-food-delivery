@@ -91,7 +91,7 @@ export default {
               </div>
               <div class="col-lg-7 col-md-12 col-sm-12 col-12 orderl-lg-2 order-md-1 order-sm-1 order-1">
                 <div class="main-img text-center">
-                    <img src="@/assets/homepage/right-bg.png" class="image-right" alt="">
+                    <img src="@/assets/homepage/right-bg.bd9cedcd_2.png" class="image-right" alt="">
                 </div>
             </div>
         </div>
