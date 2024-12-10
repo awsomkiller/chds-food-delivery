@@ -14,6 +14,10 @@ export const useCartStore = defineStore('cart', {
       selected_meal_portion_weight: 0,
       selected_meal_portion_price: 0,
       selected_meal_addon_price: 0,
+      selected_meal_portion_protein: 0,
+      selected_meal_portion_carbs: 0,
+      selected_meal_portion_fat: 0,
+      selected_meal_portion_calories: 0,
       addons: [],
       quantity: 1,
       total_price: 0,
@@ -61,6 +65,10 @@ export const useCartStore = defineStore('cart', {
       this.active.selected_meal_portion_name = portion.portion_name;
       this.active.selected_meal_portion_weight = portion.portion_weight;
       this.active.selected_meal_portion_price = parseFloat(portion.price);
+      this.active.selected_meal_portion_protein = portion.protein;
+      this.active.selected_meal_portion_carbs = portion.carbs;
+      this.active.selected_meal_portion_fat = portion.fats;
+      this.active.selected_meal_portion_calories = portion.calories;
       this.active.addons = [];
       this.updateActiveTotalPrice();
     },
