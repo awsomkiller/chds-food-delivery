@@ -31,6 +31,7 @@ export default {
     };
 
     const selectPortion = (portion) => {
+      cartStore.resetActive()
       cartStore.updateActivePortion(portion);
     };
 
