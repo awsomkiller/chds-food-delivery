@@ -94,9 +94,9 @@ export default {
 <template>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid p-0 m-0">
-              <a class="navbar-brand w-15 m-0" href="/">
+              <router-link class="navbar-brand w-15 m-0" to="/">
                 <img src="@/assets/chi-hun-da-su-logo-vertical-white.svg" alt="">
-              </a>
+              </router-link>
              
               <div class="d-flex flex-column w-100 home-wrap-nav">
                   <div class="top-address">
