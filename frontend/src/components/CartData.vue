@@ -4,6 +4,8 @@
     import { useCartStore } from '@/stores/cart';
     import { useAuthStore } from '@/stores/auth';
     import { useTranslationStore } from '@/stores/translation';
+    import { Offcanvas } from 'bootstrap';
+
     
     export default {
         name: 'CartData',
@@ -27,6 +29,21 @@
                 cartStore.decreaseItemQuantity(itemId);
             };
 
+            const handleCheckout = (event) => {
+      // Prevent default router-link behavior
+      event.preventDefault();
+
+      // Dismiss the offcanvas sidebar
+      const offcanvasElement = document.querySelector('.offcanvas'); // Adjust selector as needed
+      const offcanvasInstance = Offcanvas.getInstance(offcanvasElement);
+      if (offcanvasInstance) {
+        offcanvasInstance.hide();
+      }
+
+      // Navigate to the checkout route
+    //   this.$router.push('/checkout');
+    }
+
             return{
                 t,
                 cart,
@@ -35,6 +52,7 @@
                 TotalOrderPrice,
                 incrementItem,
                 decrementItem,
+                handleCheckout,
             };
         }
     };
@@ -89,7 +107,7 @@
             </div>
             <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#loginModal" v-if="!user"> {{ t('login_to_continue', ['cart']) }}</button>
             <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#addressModal" v-else-if="user && !user.primary_address"> {{ t('add_your_address', ['cart']) }}</button>
-            <router-link to="/checkout" class="btn btn-primary w-100" v-else-if="user && totalQty > 0">{{ t('proceed_to_checkout', ['cart']) }} </router-link>
+            <router-link to="/checkout" class="btn btn-primary w-100" v-else-if="user && totalQty > 0"  @click="handleCheckout"> {{ t('proceed_to_checkout', ['cart']) }} </router-link>
             <button v-else-if="user && totalQty <= 0" class="btn btn-primary w-100 " disabled >{{ t('proceed_to_checkout', ['cart']) }} </button>
         </div>         
     </div>
