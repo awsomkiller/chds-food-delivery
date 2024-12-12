@@ -195,7 +195,10 @@ export default {
 
           <!-- nutritions facts -->
           <div class="px-3 py-2 pt-4">
-            <h4 class="nutrients-facts text-center">
+            <h4 class="nutrients-facts text-center" v-if="active.isMealSet">
+              Nutrition Facts – Per Meal Set (150g Dish + 150g Vegetables + 150g Rice)
+            </h4>
+            <h4 class="nutrients-facts text-center" v-else>
               Nutrition Facts - Per 100g Of Main Dish
             </h4>
             <div class="meal-category-table rounded">

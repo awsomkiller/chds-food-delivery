@@ -18,6 +18,7 @@ export const useCartStore = defineStore('cart', {
       selected_meal_portion_carbs: 0,
       selected_meal_portion_fat: 0,
       selected_meal_portion_calories: 0,
+      isMealSet: false,
       addons: [],
       quantity: 1,
       total_price: 0,
@@ -69,6 +70,7 @@ export const useCartStore = defineStore('cart', {
       this.active.selected_meal_portion_carbs = portion.carbs;
       this.active.selected_meal_portion_fat = portion.fats;
       this.active.selected_meal_portion_calories = portion.calories;
+      this.active.isMealSet = portion.portion_code === "meal_set" ? true : false;
       this.active.addons = [];
       this.updateActiveTotalPrice();
     },

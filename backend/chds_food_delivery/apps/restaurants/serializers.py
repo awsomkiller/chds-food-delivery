@@ -34,11 +34,12 @@ class ListMenuItemsTags(serializers.ModelSerializer):
 class ListPortionSerializer(serializers.ModelSerializer):
     portion_name = serializers.CharField(source='portion_item.name')
     portion_weight = serializers.CharField(source='portion_item.weight')
+    portion_code = serializers.CharField(source='portion_item.code')
     addons = serializers.SerializerMethodField()
 
     class Meta:
         model = MenuPortionPriceList
-        fields = ["id", "portion_name", "portion_weight", "price", "addons","calories","protein","carbs",'fats']
+        fields = ["id", "portion_name", "portion_weight", "price", "addons","calories","protein","carbs",'fats', 'portion_code']
 
     def get_addons(self, obj):
         addons = obj.portion_item.addons.all()
@@ -49,6 +50,11 @@ class ListMenuItemSerializer(serializers.ModelSerializer):
     portion = serializers.SerializerMethodField()
     tags = serializers.SerializerMethodField()
     price = serializers.SerializerMethodField()
+    protein = serializers.SerializerMethodField()
+    calories = serializers.SerializerMethodField()
+    fats = serializers.SerializerMethodField()
+    carbs = serializers.SerializerMethodField()
+
     class Meta:
         model = MenuItem
         fields = "__all__"
@@ -71,6 +77,26 @@ class ListMenuItemSerializer(serializers.ModelSerializer):
         min_price = min(prices)
         max_price = max(prices)
         return f"A${min_price} - A${max_price}"
+    
+    def fetch_menu_item(self, obj):
+        instances = MenuPortionPriceList.objects.filter(menu_item=obj).exclude(portion_item__name='meal_set')
+        return instances[0] if instances[0] else None
+
+    def get_protein(self, obj):
+        instance = self.fetch_menu_item(obj)
+        return instance.protein
+    
+    def get_fats(self, obj):
+        instance = self.fetch_menu_item(obj)
+        return instance.fats
+    
+    def get_carbs(self, obj):
+        instance = self.fetch_menu_item(obj)
+        return instance.carbs
+    
+    def get_calories(self, obj):
+        instance = self.fetch_menu_item(obj)
+        return instance.calories
    
 class CreateMenuItemSerializer(serializers.ModelSerializer):
     """     
