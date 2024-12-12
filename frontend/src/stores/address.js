@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia';
 import axios from '../../axios';
+import { useAuthStore } from './auth';
+
 
 export const useAddressStore = defineStore('address', {
   state: () => ({
@@ -16,6 +18,7 @@ export const useAddressStore = defineStore('address', {
     },
     eligibleAddress: [],
     eligibityError:'',
+    eligiblePostalCodes: [],
   }),
 
   getters: {
@@ -32,19 +35,23 @@ export const useAddressStore = defineStore('address', {
 
   actions: {
     // Define eligible postal codes as a constant
-    getEligiblePostalCodes() {
-      return [
-        3067, 3103, 3121, 3124, 3068, 3066, 3002,
-        3078, 3065, 3123, 3101, 3102, 3144, 3141,
-        3142, 3000, 3008, 3006, 3122
-      ];
+    async getEligiblePostalCodes() {
+      const response = await axios.get('/menu/delivery-point/')
+      const data = response.data.results
+      this.eligiblePostalCodes = data.map((item)=>{return parseInt(item.postal_code)});
+      const authStore = useAuthStore();
+      authStore.deliveryEligibilityCheck();
+    },
+
+    fetchEligiblePostalCodes(){
+      return this.eligiblePostalCodes;
     },
 
     // Method to update eligibleAddress based on postal codes
     updateEligibleAddress() {
-      const eligiblePostalCodes = this.getEligiblePostalCodes();
+      console.log(this.eligiblePostalCodes);
       this.eligibleAddress = this.addresses.filter(address =>
-        eligiblePostalCodes.includes(parseInt(address.postal_code))
+        this.eligiblePostalCodes.includes(parseInt(address.postal_code))
       );
     },
 
@@ -124,8 +131,7 @@ export const useAddressStore = defineStore('address', {
       }
     },
     checkDeliveryEligibility(postal_code){
-      const eligible_postal_codes = this.getEligiblePostalCodes();
-      if(eligible_postal_codes.includes(parseInt(postal_code))){
+      if(this.eligiblePostalCodes.includes(parseInt(postal_code))){
         this.eligibityError = "Delivery available";
       }
       else{

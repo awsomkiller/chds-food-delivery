@@ -9,14 +9,17 @@ import AddAddress from "./components/AddAddress.vue";
 import OrderStatus from "./components/OrderStatus.vue";
 import { useTranslationStore } from "./stores/translation";
 import { useAuthStore } from "./stores/auth";
-import { onMounted, computed } from "vue";
+import { useAddressStore } from "./stores/address";
+import {  onBeforeMount, computed } from "vue";
 
 const translationStore = useTranslationStore();
 const authStore = useAuthStore();
+const addressStore = useAddressStore();
 
-onMounted(async () => {
+onBeforeMount(async () => {
   await translationStore.fetchTranslations();
   await authStore.fetchUserDetails();
+  await addressStore.getEligiblePostalCodes();
 });
 
 const isLoaded = computed(() => translationStore.isLoaded);

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_filters',
     "rest_framework",
     'corsheaders',
+    'rangefilter',
 ]
 
 APPS_URLS = [
@@ -70,7 +71,9 @@ ROOT_URLCONF = 'chds_food_delivery.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -78,6 +81,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.static',
             ],
         },
     },
@@ -190,3 +194,21 @@ EMAIL_PORT = os.getenv("EMAIL_PORT")
 EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS")
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER') 
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD') 
+
+# settings.py
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'apps.orders.admin_filters': {  # Adjust based on your module path
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}

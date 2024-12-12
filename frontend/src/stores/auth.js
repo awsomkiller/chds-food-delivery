@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import axios from '../../axios';
+import { useAddressStore } from './address';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -61,7 +62,6 @@ export const useAuthStore = defineStore('auth', {
           const response = await axios.get('/details/');
           this.user = response.data;
           localStorage.setItem('user', JSON.stringify(this.user));
-          this.deliveryEligibilityCheck();
           this.initializeProfile();
           return;
         } else{
@@ -75,21 +75,14 @@ export const useAuthStore = defineStore('auth', {
     },
 
     deliveryEligibilityCheck(){
+      const addressStore = useAddressStore()
       if(this.user.primary_address){
         const postal_code = this.user.primary_address.postal_code;
-        const eligible_postal_code = this.getEligiblePostalCodes();
+        const eligible_postal_code = addressStore.fetchEligiblePostalCodes();
+        console.log(eligible_postal_code)
         this.delivery = eligible_postal_code.includes(parseInt(postal_code));
       }
     },
-
-    getEligiblePostalCodes() {
-      return [
-        3067, 3103, 3121, 3124, 3068, 3066, 3002,
-        3078, 3065, 3123, 3101, 3102, 3144, 3141,
-        3142, 3000, 3008, 3006, 3122
-      ];
-    },
-
 
     async handlePasswordChange(payload) {
       try {

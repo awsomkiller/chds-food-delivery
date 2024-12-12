@@ -48,6 +48,7 @@ class ListMenuItemSerializer(serializers.ModelSerializer):
     item_images = serializers.SerializerMethodField()
     portion = serializers.SerializerMethodField()
     tags = serializers.SerializerMethodField()
+    price = serializers.SerializerMethodField()
     class Meta:
         model = MenuItem
         fields = "__all__"
@@ -63,6 +64,13 @@ class ListMenuItemSerializer(serializers.ModelSerializer):
     def get_tags(self, obj):
         tags = obj.tags.all()
         return ListMenuItemsTags(tags, many=True).data
+    
+    def get_price(self, obj):
+        instances = MenuPortionPriceList.objects.filter(menu_item=obj)
+        prices = [instance.price for instance in instances]
+        min_price = min(prices)
+        max_price = max(prices)
+        return f"A${min_price} - A${max_price}"
    
 class CreateMenuItemSerializer(serializers.ModelSerializer):
     """     

@@ -3,8 +3,8 @@ from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuIma
 
 @admin.register(PickupLocation)
 class PickupLocationAdmin(admin.ModelAdmin):
-    list_display=["id","street_address1","street_address2","city","postal_code","price"]
-    fields = ["name","street_address1","street_address2","city","state","postal_code","price"]
+    list_display=["id","street_address1","street_address2","city","postal_code"]
+    fields = ["name","street_address1","street_address2","city","state","postal_code"]
     search_fields = ['city', 'postal_code', 'name']
  
 
@@ -17,10 +17,10 @@ class MenuCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(MenuItem)
 class MenuItemsAdmin(admin.ModelAdmin):
-    list_display=["id","name","price","is_popular","is_best_selling"]
-    fields=["name","price","description","calories","protein","fats","carbs","category", "tags","is_best_selling","is_popular", "trans_code"]
-    search_fields = ['name','price','category__name']
-    list_filter = ['category',]
+    list_display=["id","name","is_popular","is_best_selling"]
+    fields=["name","category", "tags","is_best_selling","is_popular", "trans_code", "trans_desc_code"]
+    search_fields = ['name','category__name']
+    list_filter = ['category', "is_best_selling","is_popular"]
     
 
 @admin.register(MenuImage)

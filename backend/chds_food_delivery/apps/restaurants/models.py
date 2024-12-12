@@ -6,12 +6,12 @@ import uuid
 class PickupLocation(models.Model):
     name = models.CharField(_("Pickup Location Name") ,max_length=255)
     code = models.UUIDField(_("Pickup Location Code"),max_length=50, unique=True)
-    street_address1 = models.CharField(_("Street Address"),max_length=255)
-    street_address2 = models.CharField(_("Street Address"),max_length=255)
+    street_address1 = models.CharField(_("Street Address 1"),max_length=255)
+    street_address2 = models.CharField(_("Street Address 2"),max_length=255)
     city = models.CharField(_("City"),max_length=100,)
     state = models.CharField(_("State"),max_length=100)
-    postal_code = models.CharField(_("Postal Code"),max_length=20,null=True,blank=True)
-    price = models.DecimalField(_("Pickup charges"),decimal_places=2,max_digits=5,help_text='Price in  Australian dollars',null=True)
+    postal_code = models.CharField(_("Postal Code"),max_length=20)
+    price = models.DecimalField(_("Pickup charges"), decimal_places=2, max_digits=5, help_text='Price in  Australian dollars', null=True, blank=True, default=0)
    
     def __str__(self):
         return f"{self.name} ({self.code}) "
@@ -50,7 +50,7 @@ class MenuCategory(models.Model):
 
 class MenuItem(models.Model):
     name = models.CharField(_("Menu Item Name"),max_length=100)
-    price = models.CharField(_("Menu Item Price"),max_length=50, help_text="Price in  Australian dollars")
+    price = models.CharField(_("Menu Item Price"),max_length=50, help_text="Price in  Australian dollars", blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     calories = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
     protein = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
@@ -60,8 +60,8 @@ class MenuItem(models.Model):
     tags = models.ManyToManyField(MenuItemTags, verbose_name=_("Tags"))
     is_popular = models.BooleanField(default=False)
     is_best_selling= models.BooleanField(default=False)
-    trans_code = models.CharField(_("Translation Code"), max_length=255, blank=True, null=True)
-    trans_desc_code = models.CharField(_("Translation Description Code"), max_length=255,  blank=True, null=True)
+    trans_code = models.CharField(_("Translation Code"), help_text="Note: If you modify this make sure to update translations.", max_length=255, blank=True, null=True)
+    trans_desc_code = models.CharField(_("Translation Description Code"),  help_text="Note: If you modify this make sure to update translations.", max_length=255,  blank=True, null=True)
 
     class Meta:
         verbose_name = "Menu Dish"
@@ -145,6 +145,7 @@ class MenuPortionPriceList(models.Model):
         verbose_name = "Price List"
         verbose_name_plural = "Price Lists"
         ordering = ['id']
+        unique_together = [['menu_item', 'portion_item']]
         
     def __str__(self):
         return f"{self.menu_item.name} - {self.portion_item.name} - {self.price}"

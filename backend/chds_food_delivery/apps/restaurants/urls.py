@@ -16,7 +16,7 @@ from django.conf.urls.static import static
 router = routers.DefaultRouter()
 router.register('pickup-location', RestaurantApi, basename="pickup_location")
 router.register("items", MenuItemApi , basename="menu_items")
-router.register("delivery-point",DeliveryPointApi , basename="delivery_point")
+router.register("delivery-point", DeliveryPointApi , basename="delivery_point")
 
 urlpatterns = [
     path("images/",MenuImagesApi.as_view(),name="create-menu_images"),

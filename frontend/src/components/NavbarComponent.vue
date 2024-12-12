@@ -66,7 +66,7 @@ export default {
     };
     // Add event listener for detecting outside clicks when component is mounted
     onMounted(() => {
-      document.addEventListener('click', handleClickOutside);
+      document.addEventListener('click', handleClickOutside);    
     });
     
     // Remove event listener when component is about to unmount
