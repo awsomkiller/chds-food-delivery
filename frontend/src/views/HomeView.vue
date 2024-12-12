@@ -1087,7 +1087,7 @@ export default {
                                           <router-link to="/ordernow">
                                               <h3 class="active">{{t('chicken_stuffed_bean_curd_rolls',['menu_item'])}}</h3>
                                           </router-link>
-                                          <h6>A$19.00 – A$31.00ayus</h6>
+                                          <h6>A$19.00 – A$31.00</h6>
                                           <!-- <p>Minced chicken wrapped in soft bean curd sheets, steamed with ginger and seasonings. Tender, juicy, and packed with flavor, this is a healthy, light meal option.</p> -->
                                       </div>
                                   </div>
@@ -1102,7 +1102,7 @@ export default {
                                       <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
                                       <div class="menu-content">
                                           <router-link to="/ordernow">
-                                              <h3 class="active">Cilantro Chicken with Vinegar</h3>
+                                              <h3 class="active">{{t('cilantro_chicken_with_vinegar',['menu_item'])}}</h3>
                                           </router-link>
                                           <h6>A$19.00 – A$31.00</h6>
                                           <!-- <p>Chicken breast mixed with cilantro, vinegar, chili, soy sauce, and oyster sauce. This tangy, refreshing dish is high in protein, perfect for fitness diets and light daily meals.</p> -->
@@ -1119,7 +1119,7 @@ export default {
                                       <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
                                       <div class="menu-content">
                                           <router-link to="/ordernow">
-                                              <h3 class="active">Honey Teriyaki Chicken Breast</h3>
+                                              <h3 class="active">{{t('honey_teriyaki_chicken_breast',['menu_item'])}}</h3>
                                           </router-link>
                                           <h6>A$19.00 – A$31.00</h6>
                                           <!-- <p>Pan-seared chicken breast with a honey-soy glaze, crispy outside, tender inside, a perfect healthy and flavorful option.</p> -->
@@ -1136,7 +1136,7 @@ export default {
                                       <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
                                       <div class="menu-content">
                                         <router-link to="/ordernow">
-                                              <h3 class="active">Korean Spicy Chicken Breast</h3>
+                                              <h3 class="active">{{t('korean_spicy_chicken_breast',['menu_item'])}}</h3>
                                         </router-link>
                                           <h6>A$19.00 – A$31.00</h6>
                                           <!-- <p>Pan-seared chicken breast with Korean spicy sauce, blending sweetness and heat for a tender and flavorful dish.</p> -->
@@ -1154,7 +1154,7 @@ export default {
                                       <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
                                       <div class="menu-content">
                                         <router-link to="/ordernow">
-                                              <h3 class="active">Wine-Marinated Chicken Gizzards</h3>
+                                              <h3 class="active">{{t('wine_marinated_chicken_gizzards',['menu_item'])}}</h3>
                                         </router-link>
                                           <h6>A$19.00 – A$31.00</h6>
                                           <!-- <p>Crisp and tender chicken gizzards marinated in wine sauce, full of flavor. Perfect as a snack or appetizer.</p> -->
@@ -1172,7 +1172,7 @@ export default {
                                       <div class="menu-item-thumb"><img src="@/assets/homepage/dish-img-wrap.png" alt="thumb"></div>
                                       <div class="menu-content">
                                         <router-link to="/ordernow">
-                                              <h3 class="active">Pickled Veg Chicken Stir-fry</h3>
+                                              <h3 class="active">{{t('pickled_veg_chicken_stir_fry',['menu_item'])}}</h3>
                                         </router-link>
                                           <h6>A$17.00 – A$31.00</h6>
                                           <!-- <p>It's a testament to our.</p> -->
