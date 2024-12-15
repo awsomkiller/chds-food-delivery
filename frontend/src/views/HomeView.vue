@@ -929,7 +929,7 @@ export default {
                 <div class="dishes-card-wrap style1">
                     <div class="dishes-card style1" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;" v-for="item in best_sellings" :key="item.id">
                         <div class="dishes-thumb">
-                            <img :src="getItemImage(item)" alt="thmb">
+                            <img :src="getItemImage(item)" alt="thmb" class="rounded">
                         </div>
                         <router-link to="/ordernow">
                             <h3>{{ t(item.trans_code, ['menu_item']) }}</h3>

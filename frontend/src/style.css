@@ -1700,6 +1700,7 @@ ul {
 .dishes-thumb img {
   position: relative;
   z-index: 2;
+  width: 200px;
 }
 
 .dishes-card.style1 h3 {
