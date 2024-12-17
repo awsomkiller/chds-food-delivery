@@ -1,6 +1,7 @@
 import uuid
 from django.db import models
 from apps.users.models import User
+from django.utils.translation import gettext_lazy as _
 
 
 class Transaction(models.Model):
@@ -68,10 +69,13 @@ class Transaction(models.Model):
 
 
 class WalletCoupon(models.Model):
+    desc_code = models.CharField(max_length=200, default='NA')
     recharge_amount = models.DecimalField(max_digits=10, decimal_places=2)
     recharge_value = models.DecimalField(max_digits=10, decimal_places=2)
     name = models.CharField(max_length=100)
     code = models.CharField(max_length=50, unique=True)
+    is_active = models.BooleanField(_("Is Active"), default=True)
+
 
     class Meta:
         verbose_name = "Wallet Coupon"
@@ -84,14 +88,18 @@ class WalletCoupon(models.Model):
 
 class OrderCoupon(models.Model):
     DISCOUNT_TYPE_CHOICES = [
-        ("PERCENTAGE", "Percentage"),
-        ("FIXED", "Fixed"),
+        ("PERCENTAGE", "Discount Percentage"),
+        ("FIXED_ITEM", "Fixed discount per Item"),
+        ("FIXED_ORDER", "Fixed discount per Order")
     ]
 
     name = models.CharField(max_length=100)
+    name_code = models.CharField(_("Coupon Name Translation Code"), max_length=50)
+    desc_code = models.CharField(_("Coupon Description Translation Code"), max_length=200, default='NA')
     code = models.CharField(max_length=50, unique=True)
-    discount_type = models.CharField(max_length=10, choices=DISCOUNT_TYPE_CHOICES)
-    discount_upto = models.DecimalField(max_digits=10, decimal_places=2)
+    discount_type = models.CharField(max_length=15, choices=DISCOUNT_TYPE_CHOICES)
+    discount_upto = models.DecimalField(_("Discount"), max_digits=10, decimal_places=2)
+    is_active = models.BooleanField(_("Is Active"), default=True)
 
     class Meta:
         verbose_name = "Order Coupon"
@@ -100,6 +108,13 @@ class OrderCoupon(models.Model):
 
     def __str__(self):
         return f"{self.name} (Code: {self.code})"
+    
+
+    def save(self, *args, **kwargs):
+        if self.name:
+            self.name_code = self.name.strip().lower().replace(' ', '_')
+            self.desc_code = f"{self.name_code}_desc"
+        super().save(*args, **kwargs)
 
 
 class Wallet(models.Model):

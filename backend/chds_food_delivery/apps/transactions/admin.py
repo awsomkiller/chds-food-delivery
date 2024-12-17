@@ -10,11 +10,11 @@ class WalletCouponAdmin(admin.ModelAdmin):
  
 @admin.register(OrderCoupon)
 class OrderCouponAdmin(admin.ModelAdmin):
-    list_display=["id","name","discount_type","discount_upto"]
-    fields=["name","code","discount_type","discount_upto"]
-    search_fields=["discount_type"]
-  
-
+    list_display=["id","name", "name_code", "desc_code", "discount_type","discount_upto"]
+    fields=["name", "code", "discount_type", "discount_upto", "is_active"]
+    search_fields=["discount_type", "name", "name_code", "desc_code"]
+    list_filter=["discount_type",]
+    
  
 @admin.register(Wallet)
 class UserWalletAdmin(admin.ModelAdmin):
