@@ -93,9 +93,9 @@ class OrderCoupon(models.Model):
         ("FIXED_ORDER", "Fixed discount per Order")
     ]
 
-    name = models.CharField(max_length=100)
-    name_code = models.CharField(_("Coupon Name Translation Code"), max_length=50)
-    desc_code = models.CharField(_("Coupon Description Translation Code"), max_length=200, default='NA')
+    name = models.CharField(max_length=100, unique=True)
+    name_code = models.CharField(_("Name Translation Code"), max_length=50, unique=True)
+    desc_code = models.CharField(_("Description Translation Code"), max_length=200, unique=True)
     code = models.CharField(max_length=50, unique=True)
     discount_type = models.CharField(max_length=15, choices=DISCOUNT_TYPE_CHOICES)
     discount_upto = models.DecimalField(_("Discount"), max_digits=10, decimal_places=2)

@@ -49,7 +49,7 @@ class PortionSizePriceAdmin(admin.ModelAdmin):
     list_filter = ["menu_item", "portion_item"]
    
     def item_price(self, obj):
-        return f"{obj.price}$"
+        return f"{obj.price}A$"
     
 
 @admin.register(Addons)

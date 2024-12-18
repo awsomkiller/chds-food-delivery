@@ -108,10 +108,11 @@ export default {
         return translationStore.translate(label, modules);
     };
 
-    onMounted(() => {
+    onMounted(async () => {
       menuStore.resetItems();
-      menuStore.loadCategories();
-      menuStore.loadItems();
+      await menuStore.fetchCoupons();
+      await menuStore.loadCategories();
+      await menuStore.loadItems();
       walletStore.fetchWallet()
       authStore.fetchUserDetails();
       window.addEventListener("scroll", handleScroll);

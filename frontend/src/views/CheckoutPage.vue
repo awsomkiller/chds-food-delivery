@@ -6,6 +6,7 @@ import { useAddressStore } from '@/stores/address';
 import { useAuthStore } from '@/stores/auth';
 import { useWalletStore } from '@/stores/wallet';
 import { useTranslationStore } from '@/stores/translation';
+import { useMenuStore } from '@/stores/menu';
 import {
     onUpdated,
     computed,
@@ -29,6 +30,7 @@ export default {
         const authStore = useAuthStore();
         const walletStore = useWalletStore();
         const translationStore = useTranslationStore();
+        const menuStore = useMenuStore();
 
         const billing_address = authStore.getBillingAddress();
         const { user } = storeToRefs(authStore);
@@ -36,7 +38,9 @@ export default {
         const {
             cart,
             totalQty,
-            TotalOrderPrice
+            TotalOrderPrice,
+            TotalDiscount,
+            appliedCoupon
         } = storeToRefs(cartStore);
         const {
             delivery_time_slots,
@@ -51,13 +55,15 @@ export default {
         const {
             balance
         } = storeToRefs(walletStore)
+        const {
+            availableCoupons,
+        } = storeToRefs(menuStore);
 
         const selectedOption = ref('delivery');
         const selectedDeliveryAddress = ref({});
         const selectedPickupAddress = ref({});
         const showFail = ref(null);
         const showSuccess = ref(null);
-        // const scheduleDate = ref('');
         const router = useRouter();
 
         if (totalQty.value <= 0) {
@@ -160,6 +166,7 @@ export default {
             payload.schedule_date = schedule_date.value;
             payload.time_slot = schedule_time.value;
             payload.notes = notesTextField.value;
+            payload.coupon = appliedCoupon.id || null;
 
             if (selectPaymentMethod.value === "wallet") {
                 try {
@@ -321,6 +328,14 @@ export default {
             return translationStore.translate(label, modules);
         };
 
+        const handleCouponApply = (coupon) =>{
+            cartStore.applyCoupon(coupon);
+        }
+
+        const handleCouponUnapply = () =>{
+            cartStore.unapplyCoupon();
+        }
+
         watch(
             totalQty,
             (newCount, oldCount) => {
@@ -378,6 +393,7 @@ export default {
             eligibleAddress,
             pickUpAddresses,
             TotalOrderPrice,
+            TotalDiscount,
             handleDelete,
             selectedOption,
             deliveryDatepicker,
@@ -397,6 +413,10 @@ export default {
             notesTextField,
             handleClear,
             toggleNoteVisibility,
+            availableCoupons,
+            handleCouponApply,
+            appliedCoupon,
+            handleCouponUnapply,
         };
     },
 };
@@ -597,10 +617,64 @@ export default {
                 </div>
             </div>
         </div>
-       <div class="col-lg-4 col-md-12 col-sm-12 col-12 p-3">
+        <!-- can be removed -->
+                    <div class="col-lg-4 col-md-12 col-sm-12 col-12 p-3">
+            <div class="store-n-diliveri bg-white p-2 rounded">
+                <!-- Add Coupons Section -->
+                <h6 class="extra-status" v-if="availableCoupons">{{ t('apply_coupons', ['checkout']) }}</h6>
+                <div class="store-n-diliveri bg-white pb-3 rounded" v-if="availableCoupons">
+                    <div class="row">
+                        <div 
+                            class="m-2"
+                            v-for="coupon in availableCoupons" 
+                            :key="coupon.id"
+                        >
+                            <div class="card shadow-sm border-dark p-2">
+                                <div class=" d-flex">
+                                    <div class="flex-fill">
+                                        <h5 class="card-title" style="color: #944C22;">{{ coupon.code }}</h5>
+                                        <p class="card-text" style="color: #C5886B;">{{ coupon.description }}</p>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <button 
+                                            class="btn btn-primary flex-fill"
+                                            @click="handleCouponApply(coupon)"
+                                            :disabled="appliedCoupon && appliedCoupon.id === coupon.id"
+                                        >
+                                            {{ appliedCoupon && appliedCoupon.id === coupon.id 
+                                                ? t('applied', ['checkout']) 
+                                                : t('apply', ['checkout']) }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="applied-coupon-section mt-4" v-if="appliedCoupon">
+                    <div class="alert alert-success d-flex justify-content-between align-items-center" role="alert">
+                        <div>
+                        <strong>{{ t('applied_coupon', ['checkout']) }}:</strong> {{ appliedCoupon.code }}
+                        
+                        <span>
+                            {{ t('you_would_get_cash_back_of', ['checkout']) }} A${{ TotalDiscount.toFixed(2) }}
+                        </span>
+                        </div>
+                        <a href="#" @click.prevent="handleCouponUnapply" class="btn btn-sm btn-outline-danger">
+                        {{ t('unapply', ['checkout']) }}
+                        </a>
+                    </div>
+                </div>
+
+                <!-- End of Coupons Section -->
+
+                <!-- Other Checkout Content -->
+            </div>
+
     <!-- Addons Section -->
     <div class="p-3 bg-white rounded">
-        <h4 class="extra-status">{{ t('select_payment_method',['checkout']) }}</h4>
+        <h4 class="extra-status mb-3">{{ t('select_payment_method',['checkout']) }}</h4>
         <div class="meal-addons payment-method rounded">
             <!-- Wallet Option -->
             <input type="radio" class="btn-check" name="options" id="addons1" value="wallet" v-model="selectPaymentMethod" checked>
@@ -649,9 +723,14 @@ export default {
 
     <!-- Billing Details Section -->
     <div class="billing-details-container bg-white p-3 rounded">
-        <div class="billing-detail grand-total">
+        <div class="billing-detail grand-total" v-if="!appliedCoupon">
             <p>{{ t('subtotal',['checkout']) }}</p>
             <p>A$ {{ TotalOrderPrice }}</p>
+        </div>
+
+        <div class="billing-detail grand-total" v-else>
+            <p>{{ t('discounted_price',['checkout']) }}</p>
+            <p>A$ {{ TotalOrderPrice - TotalDiscount }}</p>
         </div>
 
         <!-- Display balances for specific payment methods -->
@@ -1041,5 +1120,17 @@ a.add-addrss-button {
         align-items: flex-start;
     }
 
+}
+/* Can be removed style */
+.card {
+  border-radius: 8px;
+}
+.card-title {
+  font-weight: bold;
+}
+.card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
 }
 </style>

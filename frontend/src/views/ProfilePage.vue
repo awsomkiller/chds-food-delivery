@@ -216,6 +216,7 @@ export default {
       await nextTick();
       initializeStripe();
       walletStore.fetchTransactions();
+      walletStore.fetchCoupons();
       authStore.initializeProfile();
       orderStore.fetchOrders();
     });

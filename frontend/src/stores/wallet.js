@@ -6,6 +6,7 @@ export const useWalletStore = defineStore('wallet', {
     balance: 0.00,
     currency: 'AUD',
     transactions: [],
+    coupons: [],
     loading: false,
     error: null,
   }),
@@ -55,6 +56,20 @@ export const useWalletStore = defineStore('wallet', {
       }
     },
     
+    async fetchCoupons(){
+      this.loading = true;
+      this.error = null;
+      
+      try {
+        const response = await axios.get('/transactions/coupons/wallet/');
+        this.coupons = response.data
+      } catch (err) {
+        this.error = err.response?.data?.message || 'Failed to fetch coupons.';
+        console.error('Error fetching transactions:', err);
+      } finally {
+        this.loading = false;
+      }
+    },
     /**
      * Recharge the wallet.
      * @param {Number} amount - The amount to recharge.

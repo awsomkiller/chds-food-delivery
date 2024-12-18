@@ -16,6 +16,7 @@ export const useMenuStore = defineStore('menu', {
     selectedCategory: "",
     best_sellings:[],
     popular:[],
+    availableCoupons:[],
   }),
   getters: {
     isAllItemsLoaded: (state) => !state.nextPageUrl,
@@ -60,6 +61,20 @@ export const useMenuStore = defineStore('menu', {
         this.categoriesError = error;
       } finally {
         this.categoriesLoading = false;
+      }
+    },
+    async fetchCoupons(){
+      this.loading = true;
+      this.error = null;
+      
+      try {
+        const response = await axios.get('/transactions/coupons/orders/');
+        this.availableCoupons = response.data.results;
+      } catch (err) {
+        this.error = err.response?.data?.message || 'Failed to fetch coupons.';
+        console.error('Error fetching transactions:', err);
+      } finally {
+        this.loading = false;
       }
     },
     selectCategory(category) {

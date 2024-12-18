@@ -5,6 +5,7 @@ export const useCartStore = defineStore('cart', {
     cart: [],
     totalQty: 0,
     TotalOrderPrice: 0,
+    TotalDiscount: 0,
     active: {
       id: 1,
       meal_name: '',
@@ -22,7 +23,9 @@ export const useCartStore = defineStore('cart', {
       addons: [],
       quantity: 1,
       total_price: 0,
+      discount: 0,
     },
+    appliedCoupon:null,
   }),
   actions: {
     addToCart(item) {
@@ -114,6 +117,59 @@ export const useCartStore = defineStore('cart', {
     },
     resetCart() {
       this.$reset();
+    },
+
+    applyCoupon(coupon) {
+      if (!coupon || !coupon.is_active) {
+        throw new Error('Invalid or inactive coupon.');
+      }
+
+      this.appliedCoupon = coupon;
+      this.calculateDiscount();
+    },
+
+    unapplyCoupon() {
+      this.appliedCoupon = null;
+      this.TotalDiscount = 0;
+    },
+
+    calculateDiscount() {
+      if (!this.appliedCoupon) {
+        this.TotalDiscount = 0;
+        return;
+      }
+
+      const discountType = this.appliedCoupon.discount_type;
+      const discountValue = parseFloat(this.appliedCoupon.discount_upto);
+
+      switch (discountType) {
+        case 'PERCENTAGE':{
+          this.TotalDiscount = (discountValue / 100) * this.TotalOrderPrice;
+          break;
+        }
+        case 'FIXED_ORDER':{
+          this.TotalDiscount = discountValue;
+          // Ensure that discount does not exceed the total order price
+          if (this.TotalDiscount > this.TotalOrderPrice) {
+            this.TotalDiscount = this.TotalOrderPrice;
+          }
+          break;
+        }
+        case 'FIXED_ITEM':{
+          // Apply fixed discount per item quantity
+          const totalItems = this.cart.reduce((sum, item) => sum + item.quantity, 0);
+          this.TotalDiscount = discountValue * totalItems;
+          // Ensure that discount does not exceed the total order price
+          if (this.TotalDiscount > this.TotalOrderPrice) {
+            this.TotalDiscount = this.TotalOrderPrice;
+          }
+          break;
+        }
+        default:{
+          this.TotalDiscount = 0;
+          break;
+        }
+      }
     },
   },
 });
