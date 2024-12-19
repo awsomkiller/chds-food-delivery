@@ -166,7 +166,7 @@ export default {
             payload.schedule_date = schedule_date.value;
             payload.time_slot = schedule_time.value;
             payload.notes = notesTextField.value;
-            payload.coupon = appliedCoupon.id || null;
+            payload.coupon = appliedCoupon.value?.code || null;
 
             if (selectPaymentMethod.value === "wallet") {
                 try {

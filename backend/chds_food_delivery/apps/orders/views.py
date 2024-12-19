@@ -1,22 +1,21 @@
 import stripe
+from decimal import Decimal
 from django.conf import settings
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from .serializers import OrderSerializer,ListOrdersSerilaizer
 from .models import Orders
+from apps.transactions.models import OrderCoupon
 from django.db import transaction as db_transaction
 from apps.transactions.models import Transaction, Wallet
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse,JsonResponse
 import logging
-from apps.restaurants.models import DeliveryPoint,PickupLocation
-from apps.users.models import UserAddress
 from rest_framework.generics import ListAPIView
-from .utilities import process_menu_item_cost, get_shipping_charge
+from .utilities import process_menu_item_cost, get_shipping_charge, calculate_discount
 import json
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -31,7 +30,7 @@ class OrderCreateView(APIView):
     def _make_transaction(self,order,payment_method):
         transaction = Transaction.objects.create(
             user=order.user,
-            amount=order.amount,
+            amount=order.total_price,
             currency='aud',
             order_type='FOOD_ORDER',
             transaction_from=payment_method,
@@ -57,11 +56,11 @@ class OrderCreateView(APIView):
         
     def calculate_total_charges(self, data):
         shipment = data.get('shipping_charges', 0)
-        subtotal = data.get('amount', 0)
-        total = float(shipment) + float(subtotal)
+        subtotal = data.get('amount', 0) 
+        discount = data.get('discount', 0)
+        total = float(shipment) + float(subtotal) - float(discount)
         total_price = total + (total * 10 / 100)
         data['total_price'] = total_price
-        print("done 1")
         return data
         
     def calculate_subtotal(self, data):
@@ -75,14 +74,28 @@ class OrderCreateView(APIView):
     def calculate_shipment_charge(self, data):
         shipping_charge = get_shipping_charge(data)
         data['shipping_charges'] = str(shipping_charge)
-        return data      
-        
+        return data
+
+    def check_for_coupons(self, data):
+        try:
+            coupon_code = data.pop('coupon')
+            coupon = OrderCoupon.objects.get(code=coupon_code, is_active=True)
+            discount = calculate_discount(data, coupon)
+            data['discount'] = discount
+            data['coupon'] = coupon
+            return data
+
+        except Exception as e:
+            data['coupon'] = None
+            return data
+               
     
     def post(self, request, *args, **kwargs):
         try:
             data , payment_method = self._check_payment_method(request.data)
             data = self.calculate_subtotal(data)
-            data = self.calculate_shipment_charge(data)
+            data = self.check_for_coupons(data)
+            data = self.calculate_shipment_charge(data) 
             data = self.calculate_total_charges(data)
             serializer = self.serializer_class(data=data, context={'request':request})
             if serializer.is_valid(raise_exception=True):
@@ -90,7 +103,7 @@ class OrderCreateView(APIView):
                 
                 if payment_method =="wallet":
                     transaction = self._make_transaction(order,"WALLET")
-                    self._make_payment_from_wallet(int(float(order.total_price)))
+                    self._make_payment_from_wallet(order.total_price)
                     transaction_status = "succeeded"
                     self._update_instances(order,transaction,transaction_status)
                     return Response({
@@ -100,7 +113,7 @@ class OrderCreateView(APIView):
                 else:
                     transaction = self._make_transaction(order,"STRIPE")
                     payment_intent = stripe.PaymentIntent.create(
-                        amount=int(float(order.total_price) * 100),
+                        amount=(float(order.total_price) * 100),
                         currency='aud',
                         payment_method_types=["card", "alipay", "wechat_pay"],
                         metadata={'order_id': order.order_id, 'user_id': order.user.id},

@@ -1,5 +1,5 @@
 from django.db import models
-from apps.restaurants.models import PickupLocation,WorkingDays
+from apps.transactions.models import OrderCoupon
 from apps.users.models import User
 from django.utils.translation import gettext_lazy as _
 from apps.transactions.models import Transaction
@@ -33,6 +33,8 @@ class Orders(models.Model):
     menu_item = models.JSONField(_("Menu Items"), help_text="Selected Menu items Json object")
     shipping_charges = models.CharField(_("Shipping Charges"), max_length=50, help_text="In Australian Dollars",null=True)
     total_price = models.CharField(_("Total Order price"), max_length=50, help_text="In Australian Dollars", null=True)
+    discount = models.CharField(_("Total Discount Applied"), max_length=50, help_text="In Australian Dollars", default="0")
+    coupon = models.ForeignKey(OrderCoupon, verbose_name=_("Coupon applied"), on_delete=models.CASCADE, null=True, blank=True)
     notes = models.CharField(_("Cooking Instructions"), max_length=255, blank=True, null=True)
     
     def __str__(self)-> str:

@@ -136,10 +136,12 @@ class Wallet(models.Model):
         self.save()
 
     def withdraw(self, amount):
+        balance = float(self.balance)
+        amount = float(amount)
         if amount <= 0:
             raise ValueError("Withdrawal amount must be positive.")
         if self.balance < amount:
             raise ValueError("Insufficient balance.")
-        self.balance -= amount
+        self.balance = balance - amount
         self.save()
    
