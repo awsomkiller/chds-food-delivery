@@ -621,8 +621,8 @@ export default {
                     <div class="col-lg-4 col-md-12 col-sm-12 col-12 p-3">
             <div class="store-n-diliveri bg-white p-2 rounded">
                 <!-- Add Coupons Section -->
-                <h6 class="extra-status" v-if="availableCoupons">{{ t('apply_coupons', ['checkout']) }}</h6>
-                <div class="store-n-diliveri bg-white pb-3 rounded" v-if="availableCoupons">
+                <h6 class="extra-status" v-if="availableCoupons.length >0">{{ t('apply_coupons', ['checkout']) }}</h6>
+                <div class="store-n-diliveri bg-white pb-3 rounded" v-if="availableCoupons.length >0">
                     <div class="row">
                         <div 
                             class="m-2"
