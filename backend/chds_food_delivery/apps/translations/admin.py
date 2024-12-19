@@ -10,5 +10,5 @@ class LanguageCategoryAdmin(admin.ModelAdmin):
 @admin.register(Translation)
 class LanguageCategoryAdmin(admin.ModelAdmin):
     list_display = ['id',"language","label", "value"]
-    search_fields = ['language']
+    search_fields = ['language', 'label', 'value']
     list_filter = ['module', 'language']

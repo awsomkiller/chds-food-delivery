@@ -4,7 +4,7 @@ from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuIma
 @admin.register(PickupLocation)
 class PickupLocationAdmin(admin.ModelAdmin):
     list_display=["id","street_address1","street_address2","city","postal_code"]
-    fields = ["name","street_address1","street_address2","city","state","postal_code"]
+    fields = ["name","street_address1","street_address2","city","state","postal_code", "is_active"]
     search_fields = ['city', 'postal_code', 'name']
  
 
@@ -18,9 +18,9 @@ class MenuCategoryAdmin(admin.ModelAdmin):
 @admin.register(MenuItem)
 class MenuItemsAdmin(admin.ModelAdmin):
     list_display=["id","name","is_popular","is_best_selling"]
-    fields=["name","category", "tags","is_best_selling","is_popular", "trans_code", "trans_desc_code"]
+    fields=["name","category", "tags","is_best_selling","is_popular", "trans_code", "trans_desc_code", "is_active"]
     search_fields = ['name','category__name']
-    list_filter = ['category', "is_best_selling","is_popular"]
+    list_filter = ['category', "is_best_selling", "is_popular", "is_active"]
     
 
 @admin.register(MenuImage)
@@ -44,7 +44,7 @@ class PortionSizeAdmin(admin.ModelAdmin):
 @admin.register(MenuPortionPriceList)
 class PortionSizePriceAdmin(admin.ModelAdmin):
     list_display=["id","menu_item","portion_item","item_price","carbs","calories","fats","protein"]
-    fields=["menu_item","portion_item","price","carbs","calories","fats","protein"]
+    fields=["menu_item","portion_item","price","carbs","calories","fats","protein", "is_active"]
     search_fields = ['price',"menu_item__name","portion_item__name"]
     list_filter = ["menu_item", "portion_item"]
    
@@ -65,14 +65,6 @@ class TimeSlotAdmin(admin.ModelAdmin):
     fields=["name","type"]
     search_fields =['name','type']
     
-    
-@admin.register(WorkingDays)
-class WorkingDaysAdmin(admin.ModelAdmin):
-    list_display=["id","date","is_active"]
-    fields=["date","time_slot","is_active"]
-    search_fields =['date','is_active']
-
-
 @admin.register(MenuItemTags)
 class TagsAdmin(admin.ModelAdmin):
     list_display= ["id", "name"]
@@ -81,5 +73,5 @@ class TagsAdmin(admin.ModelAdmin):
 @admin.register(DeliveryPoint)
 class DeliveryPointAdmin(admin.ModelAdmin):
     list_display = ['id',"name","price","postal_code"]
-    fields = ["name","price","postal_code"]
+    fields = ["name","price","postal_code", "is_active"]
     search_fields = ['postal_code',"name"]

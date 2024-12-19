@@ -30,9 +30,7 @@ def get_shipping_charge(data):
            
     elif data['order_type'] == "DELIVERY":
         delivery_location = data.get("delivery_location")
-        delivery_instance = UserAddress.objects.get(id=delivery_location)  
-        if not delivery_instance:
-            raise "Delivery location Not Found"
+        delivery_instance = UserAddress.objects.get(id=delivery_location)
         pincode_instance = DeliveryPoint.objects.filter(postal_code=delivery_instance.postal_code).first()
         shipping_charges = pincode_instance.price 
         return shipping_charges

@@ -34,6 +34,8 @@ class Orders(models.Model):
     shipping_charges = models.CharField(_("Shipping Charges"), max_length=50, help_text="In Australian Dollars",null=True)
     total_price = models.CharField(_("Total Order price"), max_length=50, help_text="In Australian Dollars", null=True)
     discount = models.CharField(_("Total Discount Applied"), max_length=50, help_text="In Australian Dollars", default="0")
+    tax = models.CharField(_("Total Tax"), max_length=50, help_text="In Australian Dollars", default="0")
+    before_tax = models.CharField(_("Total Before Tax"), max_length=50, help_text="In Australian Dollars", default="0")
     coupon = models.ForeignKey(OrderCoupon, verbose_name=_("Coupon applied"), on_delete=models.CASCADE, null=True, blank=True)
     notes = models.CharField(_("Cooking Instructions"), max_length=255, blank=True, null=True)
     
