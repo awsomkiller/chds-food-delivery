@@ -59,11 +59,11 @@ class OrderCreateView(APIView):
         subtotal = data.get('amount', 0) 
         discount = data.get('discount', 0)
         total = float(shipment) + float(subtotal) - float(discount)
-        tax = (total * 10 / 100)
+        tax = total * 0.10
         total_price = total + tax
-        data['before_tax'] = total
-        data['tax'] = tax
-        data['total_price'] = total_price
+        data['before_tax'] = round(total, 2)
+        data['tax'] = round(tax, 2)
+        data['total_price'] = round(total_price, 2)
         return data
         
     def calculate_subtotal(self, data):

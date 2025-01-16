@@ -3,7 +3,8 @@ from apps.transactions.models import OrderCoupon
 from apps.users.models import User
 from django.utils.translation import gettext_lazy as _
 from apps.transactions.models import Transaction
-import uuid
+from datetime import datetime
+
 
 class Orders(models.Model):
     ORDER_STATUS = [
@@ -49,6 +50,32 @@ class Orders(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.order_id:
-            self.order_id = str(uuid.uuid4())
+            if self.schedule_date:
+                try:
+                    schedule_dt = datetime.strptime(self.schedule_date, "%Y-%m-%d")
+                    today_str = schedule_dt.strftime("%d%m%y")  # e.g. 180125 for 18/01/25
+                except ValueError:
+                    # Fallback if schedule_date doesn't parse properly
+                    today_str = datetime.now().strftime("%d%m%y")
+            else:
+                # If no schedule_date is set, fall back to today's date
+                today_str = datetime.now().strftime("%d%m%y")
+
+            prefix = f"CHDS{today_str}"
+
+            # Find the latest order matching our prefix
+            last_order = Orders.objects.filter(
+                order_id__startswith=prefix
+            ).order_by("-order_id").first()
+
+            if last_order:
+                # Parse out the last 4 digits as an integer
+                last_sequence_num = int(last_order.order_id[-4:])
+                next_sequence_num = last_sequence_num + 1
+            else:
+                next_sequence_num = 1
+
+            # Format the sequence number with leading zeros
+            self.order_id = f"{prefix}{next_sequence_num:04d}"
+
         super().save(*args, **kwargs)
-        
