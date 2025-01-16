@@ -27,7 +27,7 @@ class RestaurantApi(ModelViewSet):
     """
     http_method_names = ["get","post","delete"]
     serializer_class = RestaurantApiSerializer
-    queryset = PickupLocation.objects.all()
+    queryset = PickupLocation.objects.filter(is_active=True)
     
 class MenuItemApi(ModelViewSet):
     """ 
@@ -35,7 +35,7 @@ class MenuItemApi(ModelViewSet):
     """
     http_method_names = ["get","post","delete"]
     serializer_class = ListMenuItemSerializer
-    queryset = MenuItem.objects.all()
+    queryset = MenuItem.objects.filter(is_active=True)
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['category']
     search_fields = ['name',"category__name"]
@@ -93,4 +93,4 @@ class TimeSlotsView(APIView):
 
 class DeliveryPointApi(ReadOnlyModelViewSet):
     serializer_class=DeliveryPointSerializer
-    queryset=DeliveryPoint.objects.all()
+    queryset=DeliveryPoint.objects.filter(is_active=True)

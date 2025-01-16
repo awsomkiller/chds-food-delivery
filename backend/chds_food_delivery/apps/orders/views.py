@@ -59,7 +59,10 @@ class OrderCreateView(APIView):
         subtotal = data.get('amount', 0) 
         discount = data.get('discount', 0)
         total = float(shipment) + float(subtotal) - float(discount)
-        total_price = total + (total * 10 / 100)
+        tax = (total * 10 / 100)
+        total_price = total + tax
+        data['before_tax'] = total
+        data['tax'] = tax
         data['total_price'] = total_price
         return data
         
@@ -87,6 +90,7 @@ class OrderCreateView(APIView):
 
         except Exception as e:
             data['coupon'] = None
+            data['discount'] = 0
             return data
                
     

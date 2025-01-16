@@ -12,7 +12,8 @@ class PickupLocation(models.Model):
     state = models.CharField(_("State"),max_length=100)
     postal_code = models.CharField(_("Postal Code"),max_length=20)
     price = models.DecimalField(_("Pickup charges"), decimal_places=2, max_digits=5, help_text='Price in  Australian dollars', null=True, blank=True, default=0)
-   
+    is_active = models.BooleanField(_("Is Active"), default=True)
+    
     def __str__(self):
         return f"{self.name} ({self.code}) "
     
@@ -62,7 +63,8 @@ class MenuItem(models.Model):
     is_best_selling= models.BooleanField(default=False)
     trans_code = models.CharField(_("Translation Code"), help_text="Note: If you modify this make sure to update translations.", max_length=255, blank=True, null=True)
     trans_desc_code = models.CharField(_("Translation Description Code"),  help_text="Note: If you modify this make sure to update translations.", max_length=255,  blank=True, null=True)
-
+    is_active = models.BooleanField(_("Is Active"), default=True)
+    
     class Meta:
         verbose_name = "Menu Dish"
         verbose_name_plural = "Menu Dishes"
@@ -71,19 +73,6 @@ class MenuItem(models.Model):
     def __str__(self):
         return f"{self.name}"
 
-    def get_caloric_breakdown(self):
-        """Returns the caloric breakdown as a percentage of total calories."""
-        total_calories = self.calories
-        if total_calories > 0:
-            protein_calories = self.protein * 4
-            fat_calories = self.fats * 9
-            carb_calories = self.carbs * 4
-            return {
-                "Protein (%)": round((protein_calories / total_calories) * 100, 2),
-                "Fats (%)": round((fat_calories / total_calories) * 100, 2),
-                "Carbs (%)": round((carb_calories / total_calories) * 100, 2),
-            }
-        return {"Protein (%)": 0, "Fats (%)": 0, "Carbs (%)": 0}
 
 
 class MenuImage(models.Model):
@@ -140,6 +129,7 @@ class MenuPortionPriceList(models.Model):
     protein = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     fats = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     carbs = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
+    is_active = models.BooleanField(_("Is Active"), default=True)
     
     class Meta:
         verbose_name = "Price List"
@@ -178,6 +168,7 @@ class DeliveryPoint(models.Model):
     name  = models.CharField(_("Delivery location name"), max_length=100,null=True, blank=True)
     price = models.DecimalField(_("Delivery Charges"),decimal_places=2,max_digits=5, help_text="Price in  Australian dollars")
     postal_code = models.CharField(_("Postal Code"),max_length=20,null=True,blank=True)
+    is_active = models.BooleanField(_("Is Active"), default=True)
     
     
     class Meta:
