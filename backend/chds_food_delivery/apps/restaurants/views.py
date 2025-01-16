@@ -1,17 +1,25 @@
 from django.shortcuts import render
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.generics import ListAPIView,CreateAPIView,ListCreateAPIView
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.generics import ListAPIView,ListCreateAPIView
 from apps.restaurants.serializers import (
     RestaurantApiSerializer ,
     MenuCategorySerializer,
     ListMenuItemSerializer,
     CreateMenuItemSerializer,
-    CreateMenuImagesSerializer
+    CreateMenuImagesSerializer,
+    ListAddonSerialzier,
+    DeliveryPointSerializer,
+    TimeslotsSerializer
 )
-from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
-from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuImage
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+from apps.restaurants.models import PickupLocation,MenuCategory,MenuItem,MenuImage,Addons, TimeSlots,DeliveryPoint
 from rest_framework.permissions import AllowAny
+
 
 class RestaurantApi(ModelViewSet):
     """ 
@@ -19,7 +27,7 @@ class RestaurantApi(ModelViewSet):
     """
     http_method_names = ["get","post","delete"]
     serializer_class = RestaurantApiSerializer
-    queryset = PickupLocation.objects.all()
+    queryset = PickupLocation.objects.filter(is_active=True)
     
 class MenuItemApi(ModelViewSet):
     """ 
@@ -27,13 +35,11 @@ class MenuItemApi(ModelViewSet):
     """
     http_method_names = ["get","post","delete"]
     serializer_class = ListMenuItemSerializer
-    queryset = MenuItem.objects.all()
+    queryset = MenuItem.objects.filter(is_active=True)
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['category']
     search_fields = ['name',"category__name"]
     permission_classes = [AllowAny,]
-
-  
     
     def get_serializer_class(self):
         if self.action == 'list':
@@ -44,6 +50,7 @@ class MenuCategoryApi(ListAPIView):
     """     
         API for listing categories
     """
+    permission_classes = [AllowAny]
     serializer_class = MenuCategorySerializer
     queryset = MenuCategory.objects.all()
 
@@ -64,8 +71,26 @@ class MenuImagesApi(ListCreateAPIView):
         if menu_name:
             return queryset.filter(menu_item__name__icontains=menu_name)
         return queryset
-    
-    
+      
+class MenuAddonApi(ListAPIView):
+    """     
+        API for listing categories
+    """
+    serializer_class = ListAddonSerialzier
+    queryset = Addons.objects.all()
 
-        
+
+class TimeSlotsView(APIView):
+
+    serializer_class = TimeslotsSerializer
+    permission_classes = [AllowAny]
     
+    def get(self, request):
+        instances = TimeSlots.objects.all()
+        serializer = self.serializer_class(instances, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class DeliveryPointApi(ReadOnlyModelViewSet):
+    serializer_class=DeliveryPointSerializer
+    queryset=DeliveryPoint.objects.filter(is_active=True)

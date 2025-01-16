@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia'
-import axios from '../../axios'
+import { defineStore } from 'pinia';
+import axios from '../../axios';
 
 export const useMenuStore = defineStore('menu', {
   state: () => ({
@@ -7,68 +7,95 @@ export const useMenuStore = defineStore('menu', {
     cart: [],
     loading: false,
     error: null,
-    nextPageUrl: '/menu-items/',
+    nextPageUrl: '/menu/items/',
     searchQuery: '',
-    selectedItem:{},
+    selectedItem: {},
+    categories: [],
+    categoriesLoading: false,
+    categoriesError: null,
+    selectedCategory: "",
+    best_sellings:[],
+    popular:[],
+    availableCoupons:[],
   }),
   getters: {
     isAllItemsLoaded: (state) => !state.nextPageUrl,
-    cartItemCount: (state) =>
-      state.cart.reduce((total, item) => total + item.quantity, 0),
-    cartTotalPrice: (state) =>
-      state.cart.reduce((total, item) => total + item.price * item.quantity, 0),
   },
   actions: {
     async loadItems() {
-      if (this.loading || !this.nextPageUrl) return
+      if (this.loading || !this.nextPageUrl) return;
 
-      this.loading = true
+      this.loading = true;
       try {
-        const response = await axios.get(this.nextPageUrl, {
-          params: { search: this.searchQuery },
-        })
-        const data = response.data
+        const params = { search: this.searchQuery };
+        if (this.selectedCategory) {
+          params.category = this.selectedCategory;
+        }
 
-        this.items.push(...data.results)
+        const response = await axios.get(this.nextPageUrl, { params });
+        const data = response.data;
 
-        this.nextPageUrl = data.next
+        this.items.push(...data.results);
+        this.filterItems();
+        this.nextPageUrl = data.next;
       } catch (error) {
-        this.error = error
+        this.error = error;
       } finally {
-        this.loading = false
+        this.loading = false;
       }
     },
     async searchItems(query) {
-      this.searchQuery = query
-      this.items = []
-      this.nextPageUrl = '/menu-items/'
-      await this.loadItems()
+      this.searchQuery = query;
+      this.items = [];
+      this.nextPageUrl = '/menu/items/';
+      await this.loadItems();
     },
-    addToCart(item) {
-      const cartItem = this.cart.find((ci) => ci.name === item.name)
-      if (cartItem) {
-        cartItem.quantity += 1
-      } else {
-        this.cart.push({ ...item, quantity: 1 })
+    async loadCategories() {
+      if (this.categoriesLoading) return;
+
+      this.categoriesLoading = true;
+      try {
+        const response = await axios.get('/menu/category/');
+        this.categories = response.data.results;
+      } catch (error) {
+        this.categoriesError = error;
+      } finally {
+        this.categoriesLoading = false;
       }
     },
-    removeFromCart(item) {
-      const index = this.cart.findIndex((ci) => ci.name === item.name)
-      if (index !== -1) {
-        this.cart.splice(index, 1)
+    async fetchCoupons(){
+      this.loading = true;
+      this.error = null;
+      
+      try {
+        const response = await axios.get('/transactions/coupons/orders/');
+        this.availableCoupons = response.data.results;
+      } catch (err) {
+        this.error = err.response?.data?.message || 'Failed to fetch coupons.';
+        console.error('Error fetching transactions:', err);
+      } finally {
+        this.loading = false;
       }
     },
-    updateCartItemQuantity(item, quantity) {
-      const cartItem = this.cart.find((ci) => ci.name === item.name)
-      if (cartItem) {
-        cartItem.quantity = quantity
-        if (cartItem.quantity <= 0) {
-          this.removeFromCart(item)
-        }
-      }
+    selectCategory(category) {
+      this.selectedCategory = category;
+      this.items = [];
+      this.nextPageUrl = '/menu/items/';
+      this.loadItems();
     },
-    updateSelectedItem(item){
-        this.selectedItem = item;
+    updateSelectedItem(item) {
+      this.selectedItem = item;
+    },
+    filterItems(){
+      this.best_sellings = this.items.filter((item)=>item.is_best_selling === true);
+      this.popular = this.items.filter((item)=>item.is_popular === true);
+    },
+    resetItems() {
+      this.items = [];
+      this.nextPageUrl = '/menu/items/';
+    },
+    findItem(meal_name) {
+      return this.items.filter((item)=> item.name === meal_name)
     }
   },
-})
+});

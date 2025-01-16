@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.restaurants.models import PickupLocation,MenuCategory,MenuImage,MenuItem
+from apps.restaurants.models import PickupLocation, MenuCategory, MenuImage, MenuItem, MenuPortionPriceList, Addons, MenuItemTags, WorkingDays, TimeSlots,DeliveryPoint
 
 
 class RestaurantApiSerializer(serializers.ModelSerializer):
@@ -20,24 +20,84 @@ class ListMenuImagesSerializer(serializers.ModelSerializer):
     class Meta:
         model = MenuImage
         fields = ["id", 'image', 'is_main']
-            
 
+class ListAddonSerialzier(serializers.ModelSerializer):
+    class Meta:
+        model = Addons
+        fields = "__all__"
+
+class ListMenuItemsTags(serializers.ModelSerializer):
+    class Meta:
+        model = MenuItemTags
+        fields = "__all__"
+            
+class ListPortionSerializer(serializers.ModelSerializer):
+    portion_name = serializers.CharField(source='portion_item.name')
+    portion_weight = serializers.CharField(source='portion_item.weight')
+    portion_code = serializers.CharField(source='portion_item.code')
+    addons = serializers.SerializerMethodField()
+
+    class Meta:
+        model = MenuPortionPriceList
+        fields = ["id", "portion_name", "portion_weight", "price", "addons","calories","protein","carbs",'fats', 'portion_code']
+
+    def get_addons(self, obj):
+        addons = obj.portion_item.addons.all()
+        return ListAddonSerialzier(addons, many=True).data
+        
 class ListMenuItemSerializer(serializers.ModelSerializer):
     item_images = serializers.SerializerMethodField()
+    portion = serializers.SerializerMethodField()
+    tags = serializers.SerializerMethodField()
+    price = serializers.SerializerMethodField()
+    protein = serializers.SerializerMethodField()
+    calories = serializers.SerializerMethodField()
+    fats = serializers.SerializerMethodField()
+    carbs = serializers.SerializerMethodField()
+
     class Meta:
         model = MenuItem
-        fields = ["name","description","price","item_images"]
+        fields = "__all__"
     
     def get_item_images(self,obj):
         images = obj.images.all()
         return ListMenuImagesSerializer(images,many=True).data
         
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        calories_payload = instance.get_caloric_breakdown()
-        final_payload = {**data,**calories_payload}
-        return final_payload
+    def get_portion(self,obj):
+        portions = obj.menu_items_prices.all()
+        return ListPortionSerializer(portions,many=True).data
+    
+    def get_tags(self, obj):
+        tags = obj.tags.all()
+        return ListMenuItemsTags(tags, many=True).data
+    
+    def get_price(self, obj):
+        instances = MenuPortionPriceList.objects.filter(menu_item=obj)
+        prices = [instance.price for instance in instances]
+        min_price = min(prices)
+        max_price = max(prices)
+        return f"A${min_price} - A${max_price}"
+    
+    def fetch_menu_item(self, obj):
+        instances = MenuPortionPriceList.objects.filter(menu_item=obj).exclude(portion_item__name='meal_set')
+        return instances[0] if instances[0] else None
 
+    def get_protein(self, obj):
+        instance = self.fetch_menu_item(obj)
+        return instance.protein
+    
+    def get_fats(self, obj):
+        instance = self.fetch_menu_item(obj)
+        return instance.fats
+    
+    def get_carbs(self, obj):
+        instance = self.fetch_menu_item(obj)
+        return instance.carbs
+    
+    def get_calories(self, obj):
+        instance = self.fetch_menu_item(obj)
+        return instance.calories
+   
 class CreateMenuItemSerializer(serializers.ModelSerializer):
     """     
         Serializer for for creating menu items
@@ -58,3 +118,16 @@ class CreateMenuImagesSerializer(serializers.ModelSerializer):
         if validated_data["is_main"]:
             MenuImage.objects.filter(menu_item=validated_data['menu_item']).update(is_main=False)
         super().create(validated_data)
+
+
+class TimeslotsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TimeSlots
+        fields = "__all__"
+
+        
+        
+class DeliveryPointSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DeliveryPoint
+        fields = "__all__"

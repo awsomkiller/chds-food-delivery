@@ -1,10 +1,9 @@
 from django.urls import path
-from rest_framework import routers
-from apps.orders.views import OrdersApi
+from apps.orders.views import OrderCreateView, stripe_webhook,ListOrders
 
 
-router =routers.DefaultRouter()
-router.register("user-orders",OrdersApi,basename="orders-api")
 urlpatterns = [
-    
-]+router.urls
+    path("create/", OrderCreateView.as_view(), name="Order-Create"),
+    path("stripe/webhook/", stripe_webhook, name="stripe-webhook"),
+    path("list-orders/",ListOrders.as_view(),name="list_orders")
+]

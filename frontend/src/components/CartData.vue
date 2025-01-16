@@ -1,13 +1,64 @@
-<script>
-    export default {
-    name: 'CartData',
-};
+<!-- CartData.vue -->
+<script> 
+    import { storeToRefs } from 'pinia';
+    import { useCartStore } from '@/stores/cart';
+    import { useAuthStore } from '@/stores/auth';
+    import { useTranslationStore } from '@/stores/translation';
+    import { Offcanvas } from 'bootstrap';
+
     
+    export default {
+        name: 'CartData',
+        setup(){
+            const cartStore = useCartStore();
+            const authStore = useAuthStore();
+            const translationStore = useTranslationStore();
+
+            const t = (label, modules) => {
+                return translationStore.translate(label, modules);
+            };
+
+            const { cart, totalQty, TotalOrderPrice } = storeToRefs(cartStore);
+            const { user } = storeToRefs(authStore);
+
+            const incrementItem = (itemId) => {
+                cartStore.increaseItemQuantity(itemId);
+            };
+
+            const decrementItem = (itemId) => {
+                cartStore.decreaseItemQuantity(itemId);
+            };
+
+            const handleCheckout = (event) => {
+      // Prevent default router-link behavior
+      event.preventDefault();
+
+      // Dismiss the offcanvas sidebar
+      const offcanvasElement = document.querySelector('.offcanvas'); // Adjust selector as needed
+      const offcanvasInstance = Offcanvas.getInstance(offcanvasElement);
+      if (offcanvasInstance) {
+        offcanvasInstance.hide();
+      }
+
+      // Navigate to the checkout route
+    //   this.$router.push('/checkout');
+    }
+
+            return{
+                t,
+                cart,
+                user,
+                totalQty,
+                TotalOrderPrice,
+                incrementItem,
+                decrementItem,
+                handleCheckout,
+            };
+        }
+    };
 </script>
 
 <template>
-
-
     <div class="bg-white cart-section p-2 rounded ">
         <div class="pb-3">
             <div class="outlet-card p-2 mb-4">
@@ -15,127 +66,55 @@
                     <img class="" src="../assets/CHDS logo Blk transparent.png"> 
                 </div>
                 <div class="outlet-detail">
-                    <h5> Chi Hun Da Su </h5>
-                    <p> Location </p>
+                    <h5> {{ t('chi_hun_da_su', ['cart']) }} </h5>
                 </div>
             </div>
-
-            <h4 class="cart-heading mb-0"> Your Cart</h4>
-
-            
-        
-            <!-- <div class="order-type-container">
-                <button type="button" class="btn-active-order"> <span> Delivery </span> <br> <span class="delhivery-time">20 Minutes</span> </button>
-                <button type="button" class="btn-inactive-order">Pick Up</button>
-                <button type="button" class="btn-inactive-order">In Car</button>
-            </div> -->
+            <h4 class="cart-heading mb-0"> {{ t('your_cart', ['cart']) }}</h4>
         </div>
-        
-
-
         <div>
-            <ul class="list-unstyled orderl-list" >
-                <li class="order-item">
+            <ul class="list-unstyled orderl-list">
+                <li class="order-item" v-for="item in cart" :key="item.id">
                     <div class="order-desscription">
-                        <p class="item-small-hd">Wine-Marinated Chicken Hearts</p>
-                        
-                        <p class="item-price"><span>4 x $ 189</span> <b style="display: inline-block; font-weight: 500;"> $ 756</b></p>
+                        <p class="item-small-hd">{{ item.meal_name }}</p>
+                        <p class="item-type-hd mb-0">Size: {{ item.selected_meal_portion_name }} ({{ item.selected_meal_portion_weight }}g)</p>
+                        <p class="item-type-hd mb-0" v-for="addon in item.addons" :key="addon.id">Extra {{ addon.name }}</p>
+                        <p class="item-price">
+                            <span>{{ item.quantity }} x A${{ (item.selected_meal_portion_price + item.selected_meal_addon_price) }}</span>
+                            <b style="display: inline-block; font-weight: 500;"> A${{ item.total_price }}</b>
+                        </p>
                     </div>
                     <div class="order-count">
                         <div class="item-action item-action-cart">
-                                <a href="" class="subtract">
-                                    <i class="fa-solid fa-minus"></i>
-                                </a>
-                                <p>20</p>
-                                <a href="" class="add">
-                                    <i class="fa-solid fa-plus"></i>
-                                </a>
-                            </div>
+                            <a href="javascript:void(0)" class="subtract" @click.prevent="decrementItem(item.id)">
+                                <i class="fa-solid fa-minus"></i>
+                            </a>
+                            <p>{{ item.quantity }}</p>
+                            <a href="javascript:void(0)" class="add" @click.prevent="incrementItem(item.id)">
+                                <i class="fa-solid fa-plus"></i>
+                            </a>
+                        </div>
                     </div>
                 </li>
-
-                <li class="order-item">
-                    <div class="order-desscription">
-                        <p class="item-small-hd">Wine-Marinated Chicken Hearts</p>
-                        
-                        <p class="item-price"><span>4 x $ 189</span> <b style="display: inline-block; font-weight: 500;"> $ 756</b></p>
-                    </div>
-                    <div class="order-count">
-                        <div class="item-action item-action-cart">
-                                <a href="" class="subtract">
-                                    <i class="fa-solid fa-minus"></i>
-                                </a>
-                                <p>20</p>
-                                <a href="" class="add">
-                                    <i class="fa-solid fa-plus"></i>
-                                </a>
-                            </div>
-                    </div>
-                </li>
-
-                <li class="order-item">
-                    <div class="order-desscription">
-                        <p class="item-small-hd">Wine-Marinated Chicken Hearts</p>
-                        
-                        <p class="item-price"><span>4 x $ 189</span> <b style="display: inline-block; font-weight: 500;"> $ 756</b></p>
-                    </div>
-                    <div class="order-count">
-                        <div class="item-action item-action-cart">
-                                <a href="" class="subtract">
-                                    <i class="fa-solid fa-minus"></i>
-                                </a>
-                                <p>20</p>
-                                <a href="" class="add">
-                                    <i class="fa-solid fa-plus"></i>
-                                </a>
-                            </div>
-                    </div>
-                </li>
-
-                <li class="order-item">
-                    <div class="order-desscription">
-                        <p class="item-small-hd">Wine-Marinated Chicken Hearts</p>
-                        
-                        <p class="item-price"><span>4 x $ 189</span> <b style="display: inline-block; font-weight: 500;"> $ 756</b></p>
-                    </div>
-                    <div class="order-count">
-                        <div class="item-action item-action-cart">
-                                <a href="" class="subtract">
-                                    <i class="fa-solid fa-minus"></i>
-                                </a>
-                                <p>20</p>
-                                <a href="" class="add">
-                                    <i class="fa-solid fa-plus"></i>
-                                </a>
-                            </div>
-                    </div>
-                </li>
-
-
             </ul> 
         </div>
         <div>
-            <!-- <div class="final-subtotal">
-                <span>Subtotal </span>
-                <span> $  800.00</span>
-            </div> -->
-            
-            <div class="final-subtotal fw-normal">
-                <span class=" ">You have total 8 items in your cart </span>
+            <div class="final-subtotal">
+                <span>{{ t('subtotal', ['cart']) }} </span>
+                <span> A${{ TotalOrderPrice }}</span>
             </div>
-
-            <button type="button" class="btn btn-primary w-100"> Proceed to Checkout </button>
-        </div>
-        
+            <div class="final-subtotal fw-normal">
+                <span>{{ t('you_have_total', ['cart']) }} {{ totalQty }} {{ t('items_in_your_cart', ['cart']) }} </span>
+            </div>
+            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#loginModal" v-if="!user"> {{ t('login_to_continue', ['cart']) }}</button>
+            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#addressModal" v-else-if="user && !user.primary_address"> {{ t('add_your_address', ['cart']) }}</button>
+            <router-link to="/checkout" class="btn btn-primary w-100" v-else-if="user && totalQty > 0"  @click="handleCheckout"> {{ t('proceed_to_checkout', ['cart']) }} </router-link>
+            <button v-else-if="user && totalQty <= 0" class="btn btn-primary w-100 " disabled >{{ t('proceed_to_checkout', ['cart']) }} </button>
+        </div>         
     </div>
-
-
 </template>
 
 
-
 <style>
-
     :root{
         --body-color: #f1f0f5;
         --divider-color: #e4e4e4;

@@ -4,7 +4,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import authenticate
-from apps.users.models import EmailToken , User,UserAddress,UserProfile,UserCardDetails,Wallet
+from apps.users.models import EmailToken , User,UserAddress,UserProfile,UserCardDetails,Wallet,ContactUs
 from django.shortcuts import get_object_or_404
 
 class RegisterApiSerializer(serializers.ModelSerializer):
@@ -57,22 +57,15 @@ class LoginSerializer(TokenObtainPairSerializer):
         return token
     
     def _get_user_address(self,user):
-        user_address = UserAddress.objects.filter(user=user,is_primary = True).first()
+        user_address = UserAddress.objects.filter(user=user,is_billing = True).first()
         return {
-            "street_address":user_address.street_address,
-            "state":user_address.state,
-            "country":user_address.country,
+            "street_address1":user_address.street_address1,
+            "street_address2":user_address.street_address2,
+            "suburbs": user_address.suburbs,
+            "name": user_address.name,
             "city":user_address.city,
             "postal_code":user_address.postal_code 
-        } if user_address else None
-    
-    def _get_user_profile(self,user):
-        profile = UserProfile.objects.filter(user=user).first()
-        return {
-                "data_of_birth": profile.date_of_birth,
-                "user_image": profile.user_image,
-            } if profile else None
-    
+        } if user_address else None   
     
     def validate(self, attrs):
         identifier = attrs.get("email")
@@ -87,8 +80,8 @@ class LoginSerializer(TokenObtainPairSerializer):
             "user":{
                 "id": user.id,
                 "email": user.email,
-                "profile": self._get_user_profile(user),
                 "primary_address": self._get_user_address(user),
+                "full_name": user.full_name,
             }
         }
         return data
@@ -125,8 +118,6 @@ class ResetPasswordSerializer(serializers.Serializer):
         return data
 
 
-
-
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(
@@ -157,7 +148,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 class UserAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAddress
-        fields = ["street_address","city","state","country","postal_code","is_primary"]
+        fields = ["id", "name", "street_address1", "street_address2", "city", "postal_code", "suburbs"]
         
     def validate(self, attrs):
         if not attrs['postal_code']:
@@ -173,7 +164,7 @@ class UserAddressSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ['id', 'user_image', 'date_of_birth', 'user']
+        fields = ['id', 'user_image', 'date_of_birth']
         
 class UserCardDetailsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -195,5 +186,58 @@ class ListWalletSerializer(serializers.ModelSerializer):
 class WalletSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wallet
-        fields = ['id', 'user', 'balance', 'expiry', 'unique_id']
-        read_only_fields = ['unique_id']
+        fields = []
+        
+        
+class ContactusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContactUs
+        fields = "__all__"
+        
+        
+class UpdateUserinfoSerializer(serializers.Serializer):
+    full_name = serializers.CharField(required=False, allow_blank=True)
+    email = serializers.EmailField(required=False, allow_blank=True)
+    mobile_number = serializers.CharField(required=False, allow_blank=True)
+    user_image = serializers.ImageField(required=False, allow_null=True)
+    date_of_birth = serializers.DateField(required=False, allow_null=True)
+
+
+class UserDetailsSerializer(serializers.ModelSerializer):
+    profile = serializers.SerializerMethodField()
+    primary_address = serializers.SerializerMethodField()
+    billing_address = serializers.SerializerMethodField()
+    
+    class Meta:
+        fields = ['id', 'email', 'profile', 'primary_address', 'full_name', 'billing_address', 'mobile_number']
+        model = User
+
+    def get_primary_address(self, obj):
+        try:
+            instance = UserAddress.objects.get(user=obj, is_primary=True)
+            serializer = UserAddressSerializer(instance)
+            return serializer.data
+        except:
+            return None
+    
+    def get_billing_address(self, obj):
+        try:
+            instance = UserAddress.objects.get(user=obj, is_billing=True)
+            serializer = UserAddressSerializer(instance)
+            return serializer.data
+        except:
+            return None
+    
+    def get_profile(self, obj):
+        try:
+            instance = UserProfile.objects.get(user=obj)
+            return UserProfileSerializer(instance).data
+        except:
+            return None
+
+
+class UpdatePrimaryUserAddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAddress
+        fields = ['is_primary']
+        

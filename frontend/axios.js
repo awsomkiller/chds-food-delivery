@@ -1,11 +1,19 @@
-// services/axios.js
 import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
 
 const caxios = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL: process.env.VUE_APP_API_URL,
   timeout: 5000,
 });
+
+// Function to get the CSRF token from cookies
+function getCsrfToken() {
+  const name = 'csrftoken';
+  const cookieValue = document.cookie
+    .split('; ')
+    .find(row => row.startsWith(name + '='));
+  return cookieValue ? cookieValue.split('=')[1] : null;
+}
 
 // Request Interceptor
 caxios.interceptors.request.use(
@@ -14,6 +22,13 @@ caxios.interceptors.request.use(
     if (authStore.accessToken) {
       config.headers.Authorization = `Bearer ${authStore.accessToken}`;
     }
+
+    // Set CSRF token in headers
+    const csrfToken = getCsrfToken();
+    if (csrfToken) {
+      config.headers['X-CSRFToken'] = csrfToken;
+    }
+
     return config;
   },
   (error) => Promise.reject(error)

@@ -9,13 +9,22 @@ import './style.css';
 import App from './App.vue';
 import router from './router';
 import { createPinia } from 'pinia';
-import { useAuthStore } from '@/stores/auth'; // Ensure this path is correct for your project
+import { useAuthStore } from '@/stores/auth';
 
 // Create the Pinia store
 const pinia = createPinia();
 
 // Create the Vue app instance
 const app = createApp(App);
+
+router.afterEach((to) => {
+    // Update the document title
+    if (to.meta.title) {
+      document.title = to.meta.title;
+    } else {
+      document.title = 'Chi Hun Da Su'; 
+    }
+  });
 
 // Use the Pinia store and router
 app.use(pinia);

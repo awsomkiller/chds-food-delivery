@@ -1,40 +1,34 @@
 from django.shortcuts import render
-from apps.translations.models import LanguageCategory,Translation
+from apps.translations.models import Module,Translation
 from rest_framework.viewsets import ReadOnlyModelViewSet,ModelViewSet,ViewSet
 from rest_framework.permissions import AllowAny
-from apps.translations.serializers import TranslationSerializer,FeaturesSerializer
+from apps.translations.serializers import TranslationSerializer,ModulesSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
+
 
 class ListLanguageFeatureView(ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
-    queryset = LanguageCategory.objects.all()
-    serializer_class = FeaturesSerializer
+    queryset = Module.objects.all()
+    serializer_class = ModulesSerializer
 
-
-class TranslationApi(ModelViewSet):
+class TranslationListApi(APIView):
     """
-    A simple ViewSet for viewing languages.
+    API view to retrieve list of translations.
     """
     permission_classes = [AllowAny]
-    queryset = Translation.objects.all()
-    serializer_class = TranslationSerializer
-    ordering_fields = ['label', 'value', 'language']
-    search_fields=["label", "value", "language"]
-    
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        language_id = self.request.query_params.get('language')
-        feature_id = self.request.query_params.get('feature')
 
-        if language_id:
-            queryset = queryset.filter(language__id=language_id)
+    def get(self, request, format=None):
+        module = request.query_params.get('module')
+        translations = Translation.objects.all()
 
-        if feature_id:
-            queryset = queryset.filter(feature__id=feature_id)
+        if module:
+            translations = translations.filter(module=module)
 
-        return queryset
+        serializer = TranslationSerializer(translations, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
 class FetchTranslationBasedOnFeatureView(ViewSet):
     """
@@ -45,7 +39,7 @@ class FetchTranslationBasedOnFeatureView(ViewSet):
 
  
     def fetch_feature_instance(self, fc):
-        return get_object_or_404(LanguageCategory, feature_code=fc)
+        return get_object_or_404(Module, feature_code=fc)
     
     def fetch_translation_data(self, languageInstance, featureInstance):
         instances = Translation.objects.filter(language=languageInstance, feature=featureInstance.id)

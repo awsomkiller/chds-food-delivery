@@ -1,17 +1,6 @@
-
 from .base import *
 
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DB_NAME"),
-        "USER": os.getenv("DB_USER"),
-        "PASSWORD": os.getenv("DB_PASSWORD"),
-        "HOST": os.getenv("DB_HOST"),
-        "PORT": os.getenv("DB_PORT"),
-    }
-}
 CORS_ALLOW_HEADERS = [
     "ngrok-skip-browser-warning",
     "accept",
@@ -27,12 +16,29 @@ CORS_ALLOW_HEADERS = [
     "Authorization",
     
 ]
-CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:8080',
-    'http://localhost:8080',
-    'http://127.0.0.1:8000',
-    'http://localhost:8000',
+
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins (unsafe for production)
-# Or explicitly specify allowed origins:
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8080",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8080",
+    "http://localhost:8000",
+    "http://127.0.0.1:8080",
+    "http://127.0.0.1:8000",
+]
+
+CORS_ORIGIN_WHITELIST = (
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+)
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+MEDIA_ROOT = os.path.join(BASE_DIR,"media")
+STATIC_ROOT = os.path.join(BASE_DIR,"static")
