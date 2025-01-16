@@ -30,7 +30,7 @@ const t = (label, modules) => {
                             </div>
                             <div class="item2">
                                 <h6>{{ t('address', ['footer']) }}</h6>
-                                <p>{{ t('address', ['footer']) }}</p>
+                                <p>{{ t('restaurant_address', ['footer']) }}</p>
                             </div>
                         </div>
                     </div>

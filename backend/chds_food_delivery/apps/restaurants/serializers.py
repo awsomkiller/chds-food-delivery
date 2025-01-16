@@ -73,30 +73,30 @@ class ListMenuItemSerializer(serializers.ModelSerializer):
     
     def get_price(self, obj):
         instances = MenuPortionPriceList.objects.filter(menu_item=obj)
-        prices = [instance.price for instance in instances]
-        min_price = min(prices)
-        max_price = max(prices)
+        prices = [int(instance.price) for instance in instances]
+        min_price = min(prices) if prices else 0
+        max_price = max(prices) if prices else 0
         return f"A${min_price} - A${max_price}"
     
     def fetch_menu_item(self, obj):
         instances = MenuPortionPriceList.objects.filter(menu_item=obj).exclude(portion_item__name='meal_set')
-        return instances[0] if instances[0] else None
+        return instances[0] if instances else None
 
     def get_protein(self, obj):
         instance = self.fetch_menu_item(obj)
-        return instance.protein
+        return instance.protein if instance else 0
     
     def get_fats(self, obj):
         instance = self.fetch_menu_item(obj)
-        return instance.fats
+        return instance.fats if instance else 0
     
     def get_carbs(self, obj):
         instance = self.fetch_menu_item(obj)
-        return instance.carbs
+        return instance.carbs if instance else 0
     
     def get_calories(self, obj):
         instance = self.fetch_menu_item(obj)
-        return instance.calories
+        return instance.calories if instance else 0
    
 class CreateMenuItemSerializer(serializers.ModelSerializer):
     """     

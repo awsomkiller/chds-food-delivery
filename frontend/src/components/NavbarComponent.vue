@@ -107,7 +107,7 @@ export default {
                         <div class="icon-location">
                             <i class="fa-solid fa-location-dot"></i>
                         </div>
-                        <p class="mb-0">{{ t('address', ['footer'])}}</p>
+                        <p class="mb-0">{{ t('restaurant_address', ['footer'])}}</p>
                     </div>
                     <div class="login-register d-flex align-items-center gap-3 login-hidden" v-if="!user">
                         
