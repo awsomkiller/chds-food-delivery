@@ -87,6 +87,11 @@ export default {
         const notesTextField = ref('');
         const displayTextField = ref(false);
 
+        const couponCode = ref('');
+        const couponSuccess = ref(false);
+        const couponError = ref(false);
+        const couponErrorMessage = ref('');
+
         const activeDatePickerRef = computed(() => {
             return selectedOption.value === 'delivery' ? deliveryDatepicker : pickupDatepicker;
         });
@@ -336,6 +341,33 @@ export default {
             cartStore.unapplyCoupon();
         }
 
+        const validateAndApplyCoupon = () => {
+            couponError.value = false;
+            couponSuccess.value = false;
+            couponErrorMessage.value = '';
+
+            const enteredCode = couponCode.value.trim();
+
+            if (!enteredCode) {
+                couponError.value = true;
+                couponErrorMessage.value = 'Please enter a coupon code.';
+                return;
+            }
+
+            // Find the coupon in availableCoupons
+            const matchedCoupon = availableCoupons.value.find(
+                (coupon) => coupon.code.toLowerCase() === enteredCode.toLowerCase()
+            );
+
+            if (matchedCoupon) {
+                handleCouponApply(matchedCoupon);
+                couponSuccess.value = true;
+            } else {
+                couponError.value = true;
+                couponErrorMessage.value = 'Invalid coupon code.';
+            }
+        };
+
         watch(
             totalQty,
             (newCount, oldCount) => {
@@ -417,6 +449,11 @@ export default {
             handleCouponApply,
             appliedCoupon,
             handleCouponUnapply,
+            couponCode,
+            couponSuccess,
+            couponError,
+            couponErrorMessage,
+            validateAndApplyCoupon,
         };
     },
 };
@@ -553,10 +590,18 @@ export default {
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="coupon-code-apply p-2">
+                    <div class="coupon-code-apply p-2">
                         <label for="inputZip" class="form-label">Coupon Code (Optional)</label>
-                        <input type="text" class="form-control" placeholder="Enter Coupon Code" id="inputZip">
-                    </div> -->
+                        <input type="text" class="form-control" placeholder="Enter Coupon Code" id="inputZip"  v-model="couponCode" v-on:focusout="validateAndApplyCoupon">
+                         <div v-if="couponSuccess" class="mt-2 alert alert-success d-flex justify-content-between">
+                         Coupon applied successfully!
+                         <button type="button" class="btn-close" @click="handleCouponUnapply" aria-label="Close"></button>
+                       </div>
+                    <!-- Error Message -->
+                    <div v-if="couponError" class="mt-2 alert alert-danger">
+                        {{ couponErrorMessage }}
+                    </div>
+                    </div>
                 </div>
             </div>
             <!-- items added in the cart list -->
@@ -619,9 +664,9 @@ export default {
         </div>
         <!-- can be removed -->
                     <div class="col-lg-4 col-md-12 col-sm-12 col-12 p-3">
-            <div class="store-n-diliveri bg-white p-2 rounded">
-                <!-- Add Coupons Section -->
-                <h6 class="extra-status" v-if="availableCoupons.length >0">{{ t('apply_coupons', ['checkout']) }}</h6>
+            <div class="store-n-diliveri bg-white p-2 rounded"> 
+       
+                <!-- <h6 class="extra-status" v-if="availableCoupons.length >0">{{ t('apply_coupons', ['checkout']) }}</h6>
                 <div class="store-n-diliveri bg-white pb-3 rounded" v-if="availableCoupons.length >0">
                     <div class="row">
                         <div 
@@ -649,10 +694,10 @@ export default {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </div> 
+                </div> -->
 
-                <div class="applied-coupon-section mt-4" v-if="appliedCoupon">
+                <!-- <div class="applied-coupon-section mt-4" v-if="appliedCoupon">
                     <div class="alert alert-success d-flex justify-content-between align-items-center" role="alert">
                         <div>
                         <strong>{{ t('applied_coupon', ['checkout']) }}:</strong> {{ appliedCoupon.code }}
@@ -665,7 +710,7 @@ export default {
                         {{ t('unapply', ['checkout']) }}
                         </a>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- End of Coupons Section -->
 
