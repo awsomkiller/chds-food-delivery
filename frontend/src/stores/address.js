@@ -36,12 +36,24 @@ export const useAddressStore = defineStore('address', {
   actions: {
     // Define eligible postal codes as a constant
     async getEligiblePostalCodes() {
-      const response = await axios.get('/menu/delivery-point/')
-      const data = response.data.results
-      this.eligiblePostalCodes = data.map((item)=>{return parseInt(item.postal_code)});
+    try {
+      let url = '/menu/delivery-point/';
+      let allPostalCodes = [];
+
+      while (url) {
+        const response = await axios.get(url);
+        const data = response.data;
+        allPostalCodes = allPostalCodes.concat(data.results.map(item => parseInt(item.postal_code)));
+        url = data.next;
+      }
+
+      this.eligiblePostalCodes = allPostalCodes;
       const authStore = useAuthStore();
       authStore.deliveryEligibilityCheck();
-    },
+    } catch (error) {
+      console.error('Failed to fetch eligible postal codes:', error);
+    }
+  },
 
     fetchEligiblePostalCodes(){
       return this.eligiblePostalCodes;
