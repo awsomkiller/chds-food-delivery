@@ -1,6 +1,5 @@
 <script setup>
 import { useTranslationStore } from '@/stores/translation';
-import FooterComponent from '@/components/FooterComponent.vue';
 
 const translationStore = useTranslationStore();
 
@@ -114,7 +113,6 @@ const t = (label, modules) => {
     </div>
 
   </section>
-  <FooterComponent />
 </template>
 
 <style>

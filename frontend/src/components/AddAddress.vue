@@ -150,7 +150,7 @@
   </template>
   
   <script>
-  import { ref, computed, onMounted } from 'vue';
+  import { ref, computed } from 'vue';
   import { useAddressStore } from '@/stores/address';
   import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
@@ -165,9 +165,6 @@ import { storeToRefs } from 'pinia';
 
       const { eligibityError } = storeToRefs(addressStore);
 
-      onMounted(() => {
-        addressStore.fetchAddresses();
-      });
   
       // Computed properties for activeAddress and addresses
       const activeAddress = computed({

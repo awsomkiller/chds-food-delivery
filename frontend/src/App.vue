@@ -1,5 +1,6 @@
 <script setup>
 import NavbarComponent from "./components/NavbarComponent.vue";
+import FooterComponent from '@/components/FooterComponent.vue';
 import LoginModule from "./components/LoginModule.vue";
 import SignUp from "./components/SignUp.vue";
 import PostalCode from "./components/PostalCode.vue";
@@ -10,17 +11,39 @@ import OrderStatus from "./components/OrderStatus.vue";
 import { useTranslationStore } from "./stores/translation";
 import { useAuthStore } from "./stores/auth";
 import { useAddressStore } from "./stores/address";
-import {  onBeforeMount, computed } from "vue";
+import {  onBeforeMount, computed, watch } from "vue";
+import { useWalletStore } from "./stores/wallet";
+import { storeToRefs } from "pinia";
 
 const translationStore = useTranslationStore();
 const authStore = useAuthStore();
 const addressStore = useAddressStore();
+const walletStore = useWalletStore();
+
+const { user } = storeToRefs(authStore);
+
 
 onBeforeMount(async () => {
   await translationStore.fetchTranslations();
-  await authStore.fetchUserDetails();
-  await addressStore.getEligiblePostalCodes();
+  if(user.value){
+    await authStore.fetchUserDetails();
+    await addressStore.getEligiblePostalCodes();
+    await addressStore.fetchAddresses();
+    await walletStore.fetchWallet();
+  }
 });
+
+watch(
+     user,
+     async(newUser, oldUser) => {
+         if (newUser != null && newUser !== oldUser) {
+             console.log("userupdated")
+             await addressStore.getEligiblePostalCodes();
+             await addressStore.fetchAddresses();
+             await walletStore.fetchWallet();
+         }
+     }
+ );
 
 const isLoaded = computed(() => translationStore.isLoaded);
 </script>
@@ -36,6 +59,7 @@ const isLoaded = computed(() => translationStore.isLoaded);
     <MobileSidebar />
     <AddAddress />
     <OrderStatus />
+    <FooterComponent />
   </div>
   <div v-else>
     <!-- Optional: A loading spinner or placeholder can go here -->

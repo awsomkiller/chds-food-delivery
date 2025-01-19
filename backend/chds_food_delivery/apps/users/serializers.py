@@ -1,11 +1,17 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import authenticate
+from django.utils import timezone
+from django.contrib.auth import get_user_model
+
 from apps.users.models import EmailToken , User,UserAddress,UserProfile,UserCardDetails,Wallet,ContactUs
-from django.shortcuts import get_object_or_404
+User = get_user_model()
+
 
 class RegisterApiSerializer(serializers.ModelSerializer):
     """ 
@@ -85,7 +91,8 @@ class LoginSerializer(TokenObtainPairSerializer):
             }
         }
         return data
-        
+    
+
 class ForgetPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
 

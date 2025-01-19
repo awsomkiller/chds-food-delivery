@@ -40,6 +40,7 @@ class WalletCouponViewSet(ReadOnlyModelViewSet):
 class OrderCouponViewSet(ReadOnlyModelViewSet):
     queryset = OrderCoupon.objects.filter(is_active=True)
     serializer_class = OrderCouponSerializer
+    permission_classes =  []
         
 
 class WalletRechargeView(APIView):

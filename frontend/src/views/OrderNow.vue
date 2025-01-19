@@ -3,8 +3,6 @@ import CartData from "@/components/CartData.vue";
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useMenuStore } from "@/stores/menu";
 import { useCartStore } from "@/stores/cart";
-import { useAuthStore } from "@/stores/auth";
-import { useWalletStore } from "@/stores/wallet";
 import { useTranslationStore } from "@/stores/translation";
 
 import { storeToRefs } from "pinia";
@@ -16,8 +14,6 @@ export default {
   setup() {
     const menuStore = useMenuStore();
     const cartStore = useCartStore();
-    const authStore = useAuthStore();
-    const walletStore = useWalletStore();
     const translationStore = useTranslationStore();
 
     const {
@@ -35,7 +31,8 @@ export default {
 
     const {
         totalQty
-    } = storeToRefs(cartStore)
+    } = storeToRefs(cartStore);
+
     const searchQuery = ref("");
     const quantity = ref(1);
 
@@ -108,13 +105,14 @@ export default {
         return translationStore.translate(label, modules);
     };
 
+
+
     onMounted(async () => {
       menuStore.resetItems();
       await menuStore.fetchCoupons();
       await menuStore.loadCategories();
-      await menuStore.loadItems();
-      walletStore.fetchWallet()
-      authStore.fetchUserDetails();
+      await menuStore.loadItems();  
+      
       window.addEventListener("scroll", handleScroll);
 
       const modalElement = document.getElementById("exampleModal");

@@ -25,9 +25,10 @@ class RestaurantApi(ModelViewSet):
     """ 
         Api for handling restaurants
     """
-    http_method_names = ["get","post","delete"]
+    http_method_names = ["get"]
     serializer_class = RestaurantApiSerializer
     queryset = PickupLocation.objects.filter(is_active=True)
+    permission_class = []
     
 class MenuItemApi(ModelViewSet):
     """ 

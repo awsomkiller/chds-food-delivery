@@ -4,7 +4,7 @@ import {
     Swiper,
     SwiperSlide
 } from 'swiper/vue';
-import FooterComponent from '@/components/FooterComponent.vue';
+
 
 // Import Swiper styles
 import 'swiper/css';
@@ -29,7 +29,6 @@ export default {
     components: {
         Swiper,
         SwiperSlide,
-        FooterComponent,
     },
     setup() {
       const menuStore = useMenuStore();
@@ -1418,7 +1417,7 @@ export default {
 
     </section>
 </div>
-<FooterComponent />
+
 </template>
 
 <style scoped>

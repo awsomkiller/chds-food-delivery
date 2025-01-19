@@ -21,16 +21,20 @@ from apps.users.serializers import (
     ContactusSerializer,
     UpdateUserinfoSerializer,
     UserDetailsSerializer,
-    UpdatePrimaryUserAddressSerializer
+    UpdatePrimaryUserAddressSerializer,
 )
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
 from rest_framework.viewsets import ModelViewSet, ViewSet
+from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from apps.users.models import User , EmailToken ,UserAddress,UserCardDetails,UserProfile,Wallet,ContactUs
 from django.utils.crypto import get_random_string
 from apps.users.email import Sendresetpasswordlinkapi
 from rest_framework.exceptions import ValidationError
+from django.utils import timezone
+from datetime import timedelta
 
 class RegisterAPI(APIView):
     permission_classes = (AllowAny,)
@@ -51,6 +55,54 @@ class RegisterAPI(APIView):
 class LoginApiView(TokenObtainPairView):
     serializer_class = LoginSerializer
     permission_classes = (AllowAny,) 
+    
+
+class RefreshTokenApiView(APIView):
+    permission_classes = ()
+
+    def post(self, request, *args, **kwargs):
+        refresh_token_str = request.data.get('refresh_token')
+
+        if not refresh_token_str:
+            return Response(
+                {'error': 'Refresh token not provided.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            refresh_token = RefreshToken(refresh_token_str)
+            user = User.objects.get(id=refresh_token['user_id']) 
+
+            if refresh_token['exp'] < timezone.now().timestamp():
+                raise InvalidToken('Refresh token has expired.')
+
+            new_refresh_token = RefreshToken.for_user(user)
+            new_access_token = new_refresh_token.access_token
+        
+            return Response(
+                {
+                    'access_token': str(new_access_token),
+                    'refresh_token': str(new_refresh_token)
+                },
+                status=status.HTTP_200_OK
+            )
+
+        except TokenError as e:
+            return Response(
+                {'error': 'Invalid or expired refresh token.'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+        except InvalidToken as e:
+            return Response(
+                {'error': str(e)},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+        except Exception as e:
+            return Response(
+                {'error': 'An error occurred while refreshing the token.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
 
 
 class UserDetails(APIView):
