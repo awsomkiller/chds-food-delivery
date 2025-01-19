@@ -266,7 +266,50 @@ class OrdersAdmin(admin.ModelAdmin):
 
         return " | ".join(lines)
 
+    # -------------
+    # NEW ADMIN ACTIONS FOR UPDATING STATUS
+    # -------------
+
+    def mark_ready_for_pickup(self, request, queryset):
+        """
+        Update the status of selected orders to READY_FOR_PICKUP.
+        """
+        updated = queryset.update(status='READY_FOR_PICKUP')
+        self.message_user(request, f"{updated} order(s) marked as Ready for Pickup.")
+    mark_ready_for_pickup.short_description = "Mark selected orders as Ready for Pickup"
+
+    def mark_out_for_delivery(self, request, queryset):
+        """
+        Update the status of selected orders to OUT_FOR_DELIVERY.
+        """
+        updated = queryset.update(status='OUT_FOR_DELIVERY')
+        self.message_user(request, f"{updated} order(s) marked as Out for Delivery.")
+    mark_out_for_delivery.short_description = "Mark selected orders as Out for Delivery"
+
+    def mark_delivered(self, request, queryset):
+        """
+        Update the status of selected orders to DELIVERED.
+        """
+        updated = queryset.update(status='DELIVERED')
+        self.message_user(request, f"{updated} order(s) marked as Delivered.")
+    mark_delivered.short_description = "Mark selected orders as Delivered"
+
+    def mark_cancelled(self, request, queryset):
+        """
+        Update the status of selected orders to CANCELLED.
+        """
+        updated = queryset.update(status='CANCELLED')
+        self.message_user(request, f"{updated} order(s) marked as Cancelled.")
+    mark_cancelled.short_description = "Mark selected orders as Cancelled"
+
     # Register the actions as admin actions (they will appear in the "Actions" dropdown)
-    actions = ["export_order_details_csv", "export_address_details_csv"]
+    actions = [
+        "export_order_details_csv",
+        "export_address_details_csv",
+        "mark_ready_for_pickup",
+        "mark_out_for_delivery",
+        "mark_delivered",
+        "mark_cancelled"
+    ]
 
 admin.site.register(Orders, OrdersAdmin)
