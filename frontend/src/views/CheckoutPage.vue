@@ -784,6 +784,11 @@ export default {
             <p>A$ {{ TotalOrderPrice - TotalDiscount }}</p>
         </div>
 
+         <div class="billing-detail detail-green" v-if="selectedOption === 'delivery'">
+             <p class=""> Delivery </p>
+             <p class=""> A$ 9.99 </p>
+         </div> 
+
         <!-- Display balances for specific payment methods -->
         <div class="billing-detail detail-green my-2" v-if="selectPaymentMethod === 'wallet'">
             <p>{{ t('wallet_balance',['checkout']) }}</p>
@@ -791,7 +796,8 @@ export default {
         </div>
 
         <!-- Credit Card Option -->
-        <div v-if="selectPaymentMethod === 'stripe'">
+        <div v-if="selectPaymentMethod === 'stripe'" class="mt-4">
+            <h6>Enter Card Details:</h6>
             <div id="card-element" ref="cardElementRef"></div>
             <button type="button" class="btn btn-primary w-100 mt-2" @click="handleCheckOutSubmit" :disabled="!cardComplete">{{ t('continue_payment',['checkout']) }}</button>
         </div>
