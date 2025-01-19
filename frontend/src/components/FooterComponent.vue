@@ -6,6 +6,13 @@ const translationStore = useTranslationStore();
 const t = (label, modules) => {
       return translationStore.translate(label, modules);
     };
+
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth', // Optional: for smooth scrolling
+  });
+};
 </script>
 <template>
 <footer class="footer-section bg-title fix">
@@ -120,25 +127,25 @@ const t = (label, modules) => {
                             </div>
                             <ul class="list-area">
                                 <li>
-                                    <router-link to="/">
+                                    <router-link to="/" @click="scrollToTop">
                                         <i class="fa-solid fa-angles-right"></i>
                                         {{ t('home', ['footer']) }}
                                     </router-link>
                                 </li>
                                 <li>
-                                    <router-link to="/ordernow">
+                                    <router-link to="/ordernow" @click="scrollToTop">
                                         <i class="fa-solid fa-angles-right"></i>
                                         {{ t('order_now', ['footer']) }}
                                     </router-link>
                                 </li>
                                 <li>
-                                    <router-link to="/ourstory">
+                                    <router-link to="/ourstory" @click="scrollToTop">
                                         <i class="fa-solid fa-angles-right"></i>
                                         {{ t('our_story', ['footer']) }}
                                     </router-link>
                                 </li>
                                 <li>
-                                    <router-link to="/contact-us">
+                                    <router-link to="/contact-us" @click="scrollToTop">
                                         <i class="fa-solid fa-angles-right"></i>
                                         {{ t('contact_us', ['footer']) }}
                                     </router-link>
