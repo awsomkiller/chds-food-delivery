@@ -349,8 +349,8 @@ export default {
             const enteredCode = couponCode.value.trim();
 
             if (!enteredCode) {
-                couponError.value = true;
-                couponErrorMessage.value = 'Please enter a coupon code.';
+                couponError.value = false;
+                couponErrorMessage.value = '';
                 return;
             }
 
@@ -398,6 +398,12 @@ export default {
             } else {
                 initializeFlatpickr(pickupDatepicker);
             }
+        });
+
+        watch(couponCode, (newVal)=>{
+         if(newVal === ''){
+           couponError.value='';
+         }
         });
 
         onMounted(async () => {
@@ -733,7 +739,7 @@ export default {
             <input type="radio" class="btn-check" name="options" id="addons2" value="stripe" v-model="selectPaymentMethod">
             <label class="btn btn-primary w-100" for="addons2">
                 <p class="mb-0">
-                    <img class="payment-icon" src="@/assets/stripe.png" alt="Stripe">
+                    <img class="payment-icon" src="@/assets/card.jpg" alt="Stripe">
                 </p>
             </label>
 
